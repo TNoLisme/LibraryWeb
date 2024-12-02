@@ -1,13 +1,13 @@
-package com.example.QLTV;
+package com.example.QuanLyThuVien;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class QltvApplication {
+public class QuanLyThuVienApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(QltvApplication.class, args);
+		SpringApplication.run(QuanLyThuVienApplication.class, args);
 	}
 
 }

@@ -1,44 +1,37 @@
-package com.example.QLTV.Service;
+package com.example.QuanLyThuVien.Service;
 
-import com.example.QLTV.Entity.Categories;
-import com.example.QLTV.Repository.CategoriesRepository;
-import jakarta.transaction.Transactional;
+import com.example.QuanLyThuVien.Entity.Category;
+import com.example.QuanLyThuVien.Repo.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
 import java.util.Optional;
 
 @Service
 public class CategoriesService {
-
     @Autowired
-    private CategoriesRepository categoriesRepository;
+    private CategoryRepository categoriesRepository;
+    public Category saveCategory(Category category) {
 
-    // Create or update a category
-    @Transactional
-    public Categories saveCategory(Categories category) {
-      try{
-          return categoriesRepository.save(category);
-      }catch (Exception ex){
-          System.out.println("a" + ex.getStackTrace());
-          return null;
-      }
+            return categoriesRepository.save(category);
+
     }
 
     // Get all categories
-    public List<Categories> getAllCategories() {
+    public List<Category> getAllCategories() {
         return categoriesRepository.findAll();
     }
 
     // Get category by id
-    public Optional<Categories> getCategoryById(int id) {
+    public Optional<Category> getCategoryById(int id) {
         return categoriesRepository.findById(id);
     }
 
     // Update category
-    public Categories updateCategory(int id, Categories categoryDetails) {
+    public Category updateCategory(int id, Category categoryDetails) {
         if (categoriesRepository.existsById(id)) {
-            categoryDetails.setCategoryId(id);
+            categoryDetails.setId(id);
             return categoriesRepository.save(categoryDetails);
         }
         return null;

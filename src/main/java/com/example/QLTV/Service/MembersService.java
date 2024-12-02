@@ -1,9 +1,11 @@
-package com.example.QLTV.Service;
+package com.example.QuanLyThuVien.Service;
 
-import com.example.QLTV.Entity.Members;
-import com.example.QLTV.Repository.MembersRepository;
+
+import com.example.QuanLyThuVien.Entity.Member;
+import com.example.QuanLyThuVien.Repo.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -11,27 +13,27 @@ import java.util.Optional;
 public class MembersService {
 
     @Autowired
-    private MembersRepository membersRepository;
+    private MemberRepository membersRepository;
 
     // Create or update a member
-    public Members saveMember(Members member) {
+    public Member saveMember(Member member) {
         return membersRepository.save(member);
     }
 
     // Get all members
-    public List<Members> getAllMembers() {
+    public List<Member> getAllMembers() {
         return membersRepository.findAll();
     }
 
     // Get member by id
-    public Optional<Members> getMemberById(int id) {
+    public Optional<Member> getMemberById(int id) {
         return membersRepository.findById(id);
     }
 
     // Update member
-    public Members updateMember(int id, Members memberDetails) {
+    public Member updateMember(int id, Member memberDetails) {
         if (membersRepository.existsById(id)) {
-            memberDetails.setMemberId(id);
+            memberDetails.setId(id);
             return membersRepository.save(memberDetails);
         }
         return null;
@@ -40,5 +42,15 @@ public class MembersService {
     // Delete member
     public void deleteMember(int id) {
         membersRepository.deleteById(id);
+    }
+
+    public boolean checkLogin(String email, String password) {
+        Optional<Member> memberOpt = membersRepository.findByEmail(email);
+        if (memberOpt.isPresent()) {
+            Member member = memberOpt.get();
+            // So sánh mật khẩu trực tiếp
+            return password.equals(member.getPassword());
+        }
+        return false;  // Không tìm thấy user hoặc mật khẩu sai
     }
 }
