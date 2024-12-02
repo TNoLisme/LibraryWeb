@@ -20,7 +20,6 @@ CREATE TABLE Members (
     fullName VARCHAR(255) NOT NULL,          -- Tên đầy đủ
     email VARCHAR(255) UNIQUE NOT NULL,      -- Email (đăng nhập)
     password VARCHAR(255) NOT NULL,          -- Mật khẩu
-    role ENUM('user', 'admin') DEFAULT 'user' -- Vai trò (admin hoặc user)
 );
 
 CREATE TABLE BorrowRequests (
@@ -51,3 +50,26 @@ CREATE TABLE Admins (
     email VARCHAR(255) UNIQUE NOT NULL,     -- Email đăng nhập admin
     password VARCHAR(255) NOT NULL          -- Mật khẩu admin
 );
+
+CREATE TABLE MemberPenalties (
+    penaltyRecordID INT AUTO_INCREMENT PRIMARY KEY,  -- ID bản ghi phạt
+    memberID INT,                                   -- ID của thành viên
+    fineID INT,                                     -- ID mức phạt từ bảng Fines
+    penaltyDate DATE NOT NULL,                       -- Ngày phạt
+    paidStatus ENUM('paid', 'unpaid') DEFAULT 'unpaid',  -- Trạng thái thanh toán
+    FOREIGN KEY (memberID) REFERENCES Members(memberID) ON DELETE CASCADE,
+    FOREIGN KEY (fineID) REFERENCES Fines(fineID) ON DELETE CASCADE
+);
+
+CREATE TABLE Fines (
+    fineID INT AUTO_INCREMENT PRIMARY KEY,  -- ID của mức phạt
+    fineReason VARCHAR(255) NOT NULL,       -- Lý do phạt
+    fineAmount DECIMAL(10, 2) NOT NULL      -- Mức phạt (số tiền)
+);
+
+-- Thêm một số lý do phạt giả định
+INSERT INTO Fines (fineReason, fineAmount) VALUES
+('Late book return', 10.00),              -- Phạt 10.00 vì trả sách trễ
+('Damaged book', 20.00),               -- Phạt 20.00 vì sách bị hư hỏng
+('Lost book', 30.00);                -- Phạt 30.00 vì đánh mất sách
+	
