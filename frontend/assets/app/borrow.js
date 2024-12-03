@@ -3,10 +3,13 @@ const borrowDate = document.querySelector("#borrowDate");
 const returnDate = document.querySelector("#returnDate");
 const statusBook = document.querySelector("#status");
 const bookID = document.querySelector("#bookID");
+const memID = document.querySelector("#memID");
+
 const modalEditId = "#modelEdit";
 const modelConfirmId = "#modelConfirm";
 const PATH = BASE_URL + "/api/borrowrequests";
 const PATH_BOOK = BASE_URL + "/api/books";
+const PATH_MEMBER = BASE_URL + "/api/members";
 
 let selectedItem = null;
 let items = [];
@@ -51,7 +54,13 @@ const renderBooksList = async () => {
     data?.data?.forEach((element) => {
       txt += `<option value=${element.id}>${element?.title}</option>`;
     });
+    const dataMem = await axios.get(PATH_MEMBER);
+    let txtMem = `<option value="">-- Chọn thành viên --</option>`;
+    dataMem?.data?.forEach((element) => {
+      txtMem += `<option value=${element.id}>${element?.fullName}</option>`;
+    });
     bookID.innerHTML = txt;
+    memID.innerHTML = txtMem;
   } catch (error) {}
 };
 
@@ -61,6 +70,8 @@ const closeModal = () => {
   $(modalEditId).modal("hide");
   $(modelConfirmId).modal("hide");
   statusBook.disabled = true;
+  bookID.disabled = false;
+  memID.disabled = false;
   clearForm();
 };
 
@@ -69,7 +80,8 @@ const getFormData = () => ({
   borrowDate: borrowDate.value.trim(),
   returnDate: returnDate.value.trim(),
   status: statusBook.value.trim(),
-  bookID: bookID.value.trim(),
+  bookID: +bookID.value.trim(),
+  memID: +memID.value.trim(),
 });
 
 const setFormData = (data) => {
@@ -77,6 +89,7 @@ const setFormData = (data) => {
   returnDate.value = data?.returnDate || "";
   statusBook.value = data?.status || "";
   bookID.value = data?.bookID?.id || "";
+  memID.value = data?.memberID?.id || "";
 };
 
 const clearForm = () => {
@@ -85,6 +98,7 @@ const clearForm = () => {
   returnDate.value = null;
   statusBook.value = "PENDING";
   bookID.value = null;
+  memID.value = null;
 };
 
 const handleFormSubmit = async (event) => {
@@ -110,6 +124,8 @@ const editItem = (id) => {
     setFormData(selectedItem);
     openModal();
     statusBook.disabled = false;
+    bookID.disabled = true;
+    memID.disabled = true;
   }
 };
 

@@ -1,13 +1,16 @@
 const tableData = document.querySelector("#tableData");
+const tableDataDialog = document.querySelector("#tableDataDialog");
 const title = document.querySelector("#title");
 const author = document.querySelector("#author");
 const publishYear = document.querySelector("#publishYear");
 const quantity = document.querySelector("#quantity");
 const cateID = document.querySelector("#cateID");
 const modalEditId = "#modelEdit";
+const modalViewId = "#modelView";
 const modelConfirmId = "#modelConfirm";
 const PATH = BASE_URL + "/api/books";
 const PATH_CATE = BASE_URL + "/api/categories";
+const PATH_REVIEW = BASE_URL + "/api/reviews";
 
 let selectedItem = null;
 let items = [];
@@ -34,6 +37,9 @@ const renderTable = async () => {
           <a onclick="openDeleteModel(${item.id})" href="javascript:void(0);">
             <i class="bx bx-trash me-1"></i>
           </a>
+          <a onclick="viewItem(${item.id})" href="javascript:void(0);">
+            <i class='bx bx-show'></i>
+          </a>
         </td>
       </tr>
     `
@@ -57,11 +63,15 @@ const renderCateList = async () => {
 };
 
 const openModal = () => $(modalEditId).modal("show");
+const openModalView = () => $(modalViewId).modal("show");
 
 const closeModal = () => {
   $(modalEditId).modal("hide");
   $(modelConfirmId).modal("hide");
+  $(modalViewId).modal("hide");
   clearForm();
+
+  tableDataDialog.innerHTML = "";
 };
 
 const getFormData = () => ({
@@ -83,6 +93,11 @@ const setFormData = (data) => {
 
 const clearForm = () => {
   title.value = "";
+  title.value = "";
+  author.value = "";
+  publishYear.value = "";
+  quantity.value = "";
+  cateID.value = "";
   selectedItem = null;
 };
 
@@ -109,6 +124,34 @@ const editItem = (id) => {
     setFormData(selectedItem);
     openModal();
   }
+};
+const viewItem = async (bookId) => {
+  try {
+    let config = {
+      params: { bookId },
+    };
+    const data = await axios.get(PATH_REVIEW + "/by-book", config);
+    const rows = data?.data
+      .map(
+        (item) => `
+    <tr>
+      <td>${item.memberID?.fullName}</td>
+      <td>
+        <textarea
+          rows="4"
+          cols="40"
+          disabled
+        >${item.comment}</textarea>
+      </td>
+      <td>${item.rating}</td>
+    </tr>
+  `
+      )
+      .join("");
+    tableDataDialog.innerHTML = rows;
+
+    openModalView();
+  } catch (error) {}
 };
 
 const openDeleteModel = (id) => {

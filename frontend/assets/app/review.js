@@ -2,26 +2,30 @@ const tableData = document.querySelector("#tableData");
 const reviewDate = document.querySelector("#reviewDate");
 const comment = document.querySelector("#comment");
 const rating = document.querySelector("#rating");
-const memberID = document.querySelector("#memberID");
-const bookID = document.querySelector("#bookID");
 const modalEditId = "#modelEdit";
 const modelConfirmId = "#modelConfirm";
 const PATH = BASE_URL + "/api/reviews";
 const PATH_BOOK = BASE_URL + "/api/books";
 const PATH_MEMBER = BASE_URL + "/api/members";
+const PATH_BORROW = BASE_URL + "/api/borrowrequests";
 
 let selectedItem = null;
 let items = [];
 
 window.addEventListener("DOMContentLoaded", () => {
   renderTable();
-  renderOptionList();
 });
 
 const renderTable = async () => {
   try {
-    const data = await axios.get(PATH);
+    const user = JSON.parse(sessionStorage.getItem("current-user"));
+    const config = {
+      params: { memberId: user?.id },
+    };
+    const data = await axios.get(PATH_BORROW + `/members`, config);
     items = data?.data || [];
+    console.log(items);
+    
     const rows = data?.data
       .map(
         (item) => `
@@ -31,9 +35,6 @@ const renderTable = async () => {
         <td style="text-align: center;">
           <a onclick="editItem(${item.id})" href="javascript:void(0);">
             <i class="bx bx-edit-alt me-1"></i>
-          </a>
-          <a onclick="openDeleteModel(${item.id})" href="javascript:void(0);">
-            <i class="bx bx-trash me-1"></i>
           </a>
         </td>
       </tr>
@@ -46,57 +47,31 @@ const renderTable = async () => {
   }
 };
 
-const renderOptionList = async () => {
-  try {
-    const data = await axios.get(PATH_BOOK);
-    let txt = `<option value="">-- Chọn sách --</option>`;
-    data?.data?.forEach((element) => {
-      txt += `<option value=${element.id}>${element?.title}</option>`;
-    });
-    const dataMem = await axios.get(PATH_MEMBER);
-    let txtMem = `<option value="">-- Chọn thành viên --</option>`;
-    dataMem?.data?.forEach((element) => {
-      txtMem += `<option value=${element.id}>${element?.fullName}</option>`;
-    });
-    bookID.innerHTML = txt;
-    memberID.innerHTML = txtMem;
-  } catch (error) {}
-};
-
 const openModal = () => $(modalEditId).modal("show");
 
 const closeModal = () => {
   $(modalEditId).modal("hide");
   $(modelConfirmId).modal("hide");
-
-  bookID.disabled = false;
-  memberID.disabled = false;
   clearForm();
 };
 
 const getFormData = () => ({
-  ...(selectedItem || {}),
-  reviewDate: reviewDate.value.trim() + "T00:00:00Z",
+  // ...(selectedItem || {}),
   comment: comment.value.trim(),
-  rating: rating.value.trim(),
-  memberID: memberID.value.trim(),
-  bookID: bookID.value.trim(),
+  rating: +rating.value.trim(),
+  borrowRequestId: selectedItem?.id,
+  memberId: selectedItem?.memberID?.id,
+  reviewDate: new Date().toISOString(),
 });
 
 const setFormData = (data) => {
-  reviewDate.value = data?.reviewDate?.replace("T00:00:00Z", "") || "";
   comment.value = data?.comment || "";
   rating.value = data?.rating || "";
-  memberID.value = data?.memberID?.id || "";
-  bookID.value = data?.bookID?.id || "";
 };
 
 const clearForm = () => {
-  reviewDate.value = "";
   comment.value = "";
   rating.value = "";
-  memberID.value = "";
-  bookID.value = "";
   selectedItem = null;
 };
 
@@ -105,8 +80,6 @@ const handleFormSubmit = async (event) => {
   try {
     const formData = getFormData();
     if (selectedItem) {
-      await axios.put(PATH + `/${selectedItem.id}`, formData);
-    } else {
       await axios.post(PATH, formData);
     }
   } catch (error) {
@@ -122,8 +95,6 @@ const editItem = (id) => {
   if (selectedItem) {
     setFormData(selectedItem);
     openModal();
-    bookID.disabled = true;
-    memberID.disabled = true;
   }
 };
 

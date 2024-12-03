@@ -173,7 +173,7 @@
 
           <div class="menu-inner-shadow"></div>
 
-          <ul class="menu-inner py-1">
+          <ul class="menu-inner py-1" id="adminSidebar">
             <!-- Dashboard -->
             <li class="menu-item">
               <a href="index.html" class="menu-link">
@@ -197,12 +197,6 @@
                 <div data-i18n="Basic">Mượn sách</div>
               </a>
             </li>
-            <li class="menu-item active">
-              <a href="review.html" class="menu-link">
-                <i class="menu-icon tf-icons bx bx-collection"></i>
-                <div data-i18n="Basic">Đánh giá lại</div>
-              </a>
-            </li>
             <li class="menu-item">
               <a href="category.html" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-collection"></i>
@@ -213,6 +207,30 @@
               <a href="member.html" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-collection"></i>
                 <div data-i18n="Basic">Thành viên</div>
+              </a>
+            </li>
+            <li class="menu-item">
+              <a href="javascript:void(0);" class="menu-link menu-toggle">
+                <i class="menu-icon tf-icons bx bx-lock-open-alt"></i>
+                <div data-i18n="Authentications">Authentications</div>
+              </a>
+              <ul class="menu-sub">
+                <li class="menu-item">
+                  <a href="login.html" class="menu-link">
+                    <div data-i18n="Basic">Đăng xuất</div>
+                  </a>
+                </li>
+              </ul>
+            </li>
+          </ul>
+          <ul class="menu-inner py-1" id="memberSidebar">
+            <li class="menu-header small text-uppercase">
+              <span class="menu-header-text">Quản lý</span>
+            </li>
+            <li class="menu-item">
+              <a href="review.html" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-collection"></i>
+                <div data-i18n="Basic">Đánh giá lại</div>
               </a>
             </li>
             <li class="menu-item">
@@ -361,15 +379,7 @@
               <div class="row">
                 <div class="col-md-12">
                   <ul class="nav nav-pills flex-column flex-md-row mb-3">
-                    <li class="nav-item">
-                      <button
-                        class="nav-link active btn-sm"
-                        data-toggle="modal"
-                        data-target="#modelEdit"
-                      >
-                        <i class="bx bxs-message-square-add me-1"></i>Thêm mới
-                      </button>
-                    </li>
+                   
                   </ul>
                   <!-- Edit model -->
                   <div class="row">
@@ -389,7 +399,7 @@
                         <div class="modal-content">
                           <div class="modal-header">
                             <h5 class="modal-title" id="exampleModalLongTitle">
-                              Thêm mới/Cập nhật thông tin đánh giá lại
+                              Thông tin đánh giá lại
                             </h5>
                             <button
                               type="button"
@@ -408,24 +418,6 @@
                           <form onsubmit="handleFormSubmit(event)">
                             <div class="modal-body">
                               <div class="mb-3">
-                                <label class="form-label" for="bookID"
-                                  >Sách</label
-                                >
-                                <select id="bookID" class="form-select">
-                                  <option value="">-- Chọn sách --</option>
-                                </select>
-                              </div>
-                              <div class="mb-3">
-                                <label class="form-label" for="memberID"
-                                  >Thành viên</label
-                                >
-                                <select id="memberID" class="form-select">
-                                  <option value="">
-                                    -- Chọn thành viên --
-                                  </option>
-                                </select>
-                              </div>
-                              <div class="mb-3">
                                 <label class="form-label" for="rating"
                                   >Số sao</label
                                 >
@@ -435,16 +427,6 @@
                                   type="number"
                                   class="form-control"
                                   id="rating"
-                                />
-                              </div>
-                              <div class="mb-3">
-                                <label class="form-label" for="reviewDate"
-                                  >Ngày đánh giá lại</label
-                                >
-                                <input
-                                  type="date"
-                                  class="form-control"
-                                  id="reviewDate"
                                 />
                               </div>
                               <div class="mb-3">
@@ -557,7 +539,7 @@
                               </tr>
                             </thead>
                             <tbody class="table-border-bottom-0" id="tableData">
-                              <tr>
+                              <!-- <tr>
                                 <td>Jerry Milton</td>
                                 <td style="text-align: center">
                                   <a href="javascript:void(0);"
@@ -567,7 +549,7 @@
                                     ><i class="bx bx-trash me-1"></i>
                                   </a>
                                 </td>
-                              </tr>
+                              </tr> -->
                             </tbody>
                           </table>
                         </div>

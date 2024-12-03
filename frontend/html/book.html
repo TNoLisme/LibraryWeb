@@ -173,7 +173,7 @@
 
           <div class="menu-inner-shadow"></div>
 
-          <ul class="menu-inner py-1">
+          <ul class="menu-inner py-1" id="adminSidebar">
             <!-- Dashboard -->
             <li class="menu-item">
               <a href="index.html" class="menu-link">
@@ -198,12 +198,6 @@
               </a>
             </li>
             <li class="menu-item">
-              <a href="review.html" class="menu-link">
-                <i class="menu-icon tf-icons bx bx-collection"></i>
-                <div data-i18n="Basic">Đánh giá lại</div>
-              </a>
-            </li>
-            <li class="menu-item">
               <a href="category.html" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-collection"></i>
                 <div data-i18n="Basic">Loại sách</div>
@@ -216,6 +210,30 @@
               </a>
             </li>
 
+            <li class="menu-item">
+              <a href="javascript:void(0);" class="menu-link menu-toggle">
+                <i class="menu-icon tf-icons bx bx-lock-open-alt"></i>
+                <div data-i18n="Authentications">Authentications</div>
+              </a>
+              <ul class="menu-sub">
+                <li class="menu-item">
+                  <a href="login.html" class="menu-link">
+                    <div data-i18n="Basic">Đăng xuất</div>
+                  </a>
+                </li>
+              </ul>
+            </li>
+          </ul>
+          <ul class="menu-inner py-1" id="memberSidebar">
+            <li class="menu-header small text-uppercase">
+              <span class="menu-header-text">Quản lý</span>
+            </li>
+            <li class="menu-item">
+              <a href="review.html" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-collection"></i>
+                <div data-i18n="Basic">Đánh giá lại</div>
+              </a>
+            </li>
             <li class="menu-item">
               <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons bx bx-lock-open-alt"></i>
@@ -484,6 +502,86 @@
                   </div>
                   <!-- Edit model -->
 
+                  <!-- View model -->
+                  <div class="row">
+                    <div
+                      class="modal fade bd-example-modal-lg"
+                      id="modelView"
+                      tabindex="-1"
+                      role="dialog"
+                      aria-labelledby="modelViewTitle"
+                      aria-hidden="true"
+                      data-backdrop="static"
+                    >
+                      <div
+                        class="modal-dialog modal-dialog-centered modal-lg"
+                        role="document"
+                      >
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLongTitle">
+                              Thông tin đánh giá lại
+                            </h5>
+                            <button
+                              type="button"
+                              class="close"
+                              data-dismiss="modal"
+                              aria-label="Close"
+                              style="
+                                background-color: transparent;
+                                border: none;
+                              "
+                              onclick="closeModal()"
+                            >
+                              <i class="bx bxs-message-square-x"></i>
+                            </button>
+                          </div>
+                          <form onsubmit="handleFormSubmit(event)">
+                            <div class="modal-body">
+                              <div class="row">
+                                <div class="col-12">
+                                  <div class="card">
+                                    <div class="table-responsive text-nowrap">
+                                      <table class="table table-striped">
+                                        <thead>
+                                          <tr>
+                                            <th>Người đánh giá</th>
+                                            <th>Nôi dung</th>
+                                            <th>Số sao</th>
+                                          </tr>
+                                        </thead>
+                                        <tbody
+                                          class="table-border-bottom-0"
+                                          id="tableDataDialog"
+                                        >
+                                          <tr>
+                                            <td></td>
+                                            <td>
+                                            </td>
+                                            <td></td>
+                                          </tr>
+                                        </tbody>
+                                      </table>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="modal-footer">
+                              <button
+                                type="button"
+                                class="btn btn-secondary btn-sm"
+                                onclick="closeModal()"
+                              >
+                                Hủy
+                              </button>
+                            </div>
+                          </form>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- View model -->
                   <!-- Confirm model -->
                   <div class="row">
                     <div
@@ -560,7 +658,7 @@
                               </tr>
                             </thead>
                             <tbody class="table-border-bottom-0" id="tableData">
-                              <tr>
+                              <!-- <tr>
                                 <td>Jerry Milton</td>
                                 <td style="text-align: center">
                                   <a href="javascript:void(0);"
@@ -570,7 +668,7 @@
                                     ><i class="bx bx-trash me-1"></i>
                                   </a>
                                 </td>
-                              </tr>
+                              </tr> -->
                             </tbody>
                           </table>
                         </div>

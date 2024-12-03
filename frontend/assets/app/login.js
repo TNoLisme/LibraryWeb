@@ -22,7 +22,7 @@ const handleFormLogin = async (event) => {
     };
 
     const response = await axios.post(path, null, config);
-
+    
     sessionStorage.setItem(
       "current-user",
       JSON.stringify({ ...response?.data, typeId: typeId?.value })

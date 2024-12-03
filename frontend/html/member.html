@@ -173,7 +173,7 @@
 
           <div class="menu-inner-shadow"></div>
 
-          <ul class="menu-inner py-1">
+          <ul class="menu-inner py-1" id="adminSidebar">
             <!-- Dashboard -->
             <li class="menu-item">
               <a href="index.html" class="menu-link">
@@ -216,6 +216,24 @@
               </a>
             </li>
 
+            <li class="menu-item">
+              <a href="javascript:void(0);" class="menu-link menu-toggle">
+                <i class="menu-icon tf-icons bx bx-lock-open-alt"></i>
+                <div data-i18n="Authentications">Authentications</div>
+              </a>
+              <ul class="menu-sub">
+                <li class="menu-item">
+                  <a href="login.html" class="menu-link">
+                    <div data-i18n="Basic">Đăng xuất</div>
+                  </a>
+                </li>
+              </ul>
+            </li>
+          </ul>
+          <ul class="menu-inner py-1"  id="memberSidebar">
+            <li class="menu-header small text-uppercase">
+              <span class="menu-header-text">Quản lý</span>
+            </li>
             <li class="menu-item">
               <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons bx bx-lock-open-alt"></i>
@@ -537,7 +555,7 @@
                               </tr>
                             </thead>
                             <tbody class="table-border-bottom-0" id="tableData">
-                              <tr>
+                              <!-- <tr>
                                 <td>Jerry Milton</td>
                                 <td style="text-align: center">
                                   <a href="javascript:void(0);"
@@ -547,7 +565,7 @@
                                     ><i class="bx bx-trash me-1"></i>
                                   </a>
                                 </td>
-                              </tr>
+                              </tr> -->
                             </tbody>
                           </table>
                         </div>
