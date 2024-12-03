@@ -5,7 +5,7 @@
   class="light-style layout-menu-fixed"
   dir="ltr"
   data-theme="theme-default"
-  data-assets-path="../assets/"
+  data-assets-path="./assets/"
   data-template="vertical-menu-template-free"
 >
   <head>
@@ -22,7 +22,7 @@
     <link
       rel="icon"
       type="image/x-icon"
-      href="../assets/img/favicon/favicon.ico"
+      href="./assets/img/favicon/favicon.ico"
     />
 
     <!-- Fonts -->
@@ -32,21 +32,21 @@
       href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="../assets/vendor/fonts/boxicons.css" />
+    <link rel="stylesheet" href="./assets/vendor/fonts/boxicons.css" />
 
     <link
       rel="stylesheet"
-      href="../assets/vendor/css/core.css"
+      href="./assets/vendor/css/core.css"
       class="template-customizer-core-css"
     />
     <link
       rel="stylesheet"
-      href="../assets/vendor/css/theme-default.css"
+      href="./assets/vendor/css/theme-default.css"
       class="template-customizer-theme-css"
     />
-    <link rel="stylesheet" href="../assets/css/demo.css" />
-    <script src="../assets/vendor/js/helpers.js"></script>
-    <script src="../assets/js/config.js"></script>
+    <link rel="stylesheet" href="./assets/css/demo.css" />
+    <script src="./assets/vendor/js/helpers.js"></script>
+    <script src="./assets/js/config.js"></script>
     <script
       src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
       integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
@@ -197,13 +197,19 @@
                 <div data-i18n="Basic">Mượn sách</div>
               </a>
             </li>
-            <li class="menu-item active">
+            <li class="menu-item">
+              <a href="review.html" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-collection"></i>
+                <div data-i18n="Basic">Đánh giá lại</div>
+              </a>
+            </li>
+            <li class="menu-item">
               <a href="category.html" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-collection"></i>
                 <div data-i18n="Basic">Loại sách</div>
               </a>
             </li>
-            <li class="menu-item">
+            <li class="menu-item active">
               <a href="member.html" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-collection"></i>
                 <div data-i18n="Basic">Thành viên</div>
@@ -227,12 +233,6 @@
           <ul class="menu-inner py-1"  id="memberSidebar">
             <li class="menu-header small text-uppercase">
               <span class="menu-header-text">Quản lý</span>
-            </li>
-            <li class="menu-item">
-              <a href="review.html" class="menu-link">
-                <i class="menu-icon tf-icons bx bx-collection"></i>
-                <div data-i18n="Basic">Đánh giá lại</div>
-              </a>
             </li>
             <li class="menu-item">
               <a href="javascript:void(0);" class="menu-link menu-toggle">
@@ -298,7 +298,7 @@
                   >
                     <div class="avatar avatar-online">
                       <img
-                        src="../assets/img/avatars/1.png"
+                        src="./assets/img/avatars/1.png"
                         alt
                         class="w-px-40 h-auto rounded-circle"
                       />
@@ -311,7 +311,7 @@
                           <div class="flex-shrink-0 me-3">
                             <div class="avatar avatar-online">
                               <img
-                                src="../assets/img/avatars/1.png"
+                                src="./assets/img/avatars/1.png"
                                 alt
                                 class="w-px-40 h-auto rounded-circle"
                               />
@@ -375,7 +375,7 @@
             <div class="container-xxl flex-grow-1 container-p-y">
               <h4 class="fw-bold py-3 mb-4">
                 <span class="text-muted fw-light">Quản lý / </span>
-                Thể loại sách
+                Thành viên
               </h4>
               <div class="row">
                 <div class="col-md-12">
@@ -408,7 +408,7 @@
                         <div class="modal-content">
                           <div class="modal-header">
                             <h5 class="modal-title" id="exampleModalLongTitle">
-                              Thêm mới thể loại sách
+                              Thêm mới/Cập nhật thành viên
                             </h5>
                             <button
                               type="button"
@@ -427,13 +427,33 @@
                           <form onsubmit="handleFormSubmit(event)">
                             <div class="modal-body">
                               <div class="mb-3">
-                                <label class="form-label" for="name"
-                                  >Tên thể loại</label
+                                <label class="form-label" for="fullName"
+                                  >Họ và tên</label
                                 >
                                 <input
                                   type="text"
                                   class="form-control"
-                                  id="name"
+                                  id="fullName"
+                                />
+                              </div>
+                              <div class="mb-3">
+                                <label class="form-label" for="email"
+                                  >Email</label
+                                >
+                                <input
+                                  type="text"
+                                  class="form-control"
+                                  id="email"
+                                />
+                              </div>
+                              <div class="mb-3">
+                                <label class="form-label" for="password"
+                                  >Mật khẩu</label
+                                >
+                                <input
+                                  type="text"
+                                  class="form-control"
+                                  id="password"
                                 />
                               </div>
                             </div>
@@ -529,7 +549,8 @@
                           <table class="table table-striped">
                             <thead>
                               <tr>
-                                <th>Tên thể loại</th>
+                                <th>Tên thành viên</th>
+                                <th>Email</th>
                                 <th style="width: 100px">Thao tác</th>
                               </tr>
                             </thead>
@@ -565,10 +586,10 @@
       <!-- Overlay -->
       <div class="layout-overlay layout-menu-toggle"></div>
     </div>
-    <script src="../assets/vendor/js/menu.js"></script>
-    <script src="../assets/js/main.js"></script>
-    <script src="../assets/app/category.js"></script>
-    <script src="../assets/app/auth.js"></script>
+    <script src="./assets/vendor/js/menu.js"></script>
+    <script src="./assets/js/main.js"></script>
+    <script src="./assets/app/member.js"></script>
+    <script src="./assets/app/auth.js"></script>
   </body>
 </html>
 <script></script>

@@ -5,7 +5,7 @@
   class="light-style layout-menu-fixed"
   dir="ltr"
   data-theme="theme-default"
-  data-assets-path="../assets/"
+  data-assets-path="./assets/"
   data-template="vertical-menu-template-free"
 >
   <head>
@@ -15,14 +15,17 @@
       content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
     />
 
-    <title>Page</title>
+    <title>
+      Dashboard - Analytics | Bookcase - Bootstrap 5 HTML Admin Template - Pro
+    </title>
 
     <meta name="description" content="" />
 
+    <!-- Favicon -->
     <link
       rel="icon"
       type="image/x-icon"
-      href="../assets/img/favicon/favicon.ico"
+      href="./assets/img/favicon/favicon.ico"
     />
 
     <!-- Fonts -->
@@ -32,42 +35,31 @@
       href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="../assets/vendor/fonts/boxicons.css" />
 
+    <!-- Icons. Uncomment required icon fonts -->
+    <link rel="stylesheet" href="./assets/vendor/fonts/boxicons.css" />
+
+    <!-- Core CSS -->
     <link
       rel="stylesheet"
-      href="../assets/vendor/css/core.css"
+      href="./assets/vendor/css/core.css"
       class="template-customizer-core-css"
     />
     <link
       rel="stylesheet"
-      href="../assets/vendor/css/theme-default.css"
+      href="./assets/vendor/css/theme-default.css"
       class="template-customizer-theme-css"
     />
-    <link rel="stylesheet" href="../assets/css/demo.css" />
-    <script src="../assets/vendor/js/helpers.js"></script>
-    <script src="../assets/js/config.js"></script>
-    <script
-      src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-      integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-      crossorigin="anonymous"
-    ></script>
-    <script
-      src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
-      integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-      crossorigin="anonymous"
-    ></script>
-    <script
-      src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
-      integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-      crossorigin="anonymous"
-    ></script>
-    <script
-      src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.7.8/axios.min.js"
-      integrity="sha512-v8+bPcpk4Sj7CKB11+gK/FnsbgQ15jTwZamnBf/xDmiQDcgOIYufBo6Acu1y30vrk8gg5su4x0CG3zfPaq5Fcg=="
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer"
-    ></script>
+    <link rel="stylesheet" href="./assets/css/demo.css" />
+
+    <!-- Page CSS -->
+
+    <!-- Helpers -->
+    <script src="./assets/vendor/js/helpers.js"></script>
+
+    <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
+    <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
+    <script src="./assets/js/config.js"></script>
   </head>
 
   <body>
@@ -175,7 +167,7 @@
 
           <ul class="menu-inner py-1" id="adminSidebar">
             <!-- Dashboard -->
-            <li class="menu-item">
+            <li class="menu-item active">
               <a href="index.html" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-home-circle"></i>
                 <div data-i18n="Analytics">Dashboard</div>
@@ -185,7 +177,7 @@
             <li class="menu-header small text-uppercase">
               <span class="menu-header-text">Quản lý</span>
             </li>
-            <li class="menu-item active">
+            <li class="menu-item">
               <a href="book.html" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-collection"></i>
                 <div data-i18n="Basic">Quản lý sách</div>
@@ -217,14 +209,14 @@
               </a>
               <ul class="menu-sub">
                 <li class="menu-item">
-                  <a href="login.html" class="menu-link">
+                  <a href="login.html" class="menu-link" >
                     <div data-i18n="Basic">Đăng xuất</div>
                   </a>
                 </li>
               </ul>
             </li>
           </ul>
-          <ul class="menu-inner py-1" id="memberSidebar">
+          <ul class="menu-inner py-1"  id="memberSidebar">
             <li class="menu-header small text-uppercase">
               <span class="menu-header-text">Quản lý</span>
             </li>
@@ -298,7 +290,7 @@
                   >
                     <div class="avatar avatar-online">
                       <img
-                        src="../assets/img/avatars/1.png"
+                        src="./assets/img/avatars/1.png"
                         alt
                         class="w-px-40 h-auto rounded-circle"
                       />
@@ -311,7 +303,7 @@
                           <div class="flex-shrink-0 me-3">
                             <div class="avatar avatar-online">
                               <img
-                                src="../assets/img/avatars/1.png"
+                                src="./assets/img/avatars/1.png"
                                 alt
                                 class="w-px-40 h-auto rounded-circle"
                               />
@@ -371,314 +363,147 @@
 
           <!-- Content wrapper -->
           <div class="content-wrapper">
-            <!-- Content -->
             <div class="container-xxl flex-grow-1 container-p-y">
-              <h4 class="fw-bold py-3 mb-4">
-                <span class="text-muted fw-light">Quản lý / </span>
-                Danh mục sách
-              </h4>
               <div class="row">
                 <div class="col-md-12">
-                  <ul class="nav nav-pills flex-column flex-md-row mb-3">
-                    <li class="nav-item">
-                      <button
-                        class="nav-link active btn-sm"
-                        data-toggle="modal"
-                        data-target="#modelEdit"
-                      >
-                        <i class="bx bxs-message-square-add me-1"></i>Thêm mới
-                      </button>
-                    </li>
-                  </ul>
-                  <!-- Edit model -->
-                  <div class="row">
+                  <div class="card h-100">
                     <div
-                      class="modal fade"
-                      id="modelEdit"
-                      tabindex="-1"
-                      role="dialog"
-                      aria-labelledby="modelEditTitle"
-                      aria-hidden="true"
-                      data-backdrop="static"
+                      class="card-header d-flex align-items-center justify-content-between pb-0"
                     >
-                      <div
-                        class="modal-dialog modal-dialog-centered"
-                        role="document"
-                      >
-                        <div class="modal-content">
-                          <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLongTitle">
-                              Thêm mới/Cập nhật sách
-                            </h5>
-                            <button
-                              type="button"
-                              class="close"
-                              data-dismiss="modal"
-                              aria-label="Close"
-                              style="
-                                background-color: transparent;
-                                border: none;
-                              "
-                              onclick="closeModal()"
-                            >
-                              <i class="bx bxs-message-square-x"></i>
-                            </button>
-                          </div>
-                          <form onsubmit="handleFormSubmit(event)">
-                            <div class="modal-body">
-                              <div class="mb-3">
-                                <label class="form-label" for="title"
-                                  >Tiêu đề</label
-                                >
-                                <input
-                                  type="text"
-                                  class="form-control"
-                                  id="title"
-                                />
-                              </div>
-                              <div class="mb-3">
-                                <label class="form-label" for="author"
-                                  >Tác giả</label
-                                >
-                                <input
-                                  type="text"
-                                  class="form-control"
-                                  id="author"
-                                />
-                              </div>
-                              <div class="mb-3">
-                                <label class="form-label" for="publishYear"
-                                  >Năm phát hành</label
-                                >
-                                <input
-                                  type="number"
-                                  class="form-control"
-                                  id="publishYear"
-                                  min="1900"
-                                  max="2099"
-                                  step="1"
-                                />
-                              </div>
-                              <div class="mb-3">
-                                <label class="form-label" for="quantity"
-                                  >Số lượng</label
-                                >
-                                <input
-                                  type="number"
-                                  class="form-control"
-                                  id="quantity"
-                                />
-                              </div>
-                              <div class="mb-3">
-                                <label class="form-label" for="cateID"
-                                  >Thể loại</label
-                                >
-                                <select id="cateID" class="form-select">
-                                  <option value="">
-                                    -- Chọn thể loại sách --
-                                  </option>
-                                </select>
-                              </div>
-                            </div>
-                            <div class="modal-footer">
-                              <button
-                                type="button"
-                                class="btn btn-secondary btn-sm"
-                                onclick="closeModal()"
-                              >
-                                Hủy
-                              </button>
-                              <button
-                                type="submit"
-                                class="btn btn-primary btn-sm"
-                              >
-                                Lưu
-                              </button>
-                            </div>
-                          </form>
+                      <div class="card-title mb-0">
+                        <h5 class="m-0 me-2">Order Statistics</h5>
+                        <small class="text-muted">42.82k Total Sales</small>
+                      </div>
+                      <div class="dropdown">
+                        <button
+                          class="btn p-0"
+                          type="button"
+                          id="orederStatistics"
+                          data-bs-toggle="dropdown"
+                          aria-haspopup="true"
+                          aria-expanded="false"
+                        >
+                          <i class="bx bx-dots-vertical-rounded"></i>
+                        </button>
+                        <div
+                          class="dropdown-menu dropdown-menu-end"
+                          aria-labelledby="orederStatistics"
+                        >
+                          <a class="dropdown-item" href="javascript:void(0);"
+                            >Select All</a
+                          >
+                          <a class="dropdown-item" href="javascript:void(0);"
+                            >Refresh</a
+                          >
+                          <a class="dropdown-item" href="javascript:void(0);"
+                            >Share</a
+                          >
                         </div>
                       </div>
                     </div>
-                  </div>
-                  <!-- Edit model -->
-
-                  <!-- View model -->
-                  <div class="row">
-                    <div
-                      class="modal fade bd-example-modal-lg"
-                      id="modelView"
-                      tabindex="-1"
-                      role="dialog"
-                      aria-labelledby="modelViewTitle"
-                      aria-hidden="true"
-                      data-backdrop="static"
-                    >
+                    <div class="card-body">
                       <div
-                        class="modal-dialog modal-dialog-centered modal-lg"
-                        role="document"
+                        class="d-flex justify-content-between align-items-center mb-3"
                       >
-                        <div class="modal-content">
-                          <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLongTitle">
-                              Thông tin đánh giá lại
-                            </h5>
-                            <button
-                              type="button"
-                              class="close"
-                              data-dismiss="modal"
-                              aria-label="Close"
-                              style="
-                                background-color: transparent;
-                                border: none;
-                              "
-                              onclick="closeModal()"
-                            >
-                              <i class="bx bxs-message-square-x"></i>
-                            </button>
-                          </div>
-                          <form onsubmit="handleFormSubmit(event)">
-                            <div class="modal-body">
-                              <div class="row">
-                                <div class="col-12">
-                                  <div class="card">
-                                    <div class="table-responsive text-nowrap">
-                                      <table class="table table-striped">
-                                        <thead>
-                                          <tr>
-                                            <th>Người đánh giá</th>
-                                            <th>Nôi dung</th>
-                                            <th>Số sao</th>
-                                          </tr>
-                                        </thead>
-                                        <tbody
-                                          class="table-border-bottom-0"
-                                          id="tableDataDialog"
-                                        >
-                                          <tr>
-                                            <td></td>
-                                            <td>
-                                            </td>
-                                            <td></td>
-                                          </tr>
-                                        </tbody>
-                                      </table>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                            <div class="modal-footer">
-                              <button
-                                type="button"
-                                class="btn btn-secondary btn-sm"
-                                onclick="closeModal()"
-                              >
-                                Hủy
-                              </button>
-                            </div>
-                          </form>
+                        <div
+                          class="d-flex flex-column align-items-center gap-1"
+                        >
+                          <h2 class="mb-2">8,258</h2>
+                          <span>Total Orders</span>
                         </div>
+                        <div id="orderStatisticsChart"></div>
                       </div>
-                    </div>
-                  </div>
-                  <!-- View model -->
-                  <!-- Confirm model -->
-                  <div class="row">
-                    <div
-                      class="modal fade"
-                      id="modelConfirm"
-                      tabindex="-1"
-                      role="dialog"
-                      aria-labelledby="modelConfirmTitle"
-                      aria-hidden="true"
-                      data-backdrop="static"
-                    >
-                      <div
-                        class="modal-dialog modal-dialog-centered modal-sm"
-                        role="document"
-                      >
-                        <div class="modal-content">
-                          <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLongTitle">
-                              Xác nhận xóa bản ghi
-                            </h5>
-                            <button
-                              type="button"
-                              class="close"
-                              data-dismiss="modal"
-                              aria-label="Close"
-                              style="
-                                background-color: transparent;
-                                border: none;
-                              "
-                              onclick="closeModal()"
-                            >
-                              <i class="bx bxs-message-square-x"></i>
-                            </button>
+                      <ul class="p-0 m-0">
+                        <li class="d-flex mb-4 pb-1">
+                          <div class="avatar flex-shrink-0 me-3">
+                            <span
+                              class="avatar-initial rounded bg-label-primary"
+                              ><i class="bx bx-mobile-alt"></i
+                            ></span>
                           </div>
-                          <div class="modal-body">
-                            <div class="mb-3">
-                              <label class="form-label"
-                                >Bạn có chắc chắc muốn xóa bản ghi này
-                                không?</label
+                          <div
+                            class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2"
+                          >
+                            <div class="me-2">
+                              <h6 class="mb-0">Electronic</h6>
+                              <small class="text-muted"
+                                >Mobile, Earbuds, TV</small
                               >
                             </div>
+                            <div class="user-progress">
+                              <small class="fw-semibold">82.5k</small>
+                            </div>
                           </div>
-                          <div class="modal-footer">
-                            <button
-                              type="button"
-                              class="btn btn-secondary btn-sm"
-                              onclick="closeModal()"
-                            >
-                              Hủy
-                            </button>
-                            <button
-                              type="button"
-                              class="btn btn-primary btn-sm"
-                              onclick="deleteItem()"
-                            >
-                              Xác nhận
-                            </button>
+                        </li>
+                        <li class="d-flex mb-4 pb-1">
+                          <div class="avatar flex-shrink-0 me-3">
+                            <span
+                              class="avatar-initial rounded bg-label-success"
+                              ><i class="bx bx-closet"></i
+                            ></span>
                           </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <!-- Confirm model -->
-                  <div class="row">
-                    <div class="col-12">
-                      <div class="card">
-                        <div class="table-responsive text-nowrap">
-                          <table class="table table-striped">
-                            <thead>
-                              <tr>
-                                <th>Tiêu đề</th>
-                                <th>Tác giả</th>
-                                <th style="width: 100px">Thao tác</th>
-                              </tr>
-                            </thead>
-                            <tbody class="table-border-bottom-0" id="tableData">
-                              <!-- <tr>
-                                <td>Jerry Milton</td>
-                                <td style="text-align: center">
-                                  <a href="javascript:void(0);"
-                                    ><i class="bx bx-edit-alt me-1"></i>
-                                  </a>
-                                  <a href="javascript:void(0);"
-                                    ><i class="bx bx-trash me-1"></i>
-                                  </a>
-                                </td>
-                              </tr> -->
-                            </tbody>
-                          </table>
-                        </div>
-                      </div>
+                          <div
+                            class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2"
+                          >
+                            <div class="me-2">
+                              <h6 class="mb-0">Fashion</h6>
+                              <small class="text-muted"
+                                >T-shirt, Jeans, Shoes</small
+                              >
+                            </div>
+                            <div class="user-progress">
+                              <small class="fw-semibold">23.8k</small>
+                            </div>
+                          </div>
+                        </li>
+                        <li class="d-flex mb-4 pb-1">
+                          <div class="avatar flex-shrink-0 me-3">
+                            <span class="avatar-initial rounded bg-label-info"
+                              ><i class="bx bx-home-alt"></i
+                            ></span>
+                          </div>
+                          <div
+                            class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2"
+                          >
+                            <div class="me-2">
+                              <h6 class="mb-0">Decor</h6>
+                              <small class="text-muted">Fine Art, Dining</small>
+                            </div>
+                            <div class="user-progress">
+                              <small class="fw-semibold">849k</small>
+                            </div>
+                          </div>
+                        </li>
+                        <li class="d-flex">
+                          <div class="avatar flex-shrink-0 me-3">
+                            <span
+                              class="avatar-initial rounded bg-label-secondary"
+                              ><i class="bx bx-football"></i
+                            ></span>
+                          </div>
+                          <div
+                            class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2"
+                          >
+                            <div class="me-2">
+                              <h6 class="mb-0">Sports</h6>
+                              <small class="text-muted"
+                                >Football, Cricket Kit</small
+                              >
+                            </div>
+                            <div class="user-progress">
+                              <small class="fw-semibold">99</small>
+                            </div>
+                          </div>
+                        </li>
+                      </ul>
                     </div>
                   </div>
                 </div>
+                <!--/ Order Statistics -->
               </div>
             </div>
             <!-- / Content -->
+
             <div class="content-backdrop fade"></div>
           </div>
           <!-- Content wrapper -->
@@ -689,10 +514,10 @@
       <!-- Overlay -->
       <div class="layout-overlay layout-menu-toggle"></div>
     </div>
-    <script src="../assets/vendor/js/menu.js"></script>
-    <script src="../assets/js/main.js"></script>
-    <script src="../assets/app/book.js"></script>
-    <script src="../assets/app/auth.js"></script>
+
+    <script src="./assets/vendor/js/menu.js"></script>
+    <script src="./assets/js/main.js"></script>
+
+    <script src="./assets/app/auth.js"></script>
   </body>
 </html>
-<script></script>

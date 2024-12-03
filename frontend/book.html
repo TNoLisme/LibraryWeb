@@ -5,7 +5,7 @@
   class="light-style layout-menu-fixed"
   dir="ltr"
   data-theme="theme-default"
-  data-assets-path="../assets/"
+  data-assets-path="./assets/"
   data-template="vertical-menu-template-free"
 >
   <head>
@@ -22,7 +22,7 @@
     <link
       rel="icon"
       type="image/x-icon"
-      href="../assets/img/favicon/favicon.ico"
+      href="./assets/img/favicon/favicon.ico"
     />
 
     <!-- Fonts -->
@@ -32,21 +32,21 @@
       href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="../assets/vendor/fonts/boxicons.css" />
+    <link rel="stylesheet" href="./assets/vendor/fonts/boxicons.css" />
 
     <link
       rel="stylesheet"
-      href="../assets/vendor/css/core.css"
+      href="./assets/vendor/css/core.css"
       class="template-customizer-core-css"
     />
     <link
       rel="stylesheet"
-      href="../assets/vendor/css/theme-default.css"
+      href="./assets/vendor/css/theme-default.css"
       class="template-customizer-theme-css"
     />
-    <link rel="stylesheet" href="../assets/css/demo.css" />
-    <script src="../assets/vendor/js/helpers.js"></script>
-    <script src="../assets/js/config.js"></script>
+    <link rel="stylesheet" href="./assets/css/demo.css" />
+    <script src="./assets/vendor/js/helpers.js"></script>
+    <script src="./assets/js/config.js"></script>
     <script
       src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
       integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
@@ -185,13 +185,13 @@
             <li class="menu-header small text-uppercase">
               <span class="menu-header-text">Quản lý</span>
             </li>
-            <li class="menu-item">
+            <li class="menu-item active">
               <a href="book.html" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-collection"></i>
                 <div data-i18n="Basic">Quản lý sách</div>
               </a>
             </li>
-            <li class="menu-item active">
+            <li class="menu-item">
               <a href="borrow.html" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-collection"></i>
                 <div data-i18n="Basic">Mượn sách</div>
@@ -224,7 +224,7 @@
               </ul>
             </li>
           </ul>
-          <ul class="menu-inner py-1"  id="memberSidebar">
+          <ul class="menu-inner py-1" id="memberSidebar">
             <li class="menu-header small text-uppercase">
               <span class="menu-header-text">Quản lý</span>
             </li>
@@ -298,7 +298,7 @@
                   >
                     <div class="avatar avatar-online">
                       <img
-                        src="../assets/img/avatars/1.png"
+                        src="./assets/img/avatars/1.png"
                         alt
                         class="w-px-40 h-auto rounded-circle"
                       />
@@ -311,7 +311,7 @@
                           <div class="flex-shrink-0 me-3">
                             <div class="avatar avatar-online">
                               <img
-                                src="../assets/img/avatars/1.png"
+                                src="./assets/img/avatars/1.png"
                                 alt
                                 class="w-px-40 h-auto rounded-circle"
                               />
@@ -375,7 +375,7 @@
             <div class="container-xxl flex-grow-1 container-p-y">
               <h4 class="fw-bold py-3 mb-4">
                 <span class="text-muted fw-light">Quản lý / </span>
-                Mượn sách
+                Danh mục sách
               </h4>
               <div class="row">
                 <div class="col-md-12">
@@ -408,7 +408,7 @@
                         <div class="modal-content">
                           <div class="modal-header">
                             <h5 class="modal-title" id="exampleModalLongTitle">
-                              Thêm mới/Cập nhật thông tin mượn sách
+                              Thêm mới/Cập nhật sách
                             </h5>
                             <button
                               type="button"
@@ -427,66 +427,56 @@
                           <form onsubmit="handleFormSubmit(event)">
                             <div class="modal-body">
                               <div class="mb-3">
-                                <label class="form-label" for="bookID"
-                                  >Sách</label
+                                <label class="form-label" for="title"
+                                  >Tiêu đề</label
                                 >
-                                <select id="bookID" class="form-select">
-                                  <option value="">-- Chọn sách --</option>
-                                </select>
+                                <input
+                                  type="text"
+                                  class="form-control"
+                                  id="title"
+                                />
                               </div>
                               <div class="mb-3">
-                                <label class="form-label" for="memID"
-                                  >Thành viên</label
+                                <label class="form-label" for="author"
+                                  >Tác giả</label
                                 >
-                                <select id="memID" class="form-select">
+                                <input
+                                  type="text"
+                                  class="form-control"
+                                  id="author"
+                                />
+                              </div>
+                              <div class="mb-3">
+                                <label class="form-label" for="publishYear"
+                                  >Năm phát hành</label
+                                >
+                                <input
+                                  type="number"
+                                  class="form-control"
+                                  id="publishYear"
+                                  min="1900"
+                                  max="2099"
+                                  step="1"
+                                />
+                              </div>
+                              <div class="mb-3">
+                                <label class="form-label" for="quantity"
+                                  >Số lượng</label
+                                >
+                                <input
+                                  type="number"
+                                  class="form-control"
+                                  id="quantity"
+                                />
+                              </div>
+                              <div class="mb-3">
+                                <label class="form-label" for="cateID"
+                                  >Thể loại</label
+                                >
+                                <select id="cateID" class="form-select">
                                   <option value="">
-                                    -- Chọn thành viên --
+                                    -- Chọn thể loại sách --
                                   </option>
-                                </select>
-                              </div>
-                              <div class="mb-3">
-                                <label class="form-label" for="borrowDate"
-                                  >Ngày mượn</label
-                                >
-                                <input
-                                  type="date"
-                                  class="form-control"
-                                  id="borrowDate"
-                                />
-                              </div>
-                              <div class="mb-3">
-                                <label class="form-label" for="returnDate"
-                                  >Ngày trả</label
-                                >
-                                <input
-                                  type="date"
-                                  class="form-control"
-                                  id="returnDate"
-                                />
-                              </div>
-                              <div class="mb-3">
-                                <label class="form-label" for="status"
-                                  >Trạng thái</label
-                                >
-                                <select
-                                  id="status"
-                                  class="form-select"
-                                  disabled
-                                >
-                                  <option value="PENDING">Đang xử lý</option>
-                                  <option value="available">Sẵn sàng</option>
-                                  <option value="borrowed">
-                                    Đang được mượn
-                                  </option>
-                                  <option value="reserved">Đặt chỗ</option>
-                                  <option value="overdue">Quá hạn</option>
-                                  <option value="lost">Mất</option>
-                                  <option value="maintenance">
-                                    Đang bảo trì
-                                  </option>
-                                  <option value="returned">Đã trả</option>
-                                  <option value="canceled">Bị hủy mượn</option>
-                                  <option value="removed">Đã thanh lý</option>
                                 </select>
                               </div>
                             </div>
@@ -512,6 +502,86 @@
                   </div>
                   <!-- Edit model -->
 
+                  <!-- View model -->
+                  <div class="row">
+                    <div
+                      class="modal fade bd-example-modal-lg"
+                      id="modelView"
+                      tabindex="-1"
+                      role="dialog"
+                      aria-labelledby="modelViewTitle"
+                      aria-hidden="true"
+                      data-backdrop="static"
+                    >
+                      <div
+                        class="modal-dialog modal-dialog-centered modal-lg"
+                        role="document"
+                      >
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLongTitle">
+                              Thông tin đánh giá lại
+                            </h5>
+                            <button
+                              type="button"
+                              class="close"
+                              data-dismiss="modal"
+                              aria-label="Close"
+                              style="
+                                background-color: transparent;
+                                border: none;
+                              "
+                              onclick="closeModal()"
+                            >
+                              <i class="bx bxs-message-square-x"></i>
+                            </button>
+                          </div>
+                          <form onsubmit="handleFormSubmit(event)">
+                            <div class="modal-body">
+                              <div class="row">
+                                <div class="col-12">
+                                  <div class="card">
+                                    <div class="table-responsive text-nowrap">
+                                      <table class="table table-striped">
+                                        <thead>
+                                          <tr>
+                                            <th>Người đánh giá</th>
+                                            <th>Nôi dung</th>
+                                            <th>Số sao</th>
+                                          </tr>
+                                        </thead>
+                                        <tbody
+                                          class="table-border-bottom-0"
+                                          id="tableDataDialog"
+                                        >
+                                          <tr>
+                                            <td></td>
+                                            <td>
+                                            </td>
+                                            <td></td>
+                                          </tr>
+                                        </tbody>
+                                      </table>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="modal-footer">
+                              <button
+                                type="button"
+                                class="btn btn-secondary btn-sm"
+                                onclick="closeModal()"
+                              >
+                                Hủy
+                              </button>
+                            </div>
+                          </form>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- View model -->
                   <!-- Confirm model -->
                   <div class="row">
                     <div
@@ -582,8 +652,8 @@
                           <table class="table table-striped">
                             <thead>
                               <tr>
-                                <th>Tên sách</th>
-                                <th>Ngày mượn</th>
+                                <th>Tiêu đề</th>
+                                <th>Tác giả</th>
                                 <th style="width: 100px">Thao tác</th>
                               </tr>
                             </thead>
@@ -619,10 +689,10 @@
       <!-- Overlay -->
       <div class="layout-overlay layout-menu-toggle"></div>
     </div>
-    <script src="../assets/vendor/js/menu.js"></script>
-    <script src="../assets/js/main.js"></script>
-    <script src="../assets/app/borrow.js"></script>
-    <script src="../assets/app/auth.js"></script>
+    <script src="./assets/vendor/js/menu.js"></script>
+    <script src="./assets/js/main.js"></script>
+    <script src="./assets/app/book.js"></script>
+    <script src="./assets/app/auth.js"></script>
   </body>
 </html>
 <script></script>
