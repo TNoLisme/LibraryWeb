@@ -19,4 +19,4 @@ let config = {
   }
 };
 
-let BASE_URL = "https://clonertemp-1.onrender.com"
+let BASE_URL = "https://qltv-syg3.onrender.com/"
