@@ -19,4 +19,4 @@ let config = {
   }
 };
 
-let BASE_URL = "http://localhost:8080"
+let BASE_URL = "https://clonertemp-1.onrender.com"

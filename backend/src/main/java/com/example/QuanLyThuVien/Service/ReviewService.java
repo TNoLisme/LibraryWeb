@@ -44,7 +44,12 @@ public class ReviewService {
             review.setMemberID(member);
             review.setRating(reviewDTO.getRating());
             review.setComment(reviewDTO.getComment());
-           review.setReviewDate(reviewDTO.getReviewDate());
+//            review.setReviewDate(reviewDTO.getReviewDate());
+            LocalDateTime localDateTime = LocalDateTime.from(reviewDTO.getReviewDate());
+            Date date = Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant());
+            review.setReviewDate(date);
+
+
             reviewRepository.save(review);
 
             return "Review created successfully!";
