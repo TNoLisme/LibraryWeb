@@ -36,10 +36,8 @@ public class Review {
     @Column(name = "comment")
     private String comment;
 
-//    @Temporal(TemporalType.TIMESTAMP)
-//    @Column(name = "reviewDate")
-//    private Date reviewDate;
-
+    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "reviewDate")
-    private Instant reviewDate;
+    private Date reviewDate;
+
 }
