@@ -63,9 +63,38 @@ public class BorrowrequestService {
     public Borrowrequest updateBorrowrequest(Integer id, BorrowrequestDto borrowrequestDto) {
         Borrowrequest borrowrequest = borrowrequestRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Borrow request not found."));
+        // Lấy thông tin sách liên quan đến yêu cầu
+        Book book = borrowrequest.getBookID();
+
+        // Nếu trạng thái yêu cầu thay đổi, xử lý số lượng sách
+        if (!borrowrequest.getStatus().equals(borrowrequestDto.getStatus())) {
+            switch (borrowrequestDto.getStatus()) {
+                case "borrowed": // Nếu trạng thái chuyển sang mượn sách
+                    if (book.getQuantity() > 0) {
+                        book.setQuantity(book.getQuantity() - 1);
+                    } else {
+                        throw new RuntimeException("Book is out of stock.");
+                    }
+                    break;
+
+                case "returned": // Nếu trạng thái chuyển sang trả sách
+                    book.setQuantity(book.getQuantity() + 1);
+                    break;
+
+                default:
+                    // Không thay đổi số lượng sách cho các trạng thái khác
+                    break;
+            }
+
+            // Cập nhật thông tin sách
+            bookRepository.save(book);
+        }
+
+        // Cập nhật các thông tin khác của yêu cầu mượn
         borrowrequest.setBorrowDate(borrowrequestDto.getBorrowDate());
         borrowrequest.setReturnDate(borrowrequestDto.getReturnDate());
         borrowrequest.setStatus(borrowrequestDto.getStatus());
+
         return borrowrequestRepository.save(borrowrequest);
     }
 

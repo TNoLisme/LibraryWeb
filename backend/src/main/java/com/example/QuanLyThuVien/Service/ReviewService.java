@@ -44,7 +44,7 @@ public class ReviewService {
             review.setMemberID(member);
             review.setRating(reviewDTO.getRating());
             review.setComment(reviewDTO.getComment());
-           review.setReviewDate(reviewDTO.getReviewDate());
+            review.setReviewDate(reviewDTO.getReviewDate());
             reviewRepository.save(review);
 
             return "Review created successfully!";
