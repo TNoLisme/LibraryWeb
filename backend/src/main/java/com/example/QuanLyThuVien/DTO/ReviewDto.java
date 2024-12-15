@@ -3,6 +3,7 @@ package com.example.QuanLyThuVien.DTO;
 import lombok.Data;
 
 import java.time.Instant;
+import java.util.Date;
 
 @Data
 public class ReviewDto {
@@ -10,5 +11,6 @@ public class ReviewDto {
     private Integer memberId;
     private Integer rating;
     private String comment;
-    private Instant reviewDate;
+    private Date reviewDate;
+    
 }

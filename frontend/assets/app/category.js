@@ -13,30 +13,35 @@ window.addEventListener("DOMContentLoaded", () => {
 
 const renderTable = async () => {
   try {
-    const data = await axios.get(PATH);
-    items = data?.data || [];
-    const rows = data?.data
+    const response = await axios.get(PATH);
+    items = response?.data || [];
+    const rows = items
       .map(
         (item) => `
-      <tr>
-        <td>${item.name}</td>
-        <td style="text-align: center;">
-          <a onclick="editItem(${item.id})" href="javascript:void(0);">
-            <i class="bx bx-edit-alt me-1"></i>
-          </a>
-          <a onclick="openDeleteModel(${item.id})" href="javascript:void(0);">
-            <i class="bx bx-trash me-1"></i>
-          </a>
-        </td>
-      </tr>
-    `
+        <tr>
+          <td>${item.name}</td>
+          <td style="text-align: center;">
+            <a onclick="editItem(${item.id})" href="javascript:void(0);">
+              <i class="bx bx-edit-alt me-1"></i>
+            </a>
+            <a onclick="openDeleteModel(${item.id})" href="javascript:void(0);">
+              <i class="bx bx-trash me-1"></i>
+            </a>
+          </td>
+        </tr>`
       )
       .join("");
     tableData.innerHTML = rows;
   } catch (error) {
-    console.error("Error rendering table:", error);
+    console.error("Error rendering table:", error.message);
+    if (error.response) {
+      console.error("Response data:", error.response.data);
+      console.error("Response status:", error.response.status);
+      console.error("Response headers:", error.response.headers);
+    }
   }
 };
+
 
 const openModal = () => $(modalEditId).modal("show");
 

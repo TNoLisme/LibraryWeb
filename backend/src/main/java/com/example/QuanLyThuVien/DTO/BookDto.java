@@ -22,4 +22,5 @@ public class BookDto implements Serializable {
     Integer publishYear;
     Integer quantity;
     Integer cateID;
+    
 }

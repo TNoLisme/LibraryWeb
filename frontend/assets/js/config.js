@@ -19,4 +19,4 @@ let config = {
   }
 };
 
-let BASE_URL = "https://qltv-syg3.onrender.com/"
+let BASE_URL = "http://127.0.0.1:8080";
