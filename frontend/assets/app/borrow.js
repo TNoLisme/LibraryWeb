@@ -19,6 +19,12 @@ window.addEventListener("DOMContentLoaded", () => {
   renderBooksList();
 });
 
+const formatDate = (dateStr) => {
+  if (!dateStr) return "";
+  const date = new Date(dateStr);
+  return date.toLocaleDateString("vi-VN"); // Định dạng ngày/tháng/năm
+};
+
 const renderTable = async () => {
   try {
     const data = await axios.get(PATH);
@@ -28,7 +34,7 @@ const renderTable = async () => {
         (item) => `
       <tr>
         <td>${item.bookID?.title}</td>
-        <td>${item.borrowDate}</td>
+        <td>${formatDate(item.borrowDate)}</td> <!-- Định dạng ngày tại đây -->
         <td style="text-align: center;">
           <a onclick="editItem(${item.id})" href="javascript:void(0);">
             <i class="bx bx-edit-alt me-1"></i>
@@ -61,7 +67,9 @@ const renderBooksList = async () => {
     });
     bookID.innerHTML = txt;
     memID.innerHTML = txtMem;
-  } catch (error) {}
+  } catch (error) {
+    console.error("Error loading book and member data", error);
+  }
 };
 
 const openModal = () => $(modalEditId).modal("show");
@@ -103,18 +111,29 @@ const clearForm = () => {
 
 const handleFormSubmit = async (event) => {
   event.preventDefault();
+
+  const borrowRequest = {
+    bookID: document.getElementById('bookID').value,
+    memID: document.getElementById('memID').value,
+    borrowDate: document.getElementById('borrowDate').value,
+    returnDate: document.getElementById('returnDate').value,
+    status: 'PENDING'
+  };
+
+  if (!borrowRequest.bookID || !borrowRequest.memID || !borrowRequest.borrowDate) {
+    alert("Vui lòng điền đầy đủ thông tin.");
+    return;
+  }
+
   try {
-    const formData = getFormData();
-    if (selectedItem) {
-      await axios.put(PATH + `/${selectedItem.id}`, formData);
-    } else {
-      await axios.post(PATH, formData);
-    }
-  } catch (error) {
-    console.error("Error submitting form:", error);
-  } finally {
+    const response = await axios.post(PATH, borrowRequest);
+    console.log('Borrow request created:', response.data);
+    alert('Yêu cầu mượn sách đã được tạo thành công!');
+    renderTable();  // Reload table after creation
     closeModal();
-    renderTable();
+  } catch (error) {
+    console.error('Error:', error);
+    alert('Đã xảy ra lỗi, vui lòng thử lại!');
   }
 };
 
