@@ -29,12 +29,13 @@ const renderTable = async () => {
   try {
     const data = await axios.get(PATH);
     items = data?.data || [];
-    const rows = data?.data
+    const rows = items
       .map(
         (item) => `
       <tr>
         <td>${item.bookID?.title}</td>
-        <td>${formatDate(item.borrowDate)}</td> <!-- Định dạng ngày tại đây -->
+        <td>${item.memberID?.fullName}</td> <!-- Hiển thị Tên người mượn -->
+        <td>${formatDate(item.borrowDate)}</td> <!-- Định dạng ngày -->
         <td style="text-align: center;">
           <a onclick="editItem(${item.id})" href="javascript:void(0);">
             <i class="bx bx-edit-alt me-1"></i>
