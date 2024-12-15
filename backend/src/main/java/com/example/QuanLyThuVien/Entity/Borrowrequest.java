@@ -7,6 +7,7 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import java.time.LocalDate;
+import java.util.Date;
 
 @Getter
 @Setter
@@ -29,13 +30,29 @@ public class Borrowrequest {
     private Member memberID;
 
     @Column(name = "borrowDate", nullable = false)
-    private LocalDate borrowDate;
+    private Date borrowDate;
+
 
     @Column(name = "returnDate")
-    private LocalDate returnDate;
-
+    private Date returnDate;
     @Lob
     @Column(name = "status")
     private String status;
+
+	public Borrowrequest() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	public Borrowrequest(Integer id, Book bookID, Member memberID, Date borrowDate, Date returnDate,
+			String status) {
+		super();
+		this.id = id;
+		this.bookID = bookID;
+		this.memberID = memberID;
+		this.borrowDate = borrowDate;
+		this.returnDate = returnDate;
+		this.status = status;
+	}
 
 }

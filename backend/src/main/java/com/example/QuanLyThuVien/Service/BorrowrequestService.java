@@ -9,6 +9,7 @@ import com.example.QuanLyThuVien.Repo.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,26 +27,32 @@ public class BorrowrequestService {
         this.memberRepository = memberRepository;
     }
 
-    // Thêm mới yêu cầu mượn sách
     public boolean createBorrowrequest(BorrowrequestDto borrowrequestDto) {
-      try{
-          Optional<Book> bookOptional = bookRepository.findById(borrowrequestDto.getBookID());
-          if (bookOptional.isPresent()) {
-              Borrowrequest borrowrequest = new Borrowrequest();
-              borrowrequest.setBookID(bookRepository.getReferenceById(borrowrequestDto.getBookID()));
-              borrowrequest.setMemberID(memberRepository.getReferenceById(borrowrequestDto.getMemID()));
-              borrowrequest.setBorrowDate(borrowrequestDto.getBorrowDate());
-              borrowrequest.setReturnDate(borrowrequestDto.getReturnDate());
-              borrowrequest.setStatus("PENDING"); // Mặc định yêu cầu mượn có trạng thái PENDING
-              borrowrequestRepository.save(borrowrequest);
-              return true;
-          } else {
-              throw new RuntimeException("Book not found.");
-          }
-      }catch (Exception e){
-          return false;
-      }
+        try {
+            // Check if the book exists in the database
+            Optional<Book> bookOptional = bookRepository.findById(borrowrequestDto.getBookID());
+            if (bookOptional.isPresent()) {
+                Borrowrequest borrowrequest = new Borrowrequest();
+                borrowrequest.setBookID(bookRepository.getReferenceById(borrowrequestDto.getBookID()));
+                borrowrequest.setMemberID(memberRepository.getReferenceById(borrowrequestDto.getMemID()));
+                
+                // Ensure the borrowDate and returnDate are set properly
+                borrowrequest.setBorrowDate(borrowrequestDto.getBorrowDate());  // Make sure this is set
+                borrowrequest.setReturnDate(borrowrequestDto.getReturnDate());
+                borrowrequest.setStatus("PENDING");  // Default status
+
+                // Save the borrowrequest object
+                borrowrequestRepository.save(borrowrequest);
+                return true;
+            } else {
+                throw new RuntimeException("Book not found.");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();  // Print the stack trace for debugging
+            return false;
+        }
     }
+
 
     // Lấy tất cả yêu cầu mượn sách
     public List<Borrowrequest> getAllBorrowrequests() {
