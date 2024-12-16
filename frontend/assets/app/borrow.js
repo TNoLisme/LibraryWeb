@@ -55,26 +55,27 @@ const renderTable = async () => {
   }
 };
 
-
-
 const renderBooksList = async () => {
   try {
     const data = await axios.get(PATH_BOOK);
     let txt = `<option value="">-- Chọn sách --</option>`;
     data?.data?.forEach((element) => {
-      txt += `<option value=${element.id}>${element?.title}</option>`;
+      txt += `<option value="${element.id}">${element?.title}</option>`;
     });
+
     const dataMem = await axios.get(PATH_MEMBER);
     let txtMem = `<option value="">-- Chọn thành viên --</option>`;
     dataMem?.data?.forEach((element) => {
-      txtMem += `<option value=${element.id}>${element?.fullName}</option>`;
+      txtMem += `<option value="${element.id}">${element?.fullName}</option>`;
     });
-    bookID.innerHTML = txt;
-    memID.innerHTML = txtMem;
+
+    bookID.innerHTML = txt; // Cập nhật danh sách sách
+    memID.innerHTML = txtMem; // Cập nhật danh sách thành viên
   } catch (error) {
     console.error("Error loading book and member data", error);
   }
 };
+
 
 const openModal = () => $(modalEditId).modal("show");
 
@@ -84,7 +85,7 @@ const closeModal = () => {
   statusBook.disabled = true;
   bookID.disabled = false;
   memID.disabled = false;
-  clearForm();
+  clearEditForm();  // Gọi hàm clearEditForm khi đóng modal
 };
 
 const getFormData = () => ({
@@ -97,20 +98,36 @@ const getFormData = () => ({
 });
 
 const setFormData = (data) => {
-  borrowDate.value = data?.borrowDate || "";
-  returnDate.value = data?.returnDate || "";
+  console.log('Setting form data:', data); // Kiểm tra dữ liệu đang được set vào form
+
+  borrowDate.value = data?.borrowDate ? new Date(data.borrowDate).toISOString().split('T')[0] : "";
+  returnDate.value = data?.returnDate ? new Date(data.returnDate).toISOString().split('T')[0] : "";
   statusBook.value = data?.status || "";
-  bookID.value = data?.bookID?.id || "";
-  memID.value = data?.memberID?.id || "";
+
+  bookID.value = data?.bookID?.id || "";  // Gán ID sách vào select
+  memID.value = data?.memberID?.id || "";  // Gán ID thành viên vào select
 };
 
-const clearForm = () => {
+
+
+// Đổi tên hàm xóa dữ liệu cũ của form khi mở modal chỉnh sửa
+const clearEditForm = () => {
   selectedItem = null;
   borrowDate.value = null;
   returnDate.value = null;
   statusBook.value = "PENDING";
   bookID.value = null;
   memID.value = null;
+};
+
+// Đổi tên hàm xóa dữ liệu cũ khi mở modal thêm mới
+const clearAddForm = () => {
+  selectedItem = null;
+  borrowDate.value = "";
+  returnDate.value = "";
+  statusBook.value = "PENDING";
+  bookID.value = "";
+  memID.value = "";
 };
 
 const handleFormSubmit = async (event) => {
@@ -121,7 +138,7 @@ const handleFormSubmit = async (event) => {
     memID: document.getElementById('memID').value,
     borrowDate: document.getElementById('borrowDate').value,
     returnDate: document.getElementById('returnDate').value,
-    status: 'PENDING'
+    status: document.getElementById('status').value,
   };
 
   if (!borrowRequest.bookID || !borrowRequest.memID || !borrowRequest.borrowDate) {
@@ -142,13 +159,49 @@ const handleFormSubmit = async (event) => {
 };
 
 const editItem = (id) => {
+  // Tìm item dựa trên ID
   selectedItem = items.find((item) => item.id === id);
+
   if (selectedItem) {
+    // Kiểm tra dữ liệu trong selectedItem
+    console.log(selectedItem); // In ra để kiểm tra
+
+    // Gọi setFormData để render dữ liệu cũ vào các input
     setFormData(selectedItem);
+
+    // Mở modal chỉnh sửa
     openModal();
-    statusBook.disabled = false;
+
+    // Tắt các trường không cần chỉnh sửa (bookID, memID)
     bookID.disabled = true;
     memID.disabled = true;
+  }
+};
+
+
+const handleEditFormSubmit = async (event) => {
+  event.preventDefault();
+
+  const updatedData = {
+    id: selectedItem.id,
+    bookID: document.getElementById('bookID').value,
+    memID: document.getElementById('memID').value,
+    borrowDate: document.getElementById('borrowDate').value,
+    returnDate: document.getElementById('returnDate').value,
+    status: document.getElementById('status').value,
+  };
+
+  try {
+    // Gọi API để cập nhật
+    const response = await axios.put(`${PATH}/${updatedData.id}`, updatedData);
+
+    // Hiển thị thông báo thành công và cập nhật bảng
+    alert('Cập nhật thông tin mượn sách thành công!');
+    renderTable();  // Reload bảng để hiển thị dữ liệu mới
+    closeModal();
+  } catch (error) {
+    console.error("Error updating borrow request:", error);
+    alert("Cập nhật thất bại, vui lòng thử lại.");
   }
 };
 
@@ -160,7 +213,7 @@ const openDeleteModel = (id) => {
 };
 
 const addItem = () => {
-  clearForm();
+  clearAddForm();  // Gọi hàm clearAddForm khi mở modal thêm mới
   openModal();
 };
 
