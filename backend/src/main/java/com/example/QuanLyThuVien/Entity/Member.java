@@ -11,48 +11,47 @@ import lombok.Setter;
 public class Member {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "memberID", nullable = false)
+    @Column(name = "memberID", nullable = false) 
     private Integer id;
 
-    @Column(name = "fullName", nullable = false)
+    @Column(name = "fullName", nullable = false) 
     private String fullName;
 
-    @Column(name = "email", nullable = false)
+    @Column(name = "email", nullable = false, unique = true) 
     private String email;
 
-    @Column(name = "password", nullable = false)
+    @Column(name = "password", nullable = false) 
     private String password;
 
-	public Integer getId() {
-		return id;
-	}
+    public Integer getId() {
+        return id;
+    }
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
-	public String getFullName() {
-		return fullName;
-	}
+    public String getFullName() {
+        return fullName;
+    }
 
-	public void setFullName(String fullName) {
-		this.fullName = fullName;
-	}
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
 
-	public String getEmail() {
-		return email;
-	}
+    public String getEmail() {
+        return email;
+    }
 
-	public void setEmail(String email) {
-		this.email = email;
-	}
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
-	public String getPassword() {
-		return password;
-	}
+    public String getPassword() {
+        return password;
+    }
 
-	public void setPassword(String password) {
-		this.password = password;
-	}
-    
+    public void setPassword(String password) {
+        this.password = password;
+    }
 }
