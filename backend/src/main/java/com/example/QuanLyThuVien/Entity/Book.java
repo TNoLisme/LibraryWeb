@@ -83,4 +83,21 @@ public class Book {
     public void setCategories(List<Category> categories) {
         this.categories = categories;
     }
+
+	public Book(Integer id, String title, String author, Integer publishYear, Integer quantity,
+			List<Category> categories) {
+		super();
+		this.id = id;
+		this.title = title;
+		this.author = author;
+		this.publishYear = publishYear;
+		this.quantity = quantity;
+		this.categories = categories;
+	}
+
+	public Book() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+    
 }

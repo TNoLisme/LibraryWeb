@@ -1,6 +1,7 @@
 package com.example.QuanLyThuVien.Controller;
 
 
+import com.example.QuanLyThuVien.DTO.CategoryDTO;
 import com.example.QuanLyThuVien.Entity.Category;
 import com.example.QuanLyThuVien.Service.CategoriesService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +26,7 @@ public class CategoriesController {
     }
 
     @GetMapping
-    public List<Category> getAllCategories() {
+    public List<CategoryDTO> getAllCategories() {
         return categoriesService.getAllCategories();
     }
 

@@ -19,7 +19,19 @@ public class Category {
     private String name;
 
    
-    @ManyToMany(mappedBy = "categories") 
+    public Category(Integer id, String name, List<Book> books) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.books = books;
+	}
+
+	public Category() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	@ManyToMany(mappedBy = "categories") 
     private List<Book> books;
 
     public Integer getId() {

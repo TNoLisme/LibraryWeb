@@ -25,7 +25,7 @@ window.addEventListener("DOMContentLoaded", () => {
 const renderTable = async () => {
   try {
     const { data } = await axios.get(PATH);
-    items = data || [];
+    items = Array.isArray(data) ? data : []; // Kiểm tra xem dữ liệu có phải mảng không
     const rows = items
       .map(
         (item) => `
@@ -58,9 +58,11 @@ const renderCateList = async () => {
   try {
     const { data } = await axios.get(PATH_CATE);
     let options = `<option value="">-- Chọn thể loại sách --</option>`;
-    data?.forEach((cate) => {
-      options += `<option value="${cate.id}">${cate.name}</option>`;
-    });
+    if (Array.isArray(data)) {  // Kiểm tra xem dữ liệu trả về có phải mảng không
+      data.forEach((cate) => {
+        options += `<option value="${cate.id}">${cate.name}</option>`;
+      });
+    }
     cateID.innerHTML = options;
   } catch (error) {
     console.error("Error loading categories:", error);
@@ -91,7 +93,7 @@ const getFormData = () => {
     author: author.value.trim(),
     publishYear: +publishYear.value.trim(),
     quantity: +quantity.value.trim(),
-    categoryIds: selectedCategories, // Lấy danh sách thể loại
+    categoryIds: selectedCategories.length > 0 ? selectedCategories : null, // Kiểm tra để đảm bảo không gửi mảng rỗng
   };
 };
 
@@ -125,6 +127,10 @@ const handleFormSubmit = async (event) => {
   event.preventDefault();
   try {
     const formData = getFormData();
+    if (!formData.title || !formData.author) {
+      alert("Vui lòng điền đầy đủ thông tin!");
+      return;
+    }
     if (selectedItem) {
       await axios.put(PATH + `/${selectedItem.id}`, formData);
     } else {
@@ -153,8 +159,8 @@ const editItem = (id) => {
 const viewItem = async (bookId) => {
   try {
     const { data } = await axios.get(PATH_REVIEW + "/by-book", { params: { bookId } });
-    const rows = data
-      .map(
+    const rows = Array.isArray(data) 
+      ? data.map(
         (review) => `
       <tr>
         <td>${review.memberID?.fullName}</td>
@@ -164,8 +170,8 @@ const viewItem = async (bookId) => {
         <td>${review.rating}</td>
       </tr>
     `
-      )
-      .join("");
+      ).join("")
+      : "Không có đánh giá nào.";
     tableDataDialog.innerHTML = rows;
     openModalView();
   } catch (error) {

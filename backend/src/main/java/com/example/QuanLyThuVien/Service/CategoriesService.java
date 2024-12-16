@@ -1,5 +1,6 @@
 package com.example.QuanLyThuVien.Service;
 
+import com.example.QuanLyThuVien.DTO.CategoryDTO;
 import com.example.QuanLyThuVien.Entity.Category;
 import com.example.QuanLyThuVien.Repo.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,8 +20,8 @@ public class CategoriesService {
     }
 
     // Get all categories
-    public List<Category> getAllCategories() {
-        return categoriesRepository.findAll();
+    public List<CategoryDTO> getAllCategories() {
+        return categoriesRepository.getAllCategories();
     }
 
     // Get category by id
