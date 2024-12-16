@@ -36,6 +36,7 @@ const renderTable = async () => {
         <td>${item.bookTitle}</td>  <!-- Hiển thị Tên sách -->
         <td>${item.memberFullName}</td> <!-- Hiển thị Tên người mượn -->
         <td>${formatDate(item.borrowDate)}</td>  <!-- Định dạng ngày mượn -->
+        <td>${item.status}</td>  <!-- Hiển thị trạng thái -->
         <td style="text-align: center;">
           <a onclick="editItem(${item.id})" href="javascript:void(0);">
             <i class="bx bx-edit-alt me-1"></i>
@@ -53,6 +54,7 @@ const renderTable = async () => {
     console.error("Error rendering table:", error);  // In lỗi nếu có
   }
 };
+
 
 
 const renderBooksList = async () => {
