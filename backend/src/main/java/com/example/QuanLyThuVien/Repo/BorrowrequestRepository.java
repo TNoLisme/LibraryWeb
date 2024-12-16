@@ -1,5 +1,6 @@
 package com.example.QuanLyThuVien.Repo;
 
+import com.example.QuanLyThuVien.DTO.BorrowrequestDto;
 import com.example.QuanLyThuVien.Entity.Borrowrequest;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -14,4 +15,18 @@ public interface BorrowrequestRepository extends JpaRepository<Borrowrequest, In
         AND b.id NOT IN (SELECT r.borrowRequestId.id FROM Review r)
         """)
     List<Borrowrequest> findBorrowRequestsNotInReviewsByMemberId(Integer memberId);
+    
+    @Query("""
+    	    SELECT new com.example.QuanLyThuVien.DTO.BorrowrequestDto(
+    	        b.id,
+    	        b.bookID.id,
+    	        b.memberID.id,
+    	        b.borrowDate,
+    	        b.returnDate,
+    	        b.status
+    	    )
+    	    FROM Borrowrequest b
+    	""")
+    	List<BorrowrequestDto> findAllBorrowRequestsAsDto();
+
 }

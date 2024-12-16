@@ -55,8 +55,8 @@ public class BorrowrequestService {
 
 
     // Lấy tất cả yêu cầu mượn sách
-    public List<Borrowrequest> getAllBorrowrequests() {
-        return borrowrequestRepository.findAll();
+    public List<BorrowrequestDto> getAllBorrowrequests() {
+        return borrowrequestRepository.findAllBorrowRequestsAsDto();
     }
 
     // Lấy yêu cầu mượn sách theo ID

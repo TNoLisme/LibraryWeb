@@ -30,8 +30,8 @@ public class BooksService {
 
 
     // Get all books
-    public List<Book> getAllBooks() {
-       return booksRepository.findAll();
+    public List<BookDto> getAllBooks() {
+       return booksRepository.getAllBooks();
     }
 
     // Get book by id
