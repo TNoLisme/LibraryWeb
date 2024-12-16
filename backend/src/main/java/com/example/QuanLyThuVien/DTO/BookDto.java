@@ -4,7 +4,6 @@ import com.example.QuanLyThuVien.Entity.Category;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Value;
 
 import java.io.Serializable;
 import java.util.List;
@@ -12,16 +11,21 @@ import java.util.List;
 /**
  * DTO for {@link com.example.QuanLyThuVien.Entity.Book}
  */
-@Value
-@AllArgsConstructor
 @Data
-
+@AllArgsConstructor
+@NoArgsConstructor
 public class BookDto implements Serializable {
-	  private Integer id;
-	    private String title;
-	    private String author;
-	    private Integer publishYear;
-	    private Integer quantity;
-	    private List<Integer> categoryIds;
-    
+    private Integer id;
+    private String title;
+    private String author;
+    private Integer publishYear;
+    private Integer quantity;
+    private List<Integer> categoryIds;
+
+    // Constructor chỉ nhận title và author
+    public BookDto(Integer id, String title, String author) {
+        this.id = id;
+        this.title = title;
+        this.author = author;
+    }
 }

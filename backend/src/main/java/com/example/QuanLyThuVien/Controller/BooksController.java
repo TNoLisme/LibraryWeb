@@ -26,7 +26,7 @@ public class BooksController {
     }
 
     @GetMapping
-    public List<Book> getAllBooks() {
+    public List<BookDto> getAllBooks() {
         return booksService.getAllBooks();
     }
 

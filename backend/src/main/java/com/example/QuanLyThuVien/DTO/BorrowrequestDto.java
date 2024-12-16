@@ -19,4 +19,15 @@ public class BorrowrequestDto implements Serializable {
 	    Date borrowDate;  
 	    Date returnDate;
 	    String status;
+		public BorrowrequestDto(Integer id, Integer bookID, Integer memID, Date borrowDate, Date returnDate,
+				String status) {
+			super();
+			this.id = id;
+			this.bookID = bookID;
+			this.memID = memID;
+			this.borrowDate = borrowDate;
+			this.returnDate = returnDate;
+			this.status = status;
+		}
+	    
 }

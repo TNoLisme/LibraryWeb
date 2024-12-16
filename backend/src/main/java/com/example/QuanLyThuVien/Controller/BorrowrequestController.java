@@ -24,7 +24,7 @@ public class BorrowrequestController {
 
     // Lấy tất cả yêu cầu mượn sách
     @GetMapping
-    public List<Borrowrequest> getAllBorrowrequests() {
+    public List<BorrowrequestDto> getAllBorrowrequests() {
         return borrowrequestService.getAllBorrowrequests();
     }
 
