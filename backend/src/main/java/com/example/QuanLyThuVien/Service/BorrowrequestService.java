@@ -3,7 +3,13 @@ package com.example.QuanLyThuVien.Service;
 import com.example.QuanLyThuVien.DTO.BorrowrequestDto;
 import com.example.QuanLyThuVien.Entity.Book;
 import com.example.QuanLyThuVien.Entity.Borrowrequest;
+import com.example.QuanLyThuVien.Entity.Fine;
+import com.example.QuanLyThuVien.Entity.Member;
+import com.example.QuanLyThuVien.Entity.MemberPenalties;
+import com.example.QuanLyThuVien.Entity.MemberPenalties.PaidStatus;
 import com.example.QuanLyThuVien.Repo.BorrowrequestRepository;
+import com.example.QuanLyThuVien.Repo.FineRepository;
+import com.example.QuanLyThuVien.Repo.MemberPenaltiesRepository;
 import com.example.QuanLyThuVien.Repo.BookRepository;
 import com.example.QuanLyThuVien.Repo.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +25,9 @@ public class BorrowrequestService {
     private final BorrowrequestRepository borrowrequestRepository;
     private final BookRepository bookRepository;
     private final MemberRepository memberRepository;
+    private FineRepository fineRepository;
+    private MemberPenaltiesRepository memberPenaltiesRepository;
+
 
     @Autowired
     public BorrowrequestService(BorrowrequestRepository borrowrequestRepository, BookRepository bookRepository, MemberRepository memberRepository) {
@@ -68,8 +77,16 @@ public class BorrowrequestService {
     }
     // Cập nhật yêu cầu mượn sách
     public Borrowrequest updateBorrowrequest(Integer id, BorrowrequestDto borrowrequestDto) {
+        // Lấy thông tin mượn sách theo ID
         Borrowrequest borrowrequest = borrowrequestRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Borrow request not found."));
+        
+     
+        Member member = memberRepository.findById(borrowrequest.getMemberID()) 
+            .orElseThrow(() -> new RuntimeException("Member not found"));
+
+
+
         // Lấy thông tin sách liên quan đến yêu cầu
         Book book = borrowrequest.getBookID();
 
@@ -84,26 +101,43 @@ public class BorrowrequestService {
                     }
                     break;
 
-                case "returned": // Nếu trạng thái chuyển sang trả sách
+                case "returned": 
                     book.setQuantity(book.getQuantity() + 1);
                     break;
 
+                case "lost": 
+                case "damaged": 
+                case "overdue":
+                    // Lấy lý do phạt tương ứng từ fineRepository
+                    Fine fine = fineRepository.findByFineReason(borrowrequestDto.getStatus())
+                            .orElseThrow(() -> new RuntimeException("Fine reason not found"));
+
+                    // Tạo bản ghi phạt cho thành viên
+                    MemberPenalties memberPenalty = new MemberPenalties();
+                    memberPenalty.setMember(member); // Sử dụng đối tượng Member thay vì MemberID
+                    memberPenalty.setFine(fine); // Sử dụng đối tượng Fine thay vì FineID
+                    memberPenalty.setPenaltyDate(LocalDate.now()); // Ngày phạt là ngày hiện tại
+                    memberPenalty.setPaidStatus(PaidStatus.UNPAID); // Sử dụng enum PaidStatus.UNPAID cho trạng thái thanh toán
+
+                    memberPenaltiesRepository.save(memberPenalty);
+                    break;
+
                 default:
-                    // Không thay đổi số lượng sách cho các trạng thái khác
                     break;
             }
 
-            // Cập nhật thông tin sách
             bookRepository.save(book);
         }
 
-        // Cập nhật các thông tin khác của yêu cầu mượn
         borrowrequest.setBorrowDate(borrowrequestDto.getBorrowDate());
         borrowrequest.setReturnDate(borrowrequestDto.getReturnDate());
         borrowrequest.setStatus(borrowrequestDto.getStatus());
 
         return borrowrequestRepository.save(borrowrequest);
     }
+
+
+
 
     // Xóa yêu cầu mượn sách
     public void deleteBorrowrequest(Integer id) {
