@@ -102,24 +102,28 @@ const formatDate = (dateStr) => {
 const setFormData = (data) => {
   console.log('Setting form data:', data); 
 
+  // Cập nhật ngày mượn
   if (data?.borrowDate) {
     const localBorrowDate = new Date(data.borrowDate);
-    borrowDate.value = localBorrowDate.toLocaleDateString('en-CA');  // 'en-CA' = 'YYYY-MM-DD'
+    document.getElementById('eborrowDate').value = localBorrowDate.toLocaleDateString('en-CA');  // 'en-CA' = 'YYYY-MM-DD'
   } else {
-    borrowDate.value = "";
+    document.getElementById('eborrowDate').value = "";
   }
 
+  // Cập nhật ngày trả
   if (data?.returnDate) {
     const localReturnDate = new Date(data.returnDate);
-    returnDate.value = localReturnDate.toLocaleDateString('en-CA');  // 'en-CA' = 'YYYY-MM-DD'
+    document.getElementById('ereturnDate').value = localReturnDate.toLocaleDateString('en-CA');  // 'en-CA' = 'YYYY-MM-DD'
   } else {
-    returnDate.value = "";
+    document.getElementById('ereturnDate').value = "";
   }
 
-  statusBook.value = data?.status || "";
+  // Cập nhật trạng thái
+  document.getElementById('status').value = data?.status || "";
 
-  bookID.value = data?.bookID?.id || "";  
-  memID.value = data?.memberID?.id || "";  
+  // Cập nhật thông tin sách và thành viên
+  document.getElementById('bookID').value = data?.bookID?.id || "";  
+  document.getElementById('memID').value = data?.memberID?.id || "";  
 };
 
 
@@ -127,18 +131,18 @@ const setFormData = (data) => {
 // Đổi tên hàm xóa dữ liệu cũ của form khi mở modal chỉnh sửa
 const clearEditForm = () => {
   selectedItem = null;
-  borrowDate.value = null;
-  returnDate.value = null;
+  borrowDate.value = "";  
+  returnDate.value = "";  
   statusBook.value = "PENDING";
-  bookID.value = null;
-  memID.value = null;
+  bookID.value = "";
+  memID.value = "";
 };
 
 // Đổi tên hàm xóa dữ liệu cũ khi mở modal thêm mới
 const clearAddForm = () => {
   selectedItem = null;
-  borrowDate.value = "";
-  returnDate.value = "";
+  borrowDate.value = ""; 
+  returnDate.value = ""; 
   statusBook.value = "PENDING";
   bookID.value = "";
   memID.value = "";
@@ -154,6 +158,8 @@ const handleFormSubmit = async (event) => {
     returnDate: document.getElementById('returnDate').value,
     status: document.getElementById('status').value,
   };
+
+  console.log('Form Data:', borrowRequest); // Kiểm tra giá trị form dữ liệu
 
   if (!borrowRequest.bookID || !borrowRequest.memID || !borrowRequest.borrowDate) {
     alert("Vui lòng điền đầy đủ thông tin.");
@@ -202,8 +208,8 @@ const handleEditFormSubmit = async (event) => {
     id: selectedItem.id,
     bookID: document.getElementById('bookID').value,
     memID: document.getElementById('memID').value,
-    borrowDate: document.getElementById('borrowDate').value,
-    returnDate: document.getElementById('returnDate').value,
+    borrowDate: document.getElementById('eborrowDate').value,
+    returnDate: document.getElementById('ereturnDate').value,
     status: document.getElementById('status').value,
   };
 
