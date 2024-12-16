@@ -4,10 +4,12 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
 
 @Entity
 @Table(name = "categories")
 public class Category {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "categoryID", nullable = false)
@@ -16,34 +18,31 @@ public class Category {
     @Column(name = "name", nullable = false)
     private String name;
 
-	public Integer getId() {
-		return id;
-	}
+   
+    @ManyToMany(mappedBy = "categories") 
+    private List<Book> books;
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
+    public Integer getId() {
+        return id;
+    }
 
-	public String getName() {
-		return name;
-	}
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public Category(Integer id, String name) {
-		super();
-		this.id = id;
-		this.name = name;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public Category() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
+    public List<Book> getBooks() {
+        return books;
+    }
 
-
-	
-
+    public void setBooks(List<Book> books) {
+        this.books = books;
+    }
 }

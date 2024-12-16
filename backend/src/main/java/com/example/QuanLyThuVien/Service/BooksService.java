@@ -2,6 +2,8 @@ package com.example.QuanLyThuVien.Service;
 
 import com.example.QuanLyThuVien.DTO.BookDto;
 import com.example.QuanLyThuVien.Entity.Book;
+import com.example.QuanLyThuVien.Entity.BookCategory;
+import com.example.QuanLyThuVien.Entity.Category;
 import com.example.QuanLyThuVien.Repo.BookRepository;
 import com.example.QuanLyThuVien.Repo.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +28,7 @@ public class BooksService {
         return convertToDto(savedBook);
     }
 
+
     // Get all books
     public List<Book> getAllBooks() {
        return booksRepository.findAll();
@@ -41,31 +44,32 @@ public class BooksService {
     public BookDto updateBook(int id, BookDto bookDto) {
         if (booksRepository.existsById(id)) {
             Book book = convertToEntity(bookDto);
-            book.setId(id); // Đảm bảo ID là của bản ghi đang cập nhật
+            book.setId(id);
             Book updatedBook = booksRepository.save(book);
             return convertToDto(updatedBook);
         }
         throw new RuntimeException("Book with id " + id + " not found");
     }
 
-    // Delete book
     public void deleteBook(int id) {
         booksRepository.deleteById(id);
     }
 
-    // Convert Book to BookDto
     private BookDto convertToDto(Book book) {
+        List<Integer> categoryIds = book.getCategories()
+                                        .stream()
+                                        .map(category -> category.getId()) // Chuyển từ Category sang ID
+                                        .collect(Collectors.toList());
         return new BookDto(
                 book.getId(),
                 book.getTitle(),
                 book.getAuthor(),
                 book.getPublishYear(),
                 book.getQuantity(),
-                book.getCateID().getId()
+                categoryIds
         );
     }
 
-    // Convert BookDto to Book
     private Book convertToEntity(BookDto bookDto) {
         Book book = new Book();
         book.setId(bookDto.getId());
@@ -73,7 +77,18 @@ public class BooksService {
         book.setAuthor(bookDto.getAuthor());
         book.setPublishYear(bookDto.getPublishYear());
         book.setQuantity(bookDto.getQuantity());
-        book.setCateID(categoryRepository.getReferenceById(bookDto.getCateID()));
+
+        List<Category> categories = bookDto.getCategoryIds()
+                                           .stream()
+                                           .map(categoryId -> {
+                                               Category category = categoryRepository.findById(categoryId)
+                                                                                      .orElseThrow(() -> new RuntimeException("Category not found"));
+                                               return category;
+                                           })
+                                           .collect(Collectors.toList());
+        book.setCategories(categories); 
+
         return book;
     }
+
 }
