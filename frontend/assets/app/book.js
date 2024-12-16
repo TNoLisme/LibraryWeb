@@ -15,16 +15,18 @@ const PATH_REVIEW = BASE_URL + "/api/reviews";
 let selectedItem = null;
 let items = [];
 
+// Load dữ liệu khi DOM đã sẵn sàng
 window.addEventListener("DOMContentLoaded", () => {
   renderTable();
   renderCateList();
 });
 
+// Render bảng sách
 const renderTable = async () => {
   try {
-    const data = await axios.get(PATH);
-    items = data?.data || [];
-    const rows = data?.data
+    const { data } = await axios.get(PATH);
+    items = data || [];
+    const rows = items
       .map(
         (item) => `
       <tr>
@@ -51,56 +53,74 @@ const renderTable = async () => {
   }
 };
 
+// Render danh sách thể loại trong dropdown
 const renderCateList = async () => {
   try {
-    const data = await axios.get(PATH_CATE);
-    let txt = `<option value="">-- Chọn thể loại sách --</option>`;
-    data?.data?.forEach((element) => {
-      txt += `<option value=${element.id}>${element?.name}</option>`;
+    const { data } = await axios.get(PATH_CATE);
+    let options = `<option value="">-- Chọn thể loại sách --</option>`;
+    data?.forEach((cate) => {
+      options += `<option value="${cate.id}">${cate.name}</option>`;
     });
-    cateID.innerHTML = txt;
-  } catch (error) {}
+    cateID.innerHTML = options;
+  } catch (error) {
+    console.error("Error loading categories:", error);
+  }
 };
 
+// Hiển thị modal thêm/sửa
 const openModal = () => $(modalEditId).modal("show");
 const openModalView = () => $(modalViewId).modal("show");
 
+// Đóng modal và reset form
 const closeModal = () => {
   $(modalEditId).modal("hide");
   $(modelConfirmId).modal("hide");
   $(modalViewId).modal("hide");
   clearForm();
-
   tableDataDialog.innerHTML = "";
 };
 
-const getFormData = () => ({
-  ...(selectedItem || {}),
-  title: title.value.trim(),
-  author: author.value.trim(),
-  publishYear: +publishYear.value.trim(),
-  quantity: +quantity.value.trim(),
-  cateID: +cateID.value.trim(),
-});
+// Lấy dữ liệu từ form
+const getFormData = () => {
+  const selectedCategories = Array.from(cateID.selectedOptions).map((option) =>
+    parseInt(option.value, 10)
+  );
+  return {
+    ...(selectedItem || {}),
+    title: title.value.trim(),
+    author: author.value.trim(),
+    publishYear: +publishYear.value.trim(),
+    quantity: +quantity.value.trim(),
+    categoryIds: selectedCategories, // Lấy danh sách thể loại
+  };
+};
 
+// Đặt dữ liệu lên form khi chỉnh sửa
 const setFormData = (data) => {
   title.value = data?.title || "";
   author.value = data?.author || "";
   publishYear.value = data?.publishYear || "";
   quantity.value = data?.quantity || "";
-  cateID.value = data?.cateID?.id || "";
+
+  // Đặt thể loại
+  Array.from(cateID.options).forEach((option) => {
+    option.selected = data?.categories?.some((cate) => cate.id === +option.value) || false;
+  });
 };
 
+// Xóa dữ liệu trên form
 const clearForm = () => {
-  title.value = "";
   title.value = "";
   author.value = "";
   publishYear.value = "";
   quantity.value = "";
-  cateID.value = "";
+  Array.from(cateID.options).forEach((option) => {
+    option.selected = false;
+  });
   selectedItem = null;
 };
 
+// Xử lý submit form thêm/sửa
 const handleFormSubmit = async (event) => {
   event.preventDefault();
   try {
@@ -110,14 +130,17 @@ const handleFormSubmit = async (event) => {
     } else {
       await axios.post(PATH, formData);
     }
+    alert("Lưu thành công!");
   } catch (error) {
     console.error("Error submitting form:", error);
+    alert("Có lỗi xảy ra. Vui lòng thử lại.");
   } finally {
     closeModal();
     renderTable();
   }
 };
 
+// Chỉnh sửa sách
 const editItem = (id) => {
   selectedItem = items.find((item) => item.id === id);
   if (selectedItem) {
@@ -125,35 +148,32 @@ const editItem = (id) => {
     openModal();
   }
 };
+
+// Xem đánh giá sách
 const viewItem = async (bookId) => {
   try {
-    let config = {
-      params: { bookId },
-    };
-    const data = await axios.get(PATH_REVIEW + "/by-book", config);
-    const rows = data?.data
+    const { data } = await axios.get(PATH_REVIEW + "/by-book", { params: { bookId } });
+    const rows = data
       .map(
-        (item) => `
-    <tr>
-      <td>${item.memberID?.fullName}</td>
-      <td>
-        <textarea
-          rows="4"
-          cols="40"
-          disabled
-        >${item.comment}</textarea>
-      </td>
-      <td>${item.rating}</td>
-    </tr>
-  `
+        (review) => `
+      <tr>
+        <td>${review.memberID?.fullName}</td>
+        <td>
+          <textarea rows="4" cols="40" disabled>${review.comment}</textarea>
+        </td>
+        <td>${review.rating}</td>
+      </tr>
+    `
       )
       .join("");
     tableDataDialog.innerHTML = rows;
-
     openModalView();
-  } catch (error) {}
+  } catch (error) {
+    console.error("Error viewing reviews:", error);
+  }
 };
 
+// Mở modal xóa sách
 const openDeleteModel = (id) => {
   selectedItem = items.find((item) => item.id === id);
   if (selectedItem) {
@@ -161,11 +181,13 @@ const openDeleteModel = (id) => {
   }
 };
 
+// Thêm sách mới
 const addItem = () => {
   clearForm();
   openModal();
 };
 
+// Xóa sách
 const deleteItem = async () => {
   try {
     await axios.delete(PATH + `/${selectedItem.id}`);

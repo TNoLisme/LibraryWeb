@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Value;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * DTO for {@link com.example.QuanLyThuVien.Entity.Book}
@@ -16,11 +17,11 @@ import java.io.Serializable;
 @Data
 
 public class BookDto implements Serializable {
-    Integer id;
-    String title;
-    String author;
-    Integer publishYear;
-    Integer quantity;
-    Integer cateID;
+	  private Integer id;
+	    private String title;
+	    private String author;
+	    private Integer publishYear;
+	    private Integer quantity;
+	    private List<Integer> categoryIds;
     
 }
