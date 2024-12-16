@@ -27,15 +27,15 @@ const formatDate = (dateStr) => {
 
 const renderTable = async () => {
   try {
-    const data = await axios.get(PATH);
-    items = data?.data || [];
+    const data = await axios.get(PATH);  // Gọi API để lấy dữ liệu
+    items = data?.data || [];  // Lấy dữ liệu hoặc mảng rỗng nếu không có dữ liệu
     const rows = items
       .map(
         (item) => `
       <tr>
-        <td>${item.bookID?.title}</td>
-        <td>${item.memberID?.fullName}</td> <!-- Hiển thị Tên người mượn -->
-        <td>${formatDate(item.borrowDate)}</td> <!-- Định dạng ngày -->
+        <td>${item.bookTitle}</td>  <!-- Hiển thị Tên sách -->
+        <td>${item.memberFullName}</td> <!-- Hiển thị Tên người mượn -->
+        <td>${formatDate(item.borrowDate)}</td>  <!-- Định dạng ngày mượn -->
         <td style="text-align: center;">
           <a onclick="editItem(${item.id})" href="javascript:void(0);">
             <i class="bx bx-edit-alt me-1"></i>
@@ -47,12 +47,13 @@ const renderTable = async () => {
       </tr>
     `
       )
-      .join("");
-    tableData.innerHTML = rows;
+      .join("");  // Tạo chuỗi HTML cho các dòng trong bảng
+    tableData.innerHTML = rows;  // Gán HTML cho phần tử chứa bảng
   } catch (error) {
-    console.error("Error rendering table:", error);
+    console.error("Error rendering table:", error);  // In lỗi nếu có
   }
 };
+
 
 const renderBooksList = async () => {
   try {

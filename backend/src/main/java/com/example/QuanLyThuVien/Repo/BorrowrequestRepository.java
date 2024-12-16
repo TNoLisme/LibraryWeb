@@ -23,10 +23,13 @@ public interface BorrowrequestRepository extends JpaRepository<Borrowrequest, In
     	        b.memberID.id,
     	        b.borrowDate,
     	        b.returnDate,
-    	        b.status
+    	        b.status,
+    	        b.bookID.title,  
+    	        b.memberID.fullName  
     	    )
     	    FROM Borrowrequest b
     	""")
     	List<BorrowrequestDto> findAllBorrowRequestsAsDto();
+
 
 }

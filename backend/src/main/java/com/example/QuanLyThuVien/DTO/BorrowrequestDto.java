@@ -19,8 +19,10 @@ public class BorrowrequestDto implements Serializable {
 	    Date borrowDate;  
 	    Date returnDate;
 	    String status;
+	    String bookTitle; 
+	    String memberFullName;
 		public BorrowrequestDto(Integer id, Integer bookID, Integer memID, Date borrowDate, Date returnDate,
-				String status) {
+				String status, String bookTitle, String memberFullName) {
 			super();
 			this.id = id;
 			this.bookID = bookID;
@@ -28,6 +30,8 @@ public class BorrowrequestDto implements Serializable {
 			this.borrowDate = borrowDate;
 			this.returnDate = returnDate;
 			this.status = status;
-		}
-	    
+			this.bookTitle = bookTitle;
+			this.memberFullName = memberFullName;
+		} 
+		
 }
