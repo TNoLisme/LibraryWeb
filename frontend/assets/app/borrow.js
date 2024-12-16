@@ -19,11 +19,7 @@ window.addEventListener("DOMContentLoaded", () => {
   renderBooksList();
 });
 
-const formatDate = (dateStr) => {
-  if (!dateStr) return "";
-  const date = new Date(dateStr);
-  return date.toLocaleDateString("vi-VN"); // Định dạng ngày/tháng/năm
-};
+
 
 const renderTable = async () => {
   try {
@@ -96,16 +92,34 @@ const getFormData = () => ({
   bookID: +bookID.value.trim(),
   memID: +memID.value.trim(),
 });
+const formatDate = (dateStr) => {
+  if (!dateStr) return "";
+  const date = new Date(dateStr);  // Giữ nguyên ngày UTC
+  // Đảm bảo hiển thị theo múi giờ Việt Nam mà không bị lệch
+  return date.toLocaleDateString("vi-VN"); 
+};
 
 const setFormData = (data) => {
-  console.log('Setting form data:', data); // Kiểm tra dữ liệu đang được set vào form
+  console.log('Setting form data:', data); 
 
-  borrowDate.value = data?.borrowDate ? new Date(data.borrowDate).toISOString().split('T')[0] : "";
-  returnDate.value = data?.returnDate ? new Date(data.returnDate).toISOString().split('T')[0] : "";
+  if (data?.borrowDate) {
+    const localBorrowDate = new Date(data.borrowDate);
+    borrowDate.value = localBorrowDate.toLocaleDateString('en-CA');  // 'en-CA' = 'YYYY-MM-DD'
+  } else {
+    borrowDate.value = "";
+  }
+
+  if (data?.returnDate) {
+    const localReturnDate = new Date(data.returnDate);
+    returnDate.value = localReturnDate.toLocaleDateString('en-CA');  // 'en-CA' = 'YYYY-MM-DD'
+  } else {
+    returnDate.value = "";
+  }
+
   statusBook.value = data?.status || "";
 
-  bookID.value = data?.bookID?.id || "";  // Gán ID sách vào select
-  memID.value = data?.memberID?.id || "";  // Gán ID thành viên vào select
+  bookID.value = data?.bookID?.id || "";  
+  memID.value = data?.memberID?.id || "";  
 };
 
 
@@ -175,8 +189,10 @@ const editItem = (id) => {
     // Tắt các trường không cần chỉnh sửa (bookID, memID)
     bookID.disabled = true;
     memID.disabled = true;
+    statusBook.disabled = false;
   }
 };
+
 
 
 const handleEditFormSubmit = async (event) => {
