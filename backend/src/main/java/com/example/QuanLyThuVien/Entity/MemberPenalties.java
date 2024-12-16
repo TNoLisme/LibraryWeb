@@ -1,7 +1,5 @@
 package com.example.QuanLyThuVien.Entity;
 
-import java.time.LocalDate;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -13,39 +11,37 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "memberpenalties")
 public class MemberPenalties {
 
-	 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer penaltyRecordID;  // ID của bản ghi phạt
-    
+    private Integer penaltyRecordID;  
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "memberID", referencedColumnName = "memberID")
     private Member member;  // Liên kết tới entity Member
-    
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "fineID", referencedColumnName = "fineID")
-    private Fine fine;  // Liên kết tới entity Fine
-    
+    private Fine fine;  // Liên kết với bảng fines thông qua fineID
+
+
+    @Column(name = "penalty_date", nullable = false)
     private LocalDate penaltyDate;  // Ngày phạt
-    
+
     @Enumerated(EnumType.STRING)
+    @Column(name = "paid_status", columnDefinition = "ENUM('paid', 'unpaid') DEFAULT 'unpaid'")
     private PaidStatus paidStatus;  // Trạng thái thanh toán
 
-    
-   
     public MemberPenalties() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
+    }
 
-
-
-	public MemberPenalties(Integer penaltyRecordID, Member member, Fine fine, LocalDate penaltyDate,
+  
+    public MemberPenalties(Integer penaltyRecordID, Member member, Fine fine, LocalDate penaltyDate,
 			PaidStatus paidStatus) {
 		super();
 		this.penaltyRecordID = penaltyRecordID;
@@ -56,68 +52,49 @@ public class MemberPenalties {
 	}
 
 
-
 	public Integer getPenaltyRecordID() {
-		return penaltyRecordID;
-	}
+        return penaltyRecordID;
+    }
+
+    public void setPenaltyRecordID(Integer penaltyRecordID) {
+        this.penaltyRecordID = penaltyRecordID;
+    }
+
+    public Member getMember() {
+        return member;
+    }
+
+    public void setMember(Member member) {
+        this.member = member;
+    }
 
 
 
-	public void setPenaltyRecordID(Integer penaltyRecordID) {
-		this.penaltyRecordID = penaltyRecordID;
-	}
-
-
-
-	public Member getMember() {
-		return member;
-	}
-
-
-
-	public void setMember(Member member) {
-		this.member = member;
-	}
-
-
-
-	public Fine getFine() {
+    public Fine getFine() {
 		return fine;
 	}
-
-
 
 	public void setFine(Fine fine) {
 		this.fine = fine;
 	}
 
-
-
 	public LocalDate getPenaltyDate() {
-		return penaltyDate;
-	}
+        return penaltyDate;
+    }
 
+    public void setPenaltyDate(LocalDate penaltyDate) {
+        this.penaltyDate = penaltyDate;
+    }
 
+    public PaidStatus getPaidStatus() {
+        return paidStatus;
+    }
 
-	public void setPenaltyDate(LocalDate penaltyDate) {
-		this.penaltyDate = penaltyDate;
-	}
+    public void setPaidStatus(PaidStatus paidStatus) {
+        this.paidStatus = paidStatus;
+    }
 
-
-
-	public PaidStatus getPaidStatus() {
-		return paidStatus;
-	}
-
-
-
-	public void setPaidStatus(PaidStatus paidStatus) {
-		this.paidStatus = paidStatus;
-	}
-
-
-
-	public enum PaidStatus {
+    public enum PaidStatus {
         PAID, UNPAID
     }
 }

@@ -1,5 +1,7 @@
 package com.example.QuanLyThuVien.Entity;
 
+import java.math.BigDecimal;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -8,22 +10,35 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "fines")
+@Table(name = "fines")  
 public class Fine {
 
-    @Id
+	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "fineID")
+    @Column(name = "fineID")  // Tên cột trong bảng
     private Integer fineID;
 
-    @Column(name = "fineReason", nullable = false)
-    private String fineReason;
+	 @Column(name = "fine_reason", nullable = false, length = 255)
+	    private String fineReason;
 
-    @Column(name = "fineAmount", nullable = false)
-    private Double fineAmount;
+	    @Column(name = "fine_amount", nullable = false, precision = 10, scale = 2)
+	    private BigDecimal fineAmount;  // Đảm bảo tên cột trùng khớp với bảng
 
-    // Getters and Setters
-    public Integer getFineID() {
+    public Fine() {
+    }
+
+  
+
+    public Fine(Integer fineID, String fineReason, BigDecimal fineAmount) {
+		super();
+		this.fineID = fineID;
+		this.fineReason = fineReason;
+		this.fineAmount = fineAmount;
+	}
+
+
+
+	public Integer getFineID() {
         return fineID;
     }
 
@@ -39,19 +54,12 @@ public class Fine {
         this.fineReason = fineReason;
     }
 
-    public Double getFineAmount() {
-        return fineAmount;
-    }
+	public BigDecimal getFineAmount() {
+		return fineAmount;
+	}
 
-    public void setFineAmount(Double fineAmount) {
-        this.fineAmount = fineAmount;
-    }
+	public void setFineAmount(BigDecimal fineAmount) {
+		this.fineAmount = fineAmount;
+	}
 
-    // Constructor
-    public Fine() {}
-
-    public Fine(String fineReason, Double fineAmount) {
-        this.fineReason = fineReason;
-        this.fineAmount = fineAmount;
-    }
 }

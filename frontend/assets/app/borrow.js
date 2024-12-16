@@ -193,8 +193,8 @@ const editItem = (id) => {
     openModal();
 
     // Tắt các trường không cần chỉnh sửa (bookID, memID)
-    bookID.disabled = true;
-    memID.disabled = true;
+    bookID.disabled = false;
+    memID.disabled = false;
     statusBook.disabled = false;
   }
 };

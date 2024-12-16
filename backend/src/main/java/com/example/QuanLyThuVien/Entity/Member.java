@@ -54,4 +54,9 @@ public class Member {
     public void setPassword(String password) {
         this.password = password;
     }
+
+	public void setMemberID(int i) {
+		// TODO Auto-generated method stub
+		
+	}
 }
