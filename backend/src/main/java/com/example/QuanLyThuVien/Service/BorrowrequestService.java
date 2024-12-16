@@ -6,12 +6,14 @@ import com.example.QuanLyThuVien.Entity.Borrowrequest;
 import com.example.QuanLyThuVien.Entity.Fine;
 import com.example.QuanLyThuVien.Entity.Member;
 import com.example.QuanLyThuVien.Entity.MemberPenalties;
-import com.example.QuanLyThuVien.Entity.MemberPenalties.PaidStatus;
 import com.example.QuanLyThuVien.Repo.BorrowrequestRepository;
 import com.example.QuanLyThuVien.Repo.FineRepository;
 import com.example.QuanLyThuVien.Repo.MemberPenaltiesRepository;
 import com.example.QuanLyThuVien.Repo.BookRepository;
 import com.example.QuanLyThuVien.Repo.MemberRepository;
+
+import jakarta.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,13 +23,16 @@ import java.util.Optional;
 
 @Service
 public class BorrowrequestService {
-
+	 @Autowired
     private final BorrowrequestRepository borrowrequestRepository;
+    @Autowired
     private final BookRepository bookRepository;
+    @Autowired
     private final MemberRepository memberRepository;
+    @Autowired
     private FineRepository fineRepository;
+    @Autowired
     private MemberPenaltiesRepository memberPenaltiesRepository;
-
 
     @Autowired
     public BorrowrequestService(BorrowrequestRepository borrowrequestRepository, BookRepository bookRepository, MemberRepository memberRepository) {
@@ -48,7 +53,7 @@ public class BorrowrequestService {
                 // Ensure the borrowDate and returnDate are set properly
                 borrowrequest.setBorrowDate(borrowrequestDto.getBorrowDate());  // Make sure this is set
                 borrowrequest.setReturnDate(borrowrequestDto.getReturnDate());
-                borrowrequest.setStatus("pending");  // Default status
+                borrowrequest.setStatus("PENDING");  // Default status
 
                 // Save the borrowrequest object
                 borrowrequestRepository.save(borrowrequest);
@@ -75,68 +80,89 @@ public class BorrowrequestService {
     public List<Borrowrequest> getBorrowByUserID() {
         return borrowrequestRepository.findAll();
     }
-    // Cập nhật yêu cầu mượn sách
+
+    @Transactional
     public Borrowrequest updateBorrowrequest(Integer id, BorrowrequestDto borrowrequestDto) {
-        // Lấy thông tin mượn sách theo ID
+        // Lấy thông tin yêu cầu mượn sách từ database
         Borrowrequest borrowrequest = borrowrequestRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Borrow request not found."));
-        
-     
-        Member member = memberRepository.findById(borrowrequest.getMemberID()) 
-            .orElseThrow(() -> new RuntimeException("Member not found"));
 
-
-
-        // Lấy thông tin sách liên quan đến yêu cầu
+        // Lấy thông tin sách và thành viên
         Book book = borrowrequest.getBookID();
+        Member member = borrowrequest.getMemberID();
 
-        // Nếu trạng thái yêu cầu thay đổi, xử lý số lượng sách
+        // Nếu trạng thái yêu cầu thay đổi, xử lý số lượng sách và bảng phạt
         if (!borrowrequest.getStatus().equals(borrowrequestDto.getStatus())) {
-            switch (borrowrequestDto.getStatus()) {
-                case "borrowed": // Nếu trạng thái chuyển sang mượn sách
-                    if (book.getQuantity() > 0) {
-                        book.setQuantity(book.getQuantity() - 1);
-                    } else {
-                        throw new RuntimeException("Book is out of stock.");
-                    }
-                    break;
+            try {
+                switch (borrowrequestDto.getStatus()) {
+                    case "borrowed":
+                        if (book.getQuantity() > 0) {
+                            book.setQuantity(book.getQuantity() - 1);
+                            bookRepository.save(book); // Lưu thay đổi số lượng sách
+                        } else {
+                            throw new RuntimeException("Book is out of stock.");
+                        }
+                        break;
 
-                case "returned": 
-                    book.setQuantity(book.getQuantity() + 1);
-                    break;
+                    case "returned":
+                        book.setQuantity(book.getQuantity() + 1);
+                        bookRepository.save(book); // Lưu thay đổi số lượng sách
+                        break;
 
-                case "lost": 
-                case "damaged": 
-                case "overdue":
-                    // Lấy lý do phạt tương ứng từ fineRepository
-                    Fine fine = fineRepository.findByFineReason(borrowrequestDto.getStatus())
-                            .orElseThrow(() -> new RuntimeException("Fine reason not found"));
+                    case "lost":
+                        // Thêm phạt cho mất sách
+                        Fine lostFine = fineRepository.findById(3)
+                                .orElseThrow(() -> new RuntimeException("Fine for lost book not found."));
+                        MemberPenalties lostPenalty = new MemberPenalties();
+                        lostPenalty.setMember(member);
+                        lostPenalty.setFine(lostFine); 
+                        lostPenalty.setPenaltyDate(LocalDate.now());
+                        lostPenalty.setPaidStatus(MemberPenalties.PaidStatus.UNPAID);
+                        memberPenaltiesRepository.save(lostPenalty); // Lưu phạt
+                        break;
 
-                    // Tạo bản ghi phạt cho thành viên
-                    MemberPenalties memberPenalty = new MemberPenalties();
-                    memberPenalty.setMember(member); // Sử dụng đối tượng Member thay vì MemberID
-                    memberPenalty.setFine(fine); // Sử dụng đối tượng Fine thay vì FineID
-                    memberPenalty.setPenaltyDate(LocalDate.now()); // Ngày phạt là ngày hiện tại
-                    memberPenalty.setPaidStatus(PaidStatus.UNPAID); // Sử dụng enum PaidStatus.UNPAID cho trạng thái thanh toán
+                    case "damaged":
+                        // Thêm phạt cho sách bị hỏng
+                        Fine damagedFine = fineRepository.findById(2)
+                                .orElseThrow(() -> new RuntimeException("Fine for damaged book not found."));
+                        MemberPenalties damagedPenalty = new MemberPenalties();
+                        damagedPenalty.setMember(member);
+                        damagedPenalty.setFine(damagedFine); 
+                        damagedPenalty.setPenaltyDate(LocalDate.now());
+                        damagedPenalty.setPaidStatus(MemberPenalties.PaidStatus.UNPAID);
+                        memberPenaltiesRepository.save(damagedPenalty); // Lưu phạt
+                        break;
 
-                    memberPenaltiesRepository.save(memberPenalty);
-                    break;
+                    case "overdue":
+                        // Thêm phạt cho trả sách muộn
+                        Fine overdueFine = fineRepository.findById(1)
+                                .orElseThrow(() -> new RuntimeException("Fine for overdue book not found."));
+                        MemberPenalties overduePenalty = new MemberPenalties();
+                        overduePenalty.setMember(member);
+                        overduePenalty.setFine(overdueFine); 
+                        overduePenalty.setPenaltyDate(LocalDate.now());
+                        overduePenalty.setPaidStatus(MemberPenalties.PaidStatus.UNPAID);
+                        memberPenaltiesRepository.save(overduePenalty); // Lưu phạt
+                        break;
 
-                default:
-                    break;
+                    default:
+                        break;
+                }
+            } catch (Exception e) {
+                // Log lỗi và ném ra ngoại lệ mới
+                System.out.println("Error saving penalty: " + e.getMessage());
+                throw new RuntimeException("Error updating borrow request and saving penalty.");
             }
-
-            bookRepository.save(book);
         }
 
+        // Cập nhật các thông tin khác của yêu cầu mượn
         borrowrequest.setBorrowDate(borrowrequestDto.getBorrowDate());
         borrowrequest.setReturnDate(borrowrequestDto.getReturnDate());
         borrowrequest.setStatus(borrowrequestDto.getStatus());
 
-        return borrowrequestRepository.save(borrowrequest);
+        // Lưu lại yêu cầu mượn sách đã cập nhật
+        return borrowrequestRepository.save(borrowrequest); // Lưu yêu cầu mượn sau khi cập nhật
     }
-
-
 
 
     // Xóa yêu cầu mượn sách
