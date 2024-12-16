@@ -133,7 +133,7 @@ const clearEditForm = () => {
   selectedItem = null;
   borrowDate.value = "";  
   returnDate.value = "";  
-  statusBook.value = "PENDING";
+  statusBook.value = "pending";
   bookID.value = "";
   memID.value = "";
 };
@@ -143,7 +143,7 @@ const clearAddForm = () => {
   selectedItem = null;
   borrowDate.value = ""; 
   returnDate.value = ""; 
-  statusBook.value = "PENDING";
+  statusBook.value = "pending";
   bookID.value = "";
   memID.value = "";
 };

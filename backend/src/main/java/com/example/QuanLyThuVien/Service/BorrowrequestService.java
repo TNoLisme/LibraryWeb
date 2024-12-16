@@ -39,7 +39,7 @@ public class BorrowrequestService {
                 // Ensure the borrowDate and returnDate are set properly
                 borrowrequest.setBorrowDate(borrowrequestDto.getBorrowDate());  // Make sure this is set
                 borrowrequest.setReturnDate(borrowrequestDto.getReturnDate());
-                borrowrequest.setStatus("PENDING");  // Default status
+                borrowrequest.setStatus("pending");  // Default status
 
                 // Save the borrowrequest object
                 borrowrequestRepository.save(borrowrequest);
