@@ -56,18 +56,31 @@ const renderTable = async () => {
 // Render danh sách thể loại trong dropdown
 const renderCateList = async () => {
   try {
-    const { data } = await axios.get(PATH_CATE);
-    let options = `<option value="">-- Chọn thể loại sách --</option>`;
-    if (Array.isArray(data)) {  // Kiểm tra xem dữ liệu trả về có phải mảng không
+    const { data } = await axios.get(PATH_CATE); 
+    let checkboxes = ""; 
+    if (Array.isArray(data)) { 
       data.forEach((cate) => {
-        options += `<option value="${cate.id}">${cate.name}</option>`;
+        checkboxes += `
+          <div class="form-check">
+            <input 
+              class="form-check-input" 
+              type="checkbox" 
+              id="cate-${cate.id}" 
+              value="${cate.id}" 
+            />
+            <label class="form-check-label" for="cate-${cate.id}">
+              ${cate.name}
+            </label>
+          </div>
+        `;
       });
     }
-    cateID.innerHTML = options;
+    document.getElementById("cateID").innerHTML = checkboxes;
   } catch (error) {
-    console.error("Error loading categories:", error);
+    console.error("Error loading categories:", error); 
   }
 };
+
 
 // Hiển thị modal thêm/sửa
 const openModal = () => $(modalEditId).modal("show");
