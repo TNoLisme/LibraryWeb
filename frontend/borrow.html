@@ -458,18 +458,8 @@
                     <div class="card">
                       <div class="table-responsive text-nowrap">
                         <!-- Phần chọn trạng thái -->
-                        <div class="filter-container">
-                          <label for="statusFilter">Chọn trạng thái: </label>
-                          <select id="statusFilter">
-                            <option value="">Tất cả</option>
-                            <option value="pending">Đang xử lý</option>
-                            <option value="borrowed">Đang được mượn</option>
-                            <option value="overdue">Quá hạn </option>
-                            <option value="damaged">Bị hỏng</option>
-                            <option value="lost">Bị mất</option>
-                            <option value="returned">Đã trả</option>
-                          </select>
-                        </div>
+                       
+                        
 
                         <!-- Bảng dữ liệu -->
                         <table class="table table-striped" id="tableData">
@@ -478,14 +468,34 @@
                               <th>Tên sách</th>
                               <th>Tên người mượn</th>
                               <th>Ngày mượn</th>
-                              <th>Trạng thái</th> <!-- Thêm cột Trạng thái -->
+                              <th>Trạng thái</th>
                               <th style="width: 100px">Thao tác</th>
                             </tr>
                           </thead>
+                          <tfoot>
+                            <tr>
+                              <th></th>
+                              <th></th>
+                              <th></th>
+                              <th>
+                                <select id="statusFilter">
+                                  <option value="">Chọn trạng thái</option>
+                                  <option value="borrowed">Mượn</option>
+                                  <option value="returned">Trả</option>
+                                  <option value="lost">Mất</option>
+                                  <option value="damaged">Hư hỏng</option>
+                                  <option value="overdue">Quá hạn</option>
+                                </select>
+                              </th>
+                              <th></th>
+                            </tr>
+                          </tfoot>
                           <tbody class="table-border-bottom-0">
                             <!-- Các dòng sẽ được chèn vào đây -->
                           </tbody>
                         </table>
+                        
+                        
 
                       </div>
                     </div>
