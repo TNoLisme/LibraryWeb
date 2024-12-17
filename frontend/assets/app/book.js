@@ -53,14 +53,17 @@ const renderTable = async () => {
   }
 };
 
+
 // Render danh sách thể loại trong dropdown
 const renderCateList = async () => {
   try {
-    const { data } = await axios.get(PATH_CATE); 
-    let checkboxes = ""; 
-    if (Array.isArray(data)) { 
+    // Gọi API để lấy dữ liệu thể loại sách
+    const { data } = await axios.get(PATH_CATE);
+    
+    let checkboxes = ""; // Khởi tạo chuỗi chứa HTML cho các checkbox
+    if (Array.isArray(data)) {  // Kiểm tra xem dữ liệu trả về có phải mảng không
       data.forEach((cate) => {
-        checkboxes += `
+        checkboxes += ` 
           <div class="form-check">
             <input 
               class="form-check-input" 
@@ -75,11 +78,15 @@ const renderCateList = async () => {
         `;
       });
     }
+    
+    // Đưa HTML vào phần tử có id là "cateID"
     document.getElementById("cateID").innerHTML = checkboxes;
   } catch (error) {
-    console.error("Error loading categories:", error); 
+    console.error("Error loading categories:", error);
   }
 };
+
+
 
 
 // Hiển thị modal thêm/sửa
@@ -95,20 +102,21 @@ const closeModal = () => {
   tableDataDialog.innerHTML = "";
 };
 
-// Lấy dữ liệu từ form
+
 const getFormData = () => {
-  const selectedCategories = Array.from(cateID.selectedOptions).map((option) =>
-    parseInt(option.value, 10)
-  );
+  const selectedCategories = Array.from(document.querySelectorAll('#cateID input[type="checkbox"]:checked'))
+    .map((checkbox) => parseInt(checkbox.value, 10));  
+  
   return {
-    ...(selectedItem || {}),
+    ...(selectedItem || {}), 
     title: title.value.trim(),
     author: author.value.trim(),
     publishYear: +publishYear.value.trim(),
     quantity: +quantity.value.trim(),
-    categoryIds: selectedCategories.length > 0 ? selectedCategories : null, // Kiểm tra để đảm bảo không gửi mảng rỗng
+    categoryIds: selectedCategories.length > 0 ? selectedCategories : null, 
   };
 };
+
 
 // Đặt dữ liệu lên form khi chỉnh sửa
 const setFormData = (data) => {
@@ -138,26 +146,34 @@ const clearForm = () => {
 // Xử lý submit form thêm/sửa
 const handleFormSubmit = async (event) => {
   event.preventDefault();
+
+  // Lấy dữ liệu từ form
+  const formData = getFormData();
+  // Kiểm tra nếu các trường bắt buộc chưa được điền
+  if (!formData.title || !formData.author) {
+    alert("Vui lòng điền đầy đủ thông tin!");
+    return;
+  }
+
   try {
-    const formData = getFormData();
-    if (!formData.title || !formData.author) {
-      alert("Vui lòng điền đầy đủ thông tin!");
-      return;
-    }
     if (selectedItem) {
-      await axios.put(PATH + `/${selectedItem.id}`, formData);
+      // Nếu có item được chọn (đang chỉnh sửa), thực hiện PUT
+      const response = await axios.put(`${PATH}/${selectedItem.id}`, formData);
+      alert("Cập nhật thông tin sách thành công!");
     } else {
-      await axios.post(PATH, formData);
+      // Nếu không có item được chọn (thêm mới), thực hiện POST
+      const response = await axios.post(PATH, formData);
+      alert("Thêm mới sách thành công!");
     }
-    alert("Lưu thành công!");
   } catch (error) {
     console.error("Error submitting form:", error);
     alert("Có lỗi xảy ra. Vui lòng thử lại.");
   } finally {
-    closeModal();
-    renderTable();
+    closeModal();  // Đóng modal sau khi gửi dữ liệu
+    renderTable();  // Reload lại bảng để hiển thị dữ liệu mới
   }
 };
+
 
 // Chỉnh sửa sách
 const editItem = (id) => {

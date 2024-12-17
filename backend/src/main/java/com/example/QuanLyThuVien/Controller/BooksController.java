@@ -21,8 +21,32 @@ public class BooksController {
 
     @PostMapping
     public ResponseEntity<BookDto> createBook(@RequestBody BookDto book) {
-        BookDto savedBook = booksService.saveBook(book);
-        return new ResponseEntity<>(savedBook, HttpStatus.CREATED);
+        try {
+           
+            System.out.println("Attempting to create book with title: " + book.getTitle());
+
+            if (book == null || book.getTitle() == null || book.getTitle().isEmpty()) {
+                throw new RuntimeException("Book data is invalid: Missing title");
+            }
+
+            
+            BookDto savedBook =  booksService.saveBook(book);
+
+            // Log thông tin sách đã được lưu
+            System.out.println("Book created successfully with ID: " + savedBook.getId());
+
+            return new ResponseEntity<>(savedBook, HttpStatus.CREATED);
+        } catch (RuntimeException e) {
+            System.err.println("Error occurred while creating book: " + e.getMessage());
+            e.printStackTrace();
+
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        } catch (Exception e) {
+            System.err.println("Unexpected error occurred while creating book: " + e.getMessage());
+            e.printStackTrace();
+
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
     }
 
     @GetMapping

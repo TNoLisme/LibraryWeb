@@ -43,26 +43,23 @@ public class BorrowrequestService {
 
     public boolean createBorrowrequest(BorrowrequestDto borrowrequestDto) {
         try {
-            // Check if the book exists in the database
             Optional<Book> bookOptional = bookRepository.findById(borrowrequestDto.getBookID());
             if (bookOptional.isPresent()) {
                 Borrowrequest borrowrequest = new Borrowrequest();
                 borrowrequest.setBookID(bookRepository.getReferenceById(borrowrequestDto.getBookID()));
                 borrowrequest.setMemberID(memberRepository.getReferenceById(borrowrequestDto.getMemID()));
                 
-                // Ensure the borrowDate and returnDate are set properly
-                borrowrequest.setBorrowDate(borrowrequestDto.getBorrowDate());  // Make sure this is set
+                borrowrequest.setBorrowDate(borrowrequestDto.getBorrowDate()); 
                 borrowrequest.setReturnDate(borrowrequestDto.getReturnDate());
-                borrowrequest.setStatus("PENDING");  // Default status
+                borrowrequest.setStatus("pending");  
 
-                // Save the borrowrequest object
                 borrowrequestRepository.save(borrowrequest);
                 return true;
             } else {
                 throw new RuntimeException("Book not found.");
             }
         } catch (Exception e) {
-            e.printStackTrace();  // Print the stack trace for debugging
+            e.printStackTrace(); 
             return false;
         }
     }
