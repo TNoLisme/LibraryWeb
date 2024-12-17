@@ -21,7 +21,7 @@ public class Book {
     @Column(name = "author", nullable = false)
     private String author;
 
-    @Column(name = "publishYear")
+    @Column(name = "publish_year")
     private Integer publishYear;
 
     @Column(name = "quantity")

@@ -23,10 +23,39 @@ public class BooksService {
 
     // Create or update a book
     public BookDto saveBook(BookDto bookDto) {
-        Book book = convertToEntity(bookDto);
-        Book savedBook = booksRepository.save(book);
-        return convertToDto(savedBook);
+        try {
+            // Log thông tin sách trước khi lưu
+            System.out.println("Attempting to save book: " + bookDto.getTitle());
+
+            // Kiểm tra dữ liệu đầu vào hợp lệ
+            if (bookDto == null || bookDto.getTitle() == null || bookDto.getTitle().isEmpty()) {
+                throw new IllegalArgumentException("Book data is invalid: Missing title");
+            }
+
+            // Chuyển đổi BookDto sang Book entity
+            Book book = convertToEntity(bookDto);
+
+            // Lưu sách vào cơ sở dữ liệu
+            Book savedBook = booksRepository.save(book);
+
+            // Log kết quả lưu sách
+            System.out.println("Book saved successfully with ID: " + savedBook.getId());
+
+            // Trả về BookDto đã được lưu
+            return convertToDto(savedBook);
+        } catch (IllegalArgumentException e) {
+            // Log lỗi nếu dữ liệu không hợp lệ
+            System.err.println("Error: " + e.getMessage());
+            e.printStackTrace();
+            throw e; // Ném lại lỗi để xử lý ở nơi gọi
+        } catch (Exception e) {
+            // Log lỗi hệ thống (kết nối cơ sở dữ liệu, lỗi khác)
+            System.err.println("Unexpected error occurred while saving book: " + e.getMessage());
+            e.printStackTrace();
+            throw new RuntimeException("Error occurred while saving book", e); // Ném ra lỗi để xử lý ở nơi gọi
+        }
     }
+
 
 
     // Get all books
