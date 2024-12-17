@@ -20,4 +20,12 @@ public interface MemberPenaltiesRepository  extends JpaRepository<MemberPenaltie
 		        JOIN FETCH mp.fine f
 		    """)
 		    List<MemberPenalties> findAllWithDetails();
+	 @Query("""
+			    SELECT mp
+			    FROM MemberPenalties mp
+			    JOIN FETCH mp.member m
+			    JOIN FETCH mp.fine f
+			    WHERE m.id = :memberId
+			""")
+			List<MemberPenalties> findAllByMemberIdWithDetails(int memberId);
 }
