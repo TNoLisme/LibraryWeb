@@ -20,5 +20,10 @@ public class MemberPenaltiesService {
     public List<MemberPenalties> getAllPenalties() {
         return memberPenaltiesRepository.findAllWithDetails();
     }
+    public List<MemberPenalties> findAllByMemberIdWithDetails(int memberId) {
+        return memberPenaltiesRepository.findAllByMemberIdWithDetails(memberId);
+    }
+    
+    
     
 }
