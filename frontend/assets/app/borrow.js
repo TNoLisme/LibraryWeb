@@ -150,6 +150,10 @@ const formatDate = (dateStr) => {
 const setFormData = (data) => {
   console.log('Setting form data:', data); 
 
+  // Cập nhật tên sách và tên người mượn (chỉ hiển thị, không sửa được)
+  document.getElementById('bookTitle').value = data?.bookTitle || "";
+  document.getElementById('memberFullName').value = data?.memberFullName || "";
+
   // Cập nhật ngày mượn
   if (data?.borrowDate) {
     const localBorrowDate = new Date(data.borrowDate);
@@ -169,10 +173,11 @@ const setFormData = (data) => {
   // Cập nhật trạng thái
   document.getElementById('status').value = data?.status || "";
 
-  // Cập nhật thông tin sách và thành viên
+  // Cập nhật thông tin sách và thành viên (trong trường hợp bạn muốn lưu thông tin này nhưng không cho phép chỉnh sửa)
   document.getElementById('bookID').value = data?.bookID?.id || "";  
   document.getElementById('memID').value = data?.memberID?.id || "";  
 };
+
 
 
 
