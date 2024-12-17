@@ -18,38 +18,84 @@ window.addEventListener("DOMContentLoaded", () => {
   renderTable();
   renderBooksList();
 });
+const statusFilterElement = document.querySelector("#statusFilter");
+
+statusFilterElement.addEventListener("change", (event) => {
+  const statusFilterValue = event.target.value;
+  renderTable(statusFilterValue); // Lọc bảng theo trạng thái đã chọn
+});
 
 
 
-const renderTable = async () => {
+
+const renderTable = async (statusFilter = "") => {
   try {
     const data = await axios.get(PATH);  // Gọi API để lấy dữ liệu
     items = data?.data || [];  // Lấy dữ liệu hoặc mảng rỗng nếu không có dữ liệu
+
+    // Kiểm tra và lọc dữ liệu theo trạng thái nếu có bộ lọc
+    if (statusFilter) {
+      items = items.filter(item => item.status === statusFilter);
+    }
+
+    // Kiểm tra nếu không có dữ liệu sau khi lọc
+    if (items.length === 0) {
+      document.querySelector("#tableData tbody").innerHTML = "<tr><td colspan='5' style='text-align: center;'>No data available</td></tr>";
+      return;
+    }
+
+    // Tạo HTML cho bảng
     const rows = items
       .map(
-        (item) => `
-      <tr>
-        <td>${item.bookTitle}</td>  <!-- Hiển thị Tên sách -->
-        <td>${item.memberFullName}</td> <!-- Hiển thị Tên người mượn -->
-        <td>${formatDate(item.borrowDate)}</td>  <!-- Định dạng ngày mượn -->
-        <td>${item.status}</td>  <!-- Hiển thị trạng thái -->
+        (item) => `  
+      <tr data-id="${item.id}">
+        <td>${item.bookTitle}</td>
+        <td>${item.memberFullName}</td>
+        <td>${formatDate(item.borrowDate)}</td>
+        <td>${item.status}</td> <!-- Hiển thị Trạng thái -->
         <td style="text-align: center;">
-          <a onclick="editItem(${item.id})" href="javascript:void(0);">
+          <a class="edit-btn" href="javascript:void(0);">
             <i class="bx bx-edit-alt me-1"></i>
           </a>
-          <a onclick="openDeleteModel(${item.id})" href="javascript:void(0);">
+          <a class="delete-btn" href="javascript:void(0);">
             <i class="bx bx-trash me-1"></i>
           </a>
         </td>
       </tr>
-    `
-      )
+    `)
       .join("");  // Tạo chuỗi HTML cho các dòng trong bảng
-    tableData.innerHTML = rows;  // Gán HTML cho phần tử chứa bảng
+
+    // Gán HTML cho phần tử tbody
+    document.querySelector("#tableData tbody").innerHTML = rows;
+
+    // Khởi tạo lại DataTable với các tùy chọn phân trang
+    if ($.fn.dataTable.isDataTable('#tableData')) {
+      $('#tableData').DataTable().clear().destroy();  // Hủy bỏ phiên bản cũ trước khi khởi tạo lại
+    }
+
+    const table = $('#tableData').DataTable({
+      "pageLength": 10,  // Hiển thị 2 bản ghi trên mỗi trang
+      "lengthMenu": [2, 5, 10, 25],  // Các tùy chọn cho người dùng chọn số lượng bản ghi
+    });
+
+    // Gắn lại sự kiện cho các nút sửa và xóa sau khi DataTable được khởi tạo lại
+    $('#tableData').on('click', '.edit-btn', function() {
+      const row = $(this).closest('tr');
+      const id = row.data('id'); // Lấy ID của dòng
+      editItem(id);
+    });
+
+    $('#tableData').on('click', '.delete-btn', function() {
+      const row = $(this).closest('tr');
+      const id = row.data('id'); // Lấy ID của dòng
+      openDeleteModel(id);
+    });
+
   } catch (error) {
     console.error("Error rendering table:", error);  // In lỗi nếu có
   }
 };
+
 
 const renderBooksList = async () => {
   try {
@@ -75,14 +121,16 @@ const renderBooksList = async () => {
 
 const openModal = () => $(modalEditId).modal("show");
 
+
 const closeModal = () => {
-  $(modalEditId).modal("hide");
-  $(modelConfirmId).modal("hide");
-  statusBook.disabled = true;
+  $(modalEditId).modal("hide");  // Đóng modal chỉnh sửa/thêm
+  $(modelConfirmId).modal("hide"); // Đóng modal xác nhận xóa (nếu cần)
+  statusBook.disabled = true;  // Đặt lại trạng thái các input
   bookID.disabled = false;
   memID.disabled = false;
-  clearEditForm();  // Gọi hàm clearEditForm khi đóng modal
+  clearEditForm();  // Xóa dữ liệu cũ trên form
 };
+
 
 const getFormData = () => ({
   ...(selectedItem || {}),
@@ -169,14 +217,26 @@ const handleFormSubmit = async (event) => {
   try {
     const response = await axios.post(PATH, borrowRequest);
     console.log('Borrow request created:', response.data);
+    
+    // Đóng modal sau khi tạo thành công
+    closeModala();
+
+    // Tự động tải lại trang sau khi thêm mới thành công
+    location.reload();  // Tải lại trang
+
     alert('Yêu cầu mượn sách đã được tạo thành công!');
-    renderTable();  // Reload table after creation
-    closeModal();
   } catch (error) {
     console.error('Error:', error);
     alert('Đã xảy ra lỗi, vui lòng thử lại!');
   }
 };
+
+const closeModala = () => {
+  $('#modelAdd').modal('hide'); // Đảm bảo sử dụng ID đúng của modal
+  clearAddForm(); // Đặt lại form
+
+};
+
 
 const editItem = (id) => {
   // Tìm item dựa trên ID
@@ -216,7 +276,7 @@ const handleEditFormSubmit = async (event) => {
   try {
     // Gọi API để cập nhật
     const response = await axios.put(`${PATH}/${updatedData.id}`, updatedData);
-
+    location.reload();
     // Hiển thị thông báo thành công và cập nhật bảng
     alert('Cập nhật thông tin mượn sách thành công!');
     renderTable();  // Reload bảng để hiển thị dữ liệu mới
@@ -241,11 +301,22 @@ const addItem = () => {
 
 const deleteItem = async () => {
   try {
+    // Xóa item từ API
     await axios.delete(PATH + `/${selectedItem.id}`);
-    renderTable();
+
+    // Hủy bỏ DataTable hiện tại
+    if ($.fn.dataTable.isDataTable('#tableData')) {
+      $('#tableData').DataTable().clear().destroy(); // Hủy DataTable cũ
+    }
+
+    // Cập nhật lại bảng sau khi xóa
+    renderTable();  // Tái tạo lại bảng và khởi tạo lại DataTable
+
+    alert("Yêu cầu mượn sách đã được xóa thành công!"); // Thông báo thành công
   } catch (error) {
-    console.error("Error deleting item:", error);
+    console.error("Error deleting item:", error);  // In lỗi nếu có
+    alert("Đã xảy ra lỗi khi xóa, vui lòng thử lại.");
   } finally {
-    closeModal();
+    closeModal();  // Đóng modal sau khi hoàn thành thao tác
   }
 };
