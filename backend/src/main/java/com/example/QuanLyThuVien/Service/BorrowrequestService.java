@@ -117,7 +117,7 @@ public class BorrowrequestService {
                         lostPenalty.setMember(member);
                         lostPenalty.setFine(lostFine); 
                         lostPenalty.setPenaltyDate(LocalDate.now());
-                        lostPenalty.setPaidStatus(MemberPenalties.PaidStatus.UNPAID);
+                        lostPenalty.setPaidStatus(MemberPenalties.PaidStatus.unpaid);
                         memberPenaltiesRepository.save(lostPenalty); // Lưu phạt
                         break;
 
@@ -129,7 +129,7 @@ public class BorrowrequestService {
                         damagedPenalty.setMember(member);
                         damagedPenalty.setFine(damagedFine); 
                         damagedPenalty.setPenaltyDate(LocalDate.now());
-                        damagedPenalty.setPaidStatus(MemberPenalties.PaidStatus.UNPAID);
+                        damagedPenalty.setPaidStatus(MemberPenalties.PaidStatus.unpaid);
                         memberPenaltiesRepository.save(damagedPenalty); // Lưu phạt
                         break;
 
@@ -141,7 +141,7 @@ public class BorrowrequestService {
                         overduePenalty.setMember(member);
                         overduePenalty.setFine(overdueFine); 
                         overduePenalty.setPenaltyDate(LocalDate.now());
-                        overduePenalty.setPaidStatus(MemberPenalties.PaidStatus.UNPAID);
+                        overduePenalty.setPaidStatus(MemberPenalties.PaidStatus.unpaid);
                         memberPenaltiesRepository.save(overduePenalty); // Lưu phạt
                         break;
 

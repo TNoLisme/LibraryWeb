@@ -38,6 +38,8 @@ public class Borrowrequest {
     @Lob
     @Column(name = "status")
     private String status;
+   
+    
 
 	public Borrowrequest() {
 		super();
