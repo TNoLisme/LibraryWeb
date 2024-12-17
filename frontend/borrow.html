@@ -25,6 +25,8 @@
   <link rel="stylesheet" href="./assets/vendor/css/core.css" class="template-customizer-core-css" />
   <link rel="stylesheet" href="./assets/vendor/css/theme-default.css" class="template-customizer-theme-css" />
   <link rel="stylesheet" href="./assets/css/demo.css" />
+  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.min.css">
+
   <script src="./assets/vendor/js/helpers.js"></script>
   <script src="./assets/js/config.js"></script>
   <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
@@ -312,7 +314,7 @@
                         </div>
                         <form id="editForm" onsubmit="handleEditFormSubmit(event)">
                           <div class="modal-body">
-                           
+
                             <div class="mb-3">
                               <label class="form-label" for="borrowDate">Ngày mượn</label>
                               <input type="date" class="form-control" id="eborrowDate" required />
@@ -330,7 +332,7 @@
                                 <option value="lost">Mất</option>
                                 <option value="damaged">Bị hỏng</option>
                                 <option value="overdue">Trả muộn</option>
-                                
+
                               </select>
                             </div>
                           </div>
@@ -387,7 +389,7 @@
                             <div class="mb-3">
                               <label class="form-label" for="status">Trạng thái</label>
                               <select id="status" class="form-select" disabled>
-                                <option value="PENDING">Đang xử lý</option>
+                                <option value="pending">Đang xử lý</option>
                                 <option value="borrowed">Đang được mượn</option>
                                 <option value="overdue">Quá hạn (Chưa update)</option>
                                 <option value="lost">Mất (Chưa update)</option>
@@ -448,29 +450,36 @@
                   <div class="col-12">
                     <div class="card">
                       <div class="table-responsive text-nowrap">
-                        <table class="table table-striped">
+                        <!-- Phần chọn trạng thái -->
+                        <div class="filter-container">
+                          <label for="statusFilter">Chọn trạng thái: </label>
+                          <select id="statusFilter">
+                            <option value="">Tất cả</option>
+                            <option value="pending">Đang xử lý</option>
+                            <option value="borrowed">Đang được mượn</option>
+                            <option value="overdue">Quá hạn </option>
+                            <option value="damaged">Bị hỏng</option>
+                            <option value="lost">Bị mất</option>
+                            <option value="returned">Đã trả</option>
+                          </select>
+                        </div>
+
+                        <!-- Bảng dữ liệu -->
+                        <table class="table table-striped" id="tableData">
                           <thead>
                             <tr>
                               <th>Tên sách</th>
                               <th>Tên người mượn</th>
                               <th>Ngày mượn</th>
+                              <th>Trạng thái</th> <!-- Thêm cột Trạng thái -->
                               <th style="width: 100px">Thao tác</th>
                             </tr>
                           </thead>
-                          <tbody class="table-border-bottom-0" id="tableData">
-                            <!-- <tr>
-                                <td>Jerry Milton</td>
-                                <td style="text-align: center">
-                                  <a href="javascript:void(0);"
-                                    ><i class="bx bx-edit-alt me-1"></i>
-                                  </a>
-                                  <a href="javascript:void(0);"
-                                    ><i class="bx bx-trash me-1"></i>
-                                  </a>
-                                </td>
-                              </tr> -->
+                          <tbody class="table-border-bottom-0">
+                            <!-- Các dòng sẽ được chèn vào đây -->
                           </tbody>
                         </table>
+
                       </div>
                     </div>
                   </div>
@@ -490,6 +499,8 @@
     <div class="layout-overlay layout-menu-toggle"></div>
   </div>
   <script src="./assets/vendor/js/menu.js"></script>
+  <script type="text/javascript" charset="utf-8"
+    src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
   <script src="./assets/js/main.js"></script>
   <script src="./assets/app/borrow.js"></script>
   <script src="./assets/app/auth.js"></script>
