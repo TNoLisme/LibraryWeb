@@ -76,6 +76,40 @@ const renderTable = async (statusFilter = "") => {
     const table = $('#tableData').DataTable({
       "pageLength": 10,  // Hiển thị 2 bản ghi trên mỗi trang
       "lengthMenu": [2, 5, 10, 25],  // Các tùy chọn cho người dùng chọn số lượng bản ghi
+      initComplete: function () {
+        this.api()
+          .columns()
+          .every(function () {
+            let column = this;
+
+            // Kiểm tra xem có phải cột "Trạng thái" không
+            if (column.index() === 3) {  // Cột "Trạng thái" có index là 3
+              // Tạo phần tử select cho cột Trạng thái
+              let select = document.createElement('select');
+              select.add(new Option('')); // Thêm option trống
+              column.footer().replaceChildren(select);
+
+              // Thêm sự kiện thay đổi giá trị cho select
+              select.addEventListener('change', function () {
+                column
+                  .search(select.value, {exact: true})
+                  .draw();
+              });
+
+              // Thêm các giá trị duy nhất từ cột vào select
+              column
+                .data()
+                .unique()
+                .sort()
+                .each(function (d, j) {
+                  select.add(new Option(d));
+                });
+            } else {
+              // Cột khác không làm gì, không cần thêm dropdown
+              column.footer().innerHTML = '';  // Xóa footer nếu không có dropdown
+            }
+          });
+      }
     });
 
     // Gắn lại sự kiện cho các nút sửa và xóa sau khi DataTable được khởi tạo lại

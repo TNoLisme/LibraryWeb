@@ -390,12 +390,121 @@
                       <button
                         class="nav-link active btn-sm"
                         data-toggle="modal"
-                        data-target="#modelEdit"
+                        data-target="#modelAdd"
                       >
                         <i class="bx bxs-message-square-add me-1"></i>Thêm mới
                       </button>
                     </li>
                   </ul>
+                  
+                  <!-- Edit model -->
+                  <div class="row">
+                    <div
+                      class="modal fade"
+                      id="modelAdd"
+                      tabindex="-1"
+                      role="dialog"
+                      aria-labelledby="modelEditTitle"
+                      aria-hidden="true"
+                      data-backdrop="static"
+                    >
+                      <div
+                        class="modal-dialog modal-dialog-centered"
+                        role="document"
+                      >
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLongTitle">
+                              Thêm mới/Cập nhật sách
+                            </h5>
+                            <button
+                              type="button"
+                              class="close"
+                              data-dismiss="modal"
+                              aria-label="Close"
+                              style="
+                                background-color: transparent;
+                                border: none;
+                              "
+                              onclick="closeModal()"
+                            >
+                              <i class="bx bxs-message-square-x"></i>
+                            </button>
+                          </div>
+                          <form onsubmit="handleFormSubmit(event)">
+                            <div class="modal-body">
+                              <div class="mb-3">
+                                <label class="form-label" for="title"
+                                  >Tiêu đề</label
+                                >
+                                <input
+                                  type="text"
+                                  class="form-control"
+                                  id="title"
+                                />
+                              </div>
+                              <div class="mb-3">
+                                <label class="form-label" for="author"
+                                  >Tác giả</label
+                                >
+                                <input
+                                  type="text"
+                                  class="form-control"
+                                  id="author"
+                                />
+                              </div>
+                              <div class="mb-3">
+                                <label class="form-label" for="publishYear"
+                                  >Năm phát hành</label
+                                >
+                                <input
+                                  type="number"
+                                  class="form-control"
+                                  id="publishYear"
+                                  min="1900"
+                                  max="2099"
+                                  step="1"
+                                />
+                              </div>
+                              <div class="mb-3">
+                                <label class="form-label" for="quantity"
+                                  >Số lượng</label
+                                >
+                                <input
+                                  type="number"
+                                  class="form-control"
+                                  id="quantity"
+                                />
+                              </div>
+                              <div class="mb-3">
+                                <label class="form-label" for="cateID">Thể loại</label>
+                                <div id="cateID" class="form-check-group">
+                                  
+                                </div>
+                            </div>
+                            
+                            
+                            </div>
+                            <div class="modal-footer">
+                              <button
+                                type="button"
+                                class="btn btn-secondary btn-sm"
+                                onclick="closeModal()"
+                              >
+                                Hủy
+                              </button>
+                              <button
+                                type="submit"
+                                class="btn btn-primary btn-sm"
+                              >
+                                Lưu
+                              </button>
+                            </div>
+                          </form>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                   <!-- Edit model -->
                   <div class="row">
                     <div
@@ -504,8 +613,6 @@
                       </div>
                     </div>
                   </div>
-                  <!-- Edit model -->
-
                   <!-- View model -->
                   <div class="row">
                     <div
