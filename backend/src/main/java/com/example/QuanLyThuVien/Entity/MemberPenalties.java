@@ -19,6 +19,7 @@ public class MemberPenalties {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "penalty_recordid")
     private Integer penaltyRecordID;  
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -35,7 +36,8 @@ public class MemberPenalties {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "paid_status", columnDefinition = "ENUM('paid', 'unpaid') DEFAULT 'unpaid'")
-    private PaidStatus paidStatus;  // Trạng thái thanh toán
+    private PaidStatus paidStatus;
+
 
     public MemberPenalties() {
     }
@@ -95,6 +97,6 @@ public class MemberPenalties {
     }
 
     public enum PaidStatus {
-        PAID, UNPAID
+        paid, unpaid
     }
 }

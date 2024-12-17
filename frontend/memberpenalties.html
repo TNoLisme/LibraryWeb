@@ -122,13 +122,13 @@
               <div data-i18n="Basic">Quản lý sách</div>
             </a>
           </li>
-          <li class="menu-item active">
+          <li class="menu-item ">
             <a href="borrow.html" class="menu-link">
               <i class="menu-icon tf-icons bx bx-collection"></i>
               <div data-i18n="Basic">Mượn sách</div>
             </a>
           </li>
-          <li class="menu-item">
+          <li class="menu-item active">
             <a href="memberpenalties.html" class="menu-link">
               <i class="menu-icon tf-icons bx bx-collection"></i>
               <div data-i18n="Basic">Danh sách phạt</div>
@@ -284,7 +284,7 @@
           <div class="container-xxl flex-grow-1 container-p-y">
             <h4 class="fw-bold py-3 mb-4">
               <span class="text-muted fw-light">Quản lý / </span>
-              Mượn sách
+              Danh sách phạt
             </h4>
             <div class="row">
               <div class="col-md-12">
@@ -451,24 +451,16 @@
                         <table class="table table-striped">
                           <thead>
                             <tr>
-                              <th>Tên sách</th>
-                              <th>Tên người mượn</th>
+                              <th>Tên thành viên</th>
                               <th>Ngày mượn</th>
-                              <th style="width: 100px">Thao tác</th>
+                              <th>Tiền phạt</th>
+                              <th>Lý do</th>
+                              <th>Trạng thái</th>
+                              <th style="width: 150px">Thao tác</th>
                             </tr>
                           </thead>
                           <tbody class="table-border-bottom-0" id="tableData">
-                            <!-- <tr>
-                                <td>Jerry Milton</td>
-                                <td style="text-align: center">
-                                  <a href="javascript:void(0);"
-                                    ><i class="bx bx-edit-alt me-1"></i>
-                                  </a>
-                                  <a href="javascript:void(0);"
-                                    ><i class="bx bx-trash me-1"></i>
-                                  </a>
-                                </td>
-                              </tr> -->
+                            <!-- Dữ liệu từ API sẽ được chèn vào đây -->
                           </tbody>
                         </table>
                       </div>
@@ -491,7 +483,7 @@
   </div>
   <script src="./assets/vendor/js/menu.js"></script>
   <script src="./assets/js/main.js"></script>
-  <script src="./assets/app/borrow.js"></script>
+  <script src="./assets/app/memberpenalties.js"></script>
   <script src="./assets/app/auth.js"></script>
 </body>
 
