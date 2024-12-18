@@ -2,13 +2,18 @@ package com.example.QuanLyThuVien.Controller;
 
 
 import com.example.QuanLyThuVien.DTO.BookDto;
+import com.example.QuanLyThuVien.DTO.CategoryDTO;
 import com.example.QuanLyThuVien.Entity.Book;
+import com.example.QuanLyThuVien.Entity.Category;
 import com.example.QuanLyThuVien.Service.BooksService;
+import com.example.QuanLyThuVien.Service.CategoriesService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 @CrossOrigin
@@ -18,7 +23,8 @@ public class BooksController {
 
     @Autowired
     private BooksService booksService;
-
+    @Autowired
+    private CategoriesService  categoryService;
     @PostMapping
     public ResponseEntity<BookDto> createBook(@RequestBody BookDto book) {
         try {
@@ -62,9 +68,37 @@ public class BooksController {
 
     @PutMapping("/{id}")
     public ResponseEntity<BookDto> updateBook(@PathVariable int id, @RequestBody BookDto bookDetails) {
+        // Kiểm tra nếu categoryIds không null và chuyển thành danh sách CategoryDTO
+        if (bookDetails.getCategoryIds() != null) {
+            List<CategoryDTO> categories = new ArrayList<>();
+            for (Integer categoryId : bookDetails.getCategoryIds()) {
+                // Lấy category từ service (Optional<Category>)
+                Optional<Category> categoryOptional = categoryService.getCategoryById(categoryId);
+
+                // Kiểm tra nếu category tồn tại
+                if (categoryOptional.isPresent()) {
+                    // Chuyển Category thành CategoryDTO
+                    Category category = categoryOptional.get();
+                    CategoryDTO categoryDTO = new CategoryDTO(category.getId(), category.getName());
+                    categories.add(categoryDTO);
+                } else {
+                    // Xử lý nếu category không tồn tại (nếu cần log hoặc ném ngoại lệ)
+                    System.err.println("Category with ID " + categoryId + " not found.");
+                }
+            }
+
+            // Cập nhật danh sách categoryDtos trong bookDetails
+            bookDetails.setCategoryDtos(categories);
+        }
+
+        // Thực hiện cập nhật sách
         BookDto updatedBook = booksService.updateBook(id, bookDetails);
+        
+        // Trả về kết quả
         return updatedBook != null ? ResponseEntity.ok(updatedBook) : ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
+
+
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteBook(@PathVariable int id) {

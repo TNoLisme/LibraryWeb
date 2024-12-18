@@ -13,8 +13,7 @@ import java.util.List;
  * DTO for {@link com.example.QuanLyThuVien.Entity.Book}
  */
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
+
 public class BookDto implements Serializable {
     private Integer id;
     private String title;
@@ -22,14 +21,32 @@ public class BookDto implements Serializable {
     private Integer publishYear;
     private Integer quantity;
     private List<CategoryDTO> categoryDtos;  
+    private List<Integer> categoryIds;
     // Constructor chỉ nhận title và author
     public BookDto(Integer id, String title, String author) {
         this.id = id;
         this.title = title;
         this.author = author;
     }
+    
     public List<CategoryDTO> getCategoryDtos() {
         return categoryDtos;
     }
+
+	public BookDto() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	public BookDto(Integer id, String title, String author, Integer publishYear, Integer quantity,
+			List<CategoryDTO> categoryDtos) {
+		super();
+		this.id = id;
+		this.title = title;
+		this.author = author;
+		this.publishYear = publishYear;
+		this.quantity = quantity;
+		this.categoryDtos = categoryDtos;
+	}
 
 }

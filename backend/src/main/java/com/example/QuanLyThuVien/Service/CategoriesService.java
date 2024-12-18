@@ -18,6 +18,10 @@ public class CategoriesService {
             return categoriesRepository.save(category);
 
     }
+    public Optional<Category> getCategoryById(Integer id) {
+        return categoriesRepository.findById(id);
+    }
+
 
     // Get all categories
     public List<CategoryDTO> getAllCategories() {

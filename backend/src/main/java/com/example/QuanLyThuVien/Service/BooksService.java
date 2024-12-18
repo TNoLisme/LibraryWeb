@@ -138,27 +138,25 @@ public class BooksService {
 
 
 
-    private Book convertToEntity(BookDto bookDto) {
+    public Book convertToEntity(BookDto bookDto) {
         Book book = new Book();
-        book.setId(bookDto.getId());
         book.setTitle(bookDto.getTitle());
         book.setAuthor(bookDto.getAuthor());
         book.setPublishYear(bookDto.getPublishYear());
         book.setQuantity(bookDto.getQuantity());
 
-        List<Category> categories = bookDto.getCategoryDtos()
-                                           .stream()
-                                           .map(categoryDto -> {
-                                               Category category = categoryRepository.findById(categoryDto.getId())
-                                                                                      .orElseThrow(() -> new RuntimeException("Category not found"));
-                                               return category;
-                                           })
-                                           .collect(Collectors.toList());
-
-        book.setCategories(categories);  
+        // Chuyển danh sách categoryIds thành danh sách Category entities
+        List<Category> categories = new ArrayList<>();
+        for (Integer categoryId : bookDto.getCategoryIds()) {
+            Category category = categoryRepository.findById(categoryId)
+                .orElseThrow(() -> new RuntimeException("Category not found with id " + categoryId));
+            categories.add(category);
+        }
+        book.setCategories(categories);
 
         return book;
     }
+
 
 
 }
