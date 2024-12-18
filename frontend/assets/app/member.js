@@ -76,15 +76,28 @@ const handleFormSubmit = async (event) => {
     if (selectedItem) {
       await axios.put(PATH + `/${selectedItem.id}`, formData);
     } else {
-      await axios.post(PATH, formData);
+      const response = await axios.post(PATH, formData);
+
+      // Kiểm tra trạng thái 201 (Created)
+      if (response.status === 201) {
+        alert("Thêm mới thành công!");
+      }
     }
   } catch (error) {
-    console.error("Error submitting form:", error);
+    // Kiểm tra lỗi 409 (Email đã tồn tại)
+    if (error.response && error.response.status === 409) {
+      alert("Email đã tồn tại");
+    } else {
+      alert(error.response?.data || "An unexpected error occurred.");
+    }
   } finally {
     closeModal();
     renderTable();
   }
 };
+
+
+
 
 const editItem = (id) => {
   selectedItem = items.find((item) => item.id === id);

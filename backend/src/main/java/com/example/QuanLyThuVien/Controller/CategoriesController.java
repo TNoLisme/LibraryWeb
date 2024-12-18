@@ -3,6 +3,7 @@ package com.example.QuanLyThuVien.Controller;
 
 import com.example.QuanLyThuVien.DTO.CategoryDTO;
 import com.example.QuanLyThuVien.Entity.Category;
+import com.example.QuanLyThuVien.Repo.BookRepository;
 import com.example.QuanLyThuVien.Service.CategoriesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,7 +19,7 @@ public class CategoriesController {
 
     @Autowired
     private CategoriesService categoriesService;
-
+   
     @PostMapping
     public ResponseEntity<Category> createCategory(@RequestBody Category category) {
         Category savedCategory = categoriesService.saveCategory(category);
@@ -41,10 +42,20 @@ public class CategoriesController {
         Category updatedCategory = categoriesService.updateCategory(id, categoryDetails);
         return updatedCategory != null ? ResponseEntity.ok(updatedCategory) : ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
-
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteCategory(@PathVariable int id) {
+    public ResponseEntity<String> deleteCategory(@PathVariable int id) {
+        // Kiểm tra xem thể loại có còn sách tham chiếu không
+        boolean hasBooks = categoriesService.hasBooksInCategory(id);
+        
+        if (hasBooks) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body("Không thể xóa thể loại này vì vẫn còn sách thuộc thể loại này.");
+        }
+
+        // Nếu không có sách, xóa thể loại
         categoriesService.deleteCategory(id);
         return ResponseEntity.noContent().build();
     }
+
+
 }

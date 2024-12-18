@@ -104,11 +104,20 @@ const addItem = () => {
 
 const deleteItem = async () => {
   try {
-    await axios.delete(PATH + `/${selectedItem.id}`);
-    renderTable();
+    // Gửi yêu cầu xóa thể loại
+    const response = await axios.delete(PATH + `/${selectedItem.id}`);
+
+    if (response.status === 204) {
+      renderTable();  // Reload lại bảng sau khi xóa thành công
+      alert("Xóa thể loại thành công!");
+    } else {
+      alert(response.data);  // Hiển thị thông báo lỗi nếu không thể xóa
+    }
   } catch (error) {
     console.error("Error deleting item:", error);
+    alert("Chỉ có thể xóa khi không còn sách tham chiếu tới");
   } finally {
     closeModal();
   }
 };
+
