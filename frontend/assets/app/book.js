@@ -25,29 +25,45 @@ window.addEventListener("DOMContentLoaded", () => {
 const renderTable = async () => {
   try {
     const { data } = await axios.get(PATH);
-    items = Array.isArray(data) ? data : []; // Kiểm tra xem dữ liệu có phải mảng không
+    const items = Array.isArray(data) ? data : [];
+
     const rows = items
       .map(
         (item) => `
       <tr>
-        <td>${item.title}</td>
-        <td>${item.author}</td>
+        <td>${item.title}</td> <!-- Hiển thị tên sách -->
+        <td>${item.author}</td> <!-- Hiển thị tác giả -->
+        <td>${item.publishYear}</td> <!-- Hiển thị năm xuất bản -->
+        <td>${item.quantity}</td> <!-- Hiển thị số lượng -->
+        <td>
+    ${item.categoryDtos && item.categoryDtos.length > 0
+            ? item.categoryDtos.map(category => category.name).join(', ')
+            : 'No categories'}
+</td>
+
         <td style="text-align: center;">
+          <!-- Edit Button -->
           <a onclick="editItem(${item.id})" href="javascript:void(0);">
             <i class="bx bx-edit-alt me-1"></i>
           </a>
+          
+          <!-- Delete Button -->
           <a onclick="openDeleteModel(${item.id})" href="javascript:void(0);">
             <i class="bx bx-trash me-1"></i>
           </a>
+          
+          <!-- View Button -->
           <a onclick="viewItem(${item.id})" href="javascript:void(0);">
             <i class='bx bx-show'></i>
           </a>
         </td>
       </tr>
-    `
-      )
-      .join("");
+    `)
+      .join(""); // Kết nối tất cả các hàng thành một chuỗi
+
+    const tableData = document.getElementById("tableData");
     tableData.innerHTML = rows;
+
   } catch (error) {
     console.error("Error rendering table:", error);
   }
@@ -59,7 +75,7 @@ const renderCateList = async () => {
   try {
     // Gọi API để lấy dữ liệu thể loại sách
     const { data } = await axios.get(PATH_CATE);
-    
+
     let checkboxes = ""; // Khởi tạo chuỗi chứa HTML cho các checkbox
     if (Array.isArray(data)) {  // Kiểm tra xem dữ liệu trả về có phải mảng không
       data.forEach((cate) => {
@@ -78,7 +94,7 @@ const renderCateList = async () => {
         `;
       });
     }
-    
+
     // Đưa HTML vào phần tử có id là "cateID"
     document.getElementById("cateID").innerHTML = checkboxes;
   } catch (error) {
@@ -105,15 +121,15 @@ const closeModal = () => {
 
 const getFormData = () => {
   const selectedCategories = Array.from(document.querySelectorAll('#cateID input[type="checkbox"]:checked'))
-    .map((checkbox) => parseInt(checkbox.value, 10));  
-  
+    .map((checkbox) => parseInt(checkbox.value, 10));
+
   return {
-    ...(selectedItem || {}), 
+    ...(selectedItem || {}),
     title: title.value.trim(),
     author: author.value.trim(),
     publishYear: +publishYear.value.trim(),
     quantity: +quantity.value.trim(),
-    categoryIds: selectedCategories.length > 0 ? selectedCategories : null, 
+    categoryIds: selectedCategories.length > 0 ? selectedCategories : null,
   };
 };
 
@@ -163,6 +179,7 @@ const handleFormSubmit = async (event) => {
     } else {
       // Nếu không có item được chọn (thêm mới), thực hiện POST
       const response = await axios.post(PATH, formData);
+
       alert("Thêm mới sách thành công!");
     }
   } catch (error) {
@@ -173,22 +190,75 @@ const handleFormSubmit = async (event) => {
     renderTable();  // Reload lại bảng để hiển thị dữ liệu mới
   }
 };
+// Xử lý chỉnh sửa sách
+const handleEditFormSubmit = async (event) => {
+  event.preventDefault(); // Ngăn không cho form reload trang
 
+  // Lấy dữ liệu từ form
+  const formData = {
+    title: document.querySelector("#edit-title").value.trim(),
+    author: document.querySelector("#edit-author").value.trim(),
+    publishYear: +document.querySelector("#edit-publishYear").value.trim(),
+    quantity: +document.querySelector("#edit-quantity").value.trim(),
+  };
 
-// Chỉnh sửa sách
-const editItem = (id) => {
-  selectedItem = items.find((item) => item.id === id);
-  if (selectedItem) {
-    setFormData(selectedItem);
-    openModal();
+  // Kiểm tra dữ liệu
+  if (!formData.title || !formData.author) {
+    alert("Vui lòng điền đầy đủ thông tin!");
+    return;
+  }
+
+  try {
+    // Gửi yêu cầu cập nhật dữ liệu
+    await axios.put(`${PATH}/${selectedItem.id}`, formData);
+    alert("Cập nhật thông tin sách thành công!");
+    renderTable(); // Tải lại danh sách sách
+  } catch (error) {
+    console.error("Error editing book:", error);
+    alert("Có lỗi xảy ra. Vui lòng thử lại.");
+  } finally {
+    closeModal(); // Đóng modal chỉnh sửa
   }
 };
+
+
+
+const getEditFormData = () => ({
+  ...selectedItem,
+  title: document.querySelector("#edit-title").value.trim(),
+  author: document.querySelector("#edit-author").value.trim(),
+  // Các trường khác
+});
+const editItem = (id) => {
+  // Tìm sách theo ID
+  selectedItem = items.find((item) => item.id === id);
+
+  if (selectedItem) {
+    // Gán giá trị vào form chỉnh sửa
+    document.querySelector("#edit-title").value = selectedItem.title || "";
+    document.querySelector("#edit-author").value = selectedItem.author || "";
+    document.querySelector("#edit-publishYear").value = selectedItem.publishYear || "";
+    document.querySelector("#edit-quantity").value = selectedItem.quantity || "";
+
+    // Đặt trạng thái cho các checkbox của category
+    Array.from(document.querySelectorAll('#cateID input[type="checkbox"]')).forEach((checkbox) => {
+      checkbox.checked = selectedItem?.categories?.some((cate) => cate.id === +checkbox.value) || false;
+    });
+
+    // Mở modal chỉnh sửa
+    $(modalEditId).modal("show");
+  } else {
+    console.error(`Không tìm thấy sách với ID: ${id}`);
+  }
+};
+
+
 
 // Xem đánh giá sách
 const viewItem = async (bookId) => {
   try {
     const { data } = await axios.get(PATH_REVIEW + "/by-book", { params: { bookId } });
-    const rows = Array.isArray(data) 
+    const rows = Array.isArray(data)
       ? data.map(
         (review) => `
       <tr>
