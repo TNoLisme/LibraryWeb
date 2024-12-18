@@ -136,6 +136,10 @@ public class BooksService {
     }
 
 
+    public boolean existsByCategoryId(int categoryId) {
+        // Kiểm tra xem có ít nhất một sách thuộc thể loại này
+        return booksRepository.countByCategoriesId(categoryId) > 0;
+    }
 
 
     public Book convertToEntity(BookDto bookDto) {

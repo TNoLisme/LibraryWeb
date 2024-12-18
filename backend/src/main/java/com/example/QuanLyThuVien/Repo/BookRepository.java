@@ -15,6 +15,9 @@ public interface BookRepository extends JpaRepository<Book, Integer> {
 		List<Object[]> getAllBooksWithCategories();
 
 
+		 boolean existsByCategoriesId(int categoryId);
 
+		    // Đếm số sách thuộc thể loại với ID cho trước
+		    long countByCategoriesId(int categoryId);
 }
 

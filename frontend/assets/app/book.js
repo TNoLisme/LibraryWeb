@@ -251,8 +251,8 @@ const handleFormSubmit = async (event) => {
   // Lấy dữ liệu từ form
   const formData = getFormData();
   // Kiểm tra nếu các trường bắt buộc chưa được điền
-  if (!formData.title || !formData.author) {
-    alert("Vui lòng điền đầy đủ thông tin!");
+  if (!formData.title || !formData.author || !formData.categories || formData.categories.length === 0) {
+    alert("Vui lòng điền đầy đủ thông tin và chọn ít nhất một thể loại!");
     return;
   }
 

@@ -2,6 +2,7 @@ package com.example.QuanLyThuVien.Controller;
 
 
 import com.example.QuanLyThuVien.Entity.Member;
+import com.example.QuanLyThuVien.Repo.MemberRepository;
 import com.example.QuanLyThuVien.Service.MembersService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,12 +18,25 @@ public class MembersController {
 
     @Autowired
     private MembersService membersService;
-
+    @Autowired
+    private MemberRepository membersRepository;
     @PostMapping
-    public ResponseEntity<Member> createMember(@RequestBody Member member) {
+    public ResponseEntity<?> createMember(@RequestBody Member member) {
+        // Kiểm tra xem email đã tồn tại chưa
+        Optional<Member> existingMember = membersRepository.findByEmail(member.getEmail());
+        if (existingMember.isPresent()) {
+            // Trả về mã lỗi 409 nếu email đã tồn tại
+            return new ResponseEntity<>("Email already exists", HttpStatus.CONFLICT);
+        }
+
+        // Nếu email chưa tồn tại, lưu member mới
         Member savedMember = membersService.saveMember(member);
         return new ResponseEntity<>(savedMember, HttpStatus.CREATED);
     }
+
+
+
+
 
     @GetMapping
     public List<Member> getAllMembers() {
