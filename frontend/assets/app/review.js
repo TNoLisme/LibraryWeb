@@ -31,7 +31,7 @@ const renderTable = async () => {
         (item) => `
       <tr>
         <td>${item.bookID?.title}</td>
-        <td>${item.memberID?.fullName}</td>
+        <td>${item.bookID?.author}</td>
         <td style="text-align: center;">
           <a onclick="editItem(${item.id})" href="javascript:void(0);">
             <i class="bx bx-edit-alt me-1"></i>
