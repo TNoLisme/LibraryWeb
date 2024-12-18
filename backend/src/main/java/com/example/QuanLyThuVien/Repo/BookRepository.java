@@ -10,8 +10,11 @@ import org.springframework.data.jpa.repository.Query;
 
 public interface BookRepository extends JpaRepository<Book, Integer> {
 
-	@Query("SELECT new com.example.QuanLyThuVien.DTO.BookDto(b.id, b.title, b.author) FROM Book b")
-	List<BookDto> getAllBooks();
+	@Query("SELECT b.id, b.title, b.author, b.publishYear, b.quantity, c.id, c.name " +
+		       "FROM Book b LEFT JOIN b.categories c")
+		List<Object[]> getAllBooksWithCategories();
+
+
 
 }
 

@@ -1,6 +1,7 @@
 package com.example.QuanLyThuVien.Service;
 
 import com.example.QuanLyThuVien.DTO.BookDto;
+import com.example.QuanLyThuVien.DTO.CategoryDTO;
 import com.example.QuanLyThuVien.Entity.Book;
 import com.example.QuanLyThuVien.Entity.BookCategory;
 import com.example.QuanLyThuVien.Entity.Category;
@@ -9,7 +10,10 @@ import com.example.QuanLyThuVien.Repo.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -58,10 +62,42 @@ public class BooksService {
 
 
 
-    // Get all books
-    public List<BookDto> getAllBooks() {
-       return booksRepository.getAllBooks();
+   // Get all books
+   public List<BookDto> getAllBooks() {
+    // Lấy kết quả từ repository
+    List<Object[]> results = booksRepository.getAllBooksWithCategories();
+
+    // Sử dụng Map để nhóm các BookDto theo bookId
+    Map<Integer, BookDto> bookMap = new HashMap<>();
+
+    for (Object[] row : results) {
+        // Kiểm tra số cột trong row để tránh lỗi
+        if (row.length >= 6) {  // Đảm bảo có đủ 6 cột từ kết quả truy vấn
+            Integer bookId = (Integer) row[0];
+            String title = (String) row[1];
+            String author = (String) row[2];
+            Integer publishYear = (Integer) row[3];
+            Integer quantity = (Integer) row[4];
+            Integer categoryId = row[5] != null ? (Integer) row[5] : null;
+            String categoryName = (row.length > 6 && row[6] != null) ? (String) row[6] : null; // Lấy tên danh mục
+
+            // Nếu bookId chưa tồn tại trong map, khởi tạo một BookDto mới
+            BookDto bookDto = bookMap.computeIfAbsent(bookId, id -> new BookDto(
+                id, title, author, publishYear, quantity, new ArrayList<>()
+            ));
+
+            // Thêm category vào danh sách nếu categoryId và categoryName không null
+            if (categoryId != null && categoryName != null) {
+                CategoryDTO categoryDto = new CategoryDTO(categoryId, categoryName);
+                bookDto.getCategoryDtos().add(categoryDto);
+            }
+        }
     }
+
+    // Trả về danh sách BookDto từ Map
+    return new ArrayList<>(bookMap.values());
+}
+
 
     // Get book by id
     public Optional<BookDto> getBookById(int id) {
@@ -85,19 +121,22 @@ public class BooksService {
     }
 
     private BookDto convertToDto(Book book) {
-        List<Integer> categoryIds = book.getCategories()
-                                        .stream()
-                                        .map(category -> category.getId()) // Chuyển từ Category sang ID
-                                        .collect(Collectors.toList());
+        List<CategoryDTO> categoryDtos = book.getCategories()
+                                             .stream()
+                                             .map(category -> new CategoryDTO(category.getId(), category.getName()))  // Chuyển từ Category sang CategoryDTO
+                                             .collect(Collectors.toList());
         return new BookDto(
-                book.getId(),
-                book.getTitle(),
-                book.getAuthor(),
-                book.getPublishYear(),
-                book.getQuantity(),
-                categoryIds
+            book.getId(),
+            book.getTitle(),
+            book.getAuthor(),
+            book.getPublishYear(),
+            book.getQuantity(),
+            categoryDtos  
         );
     }
+
+
+
 
     private Book convertToEntity(BookDto bookDto) {
         Book book = new Book();
@@ -107,17 +146,19 @@ public class BooksService {
         book.setPublishYear(bookDto.getPublishYear());
         book.setQuantity(bookDto.getQuantity());
 
-        List<Category> categories = bookDto.getCategoryIds()
+        List<Category> categories = bookDto.getCategoryDtos()
                                            .stream()
-                                           .map(categoryId -> {
-                                               Category category = categoryRepository.findById(categoryId)
+                                           .map(categoryDto -> {
+                                               Category category = categoryRepository.findById(categoryDto.getId())
                                                                                       .orElseThrow(() -> new RuntimeException("Category not found"));
                                                return category;
                                            })
                                            .collect(Collectors.toList());
-        book.setCategories(categories); 
+
+        book.setCategories(categories);  
 
         return book;
     }
+
 
 }
