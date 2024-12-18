@@ -7,6 +7,7 @@ const quantity = document.querySelector("#quantity");
 const cateID = document.querySelector("#cateID");
 const modalEditId = "#modelEdit";
 const modalViewId = "#modelView";
+const modalAddId = "#modelAdd";
 const modelConfirmId = "#modelConfirm";
 const PATH = BASE_URL + "/api/books";
 const PATH_CATE = BASE_URL + "/api/categories";
@@ -106,6 +107,7 @@ const closeModal = () => {
   $(modalEditId).modal("hide");
   $(modelConfirmId).modal("hide");
   $(modalViewId).modal("hide");
+  $(modalAddId).modal("hide");
   clearForm();
   tableDataDialog.innerHTML = "";
 };
@@ -178,6 +180,7 @@ const handleFormSubmit = async (event) => {
       // Nếu không có item được chọn (thêm mới), thực hiện POST
       const response = await axios.post(PATH, formData);
       alert("Thêm mới sách thành công!");
+      renderTable();
     }
   } catch (error) {
     console.error("Error submitting form:", error);
