@@ -306,28 +306,16 @@
                         </div>
                         <form id="editForm" onsubmit="handleEditFormSubmit(event)">
                           <div class="modal-body">
-                           
-                            <div class="mb-3">
-                              <label class="form-label" for="borrowDate">Ngày mượn</label>
-                              <input type="date" class="form-control" id="eborrowDate" required />
-                            </div>
-                            <div class="mb-3">
-                              <label class="form-label" for="returnDate">Ngày trả</label>
-                              <input type="date" class="form-control" id="ereturnDate" />
-                            </div>
-                            <div class="mb-3">
-                              <label class="form-label" for="status">Trạng thái</label>
-                              <select id="status" class="form-select">
-                                <option value="pending">Đang xử lý</option>
-                                <option value="borrowed">Đang được mượn</option>
-                                <option value="returned">Đã trả</option>
-                                <option value="lost">Mất</option>
-                                <option value="damaged">Bị hỏng</option>
-                                <option value="overdue">Trả muộn</option>
-                                
+                            <div class="form-group">
+                              <label for="editPaidStatus">Trạng thái thanh toán</label>
+                              <select id="editPaidStatus" class="form-control">
+                                <option value="paid">Đã trả</option>
+                                <option value="unpaid">Chưa trả</option>
                               </select>
                             </div>
                           </div>
+                          
+                          
                           <div class="modal-footer">
                             <button type="button" class="btn btn-secondary btn-sm" onclick="closeModal()">Hủy</button>
                             <button type="submit" class="btn btn-primary btn-sm">Lưu</button>

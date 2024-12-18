@@ -40,11 +40,7 @@ const renderTable = async () => {
           <td>${formatStatus(item.paidStatus)}</td>
           <td>
             <a href="javascript:void(0);" onclick="openEditModal(${item.penaltyRecordID})">
-              <i class="bx bx-edit-alt me-1"></i>
-            </a>
-            <a href="javascript:void(0);" onclick="deleteItem(${item.penaltyRecordID})">
-              <i class="bx bx-trash me-1"></i>
-            </a>
+        <i class="bx bx-edit-alt me-1"></i>
           </td>
         `;
       
@@ -54,6 +50,37 @@ const renderTable = async () => {
   } catch (error) {
     console.error("Lỗi khi render bảng:", error);
     alert("Không thể tải dữ liệu, vui lòng thử lại sau.");
+  }
+};
+const handleEditFormSubmit = async (event) => {
+  event.preventDefault();
+
+  if (!selectedItem) {
+    alert("Không tìm thấy bản ghi.");
+    return;
+  }
+
+  const newStatus = document.querySelector("#editPaidStatus").value;
+
+  try {
+    const response = await fetch(`${PATH}/${selectedItem.penaltyRecordID}/paid-status`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ paidStatus: newStatus }),
+    });
+
+    if (response.ok) {
+      alert("Cập nhật trạng thái thành công!");
+      closeEditModal();
+      renderTable(); 
+    } else {
+      throw new Error("Cập nhật thất bại.");
+    }
+  } catch (error) {
+    console.error("Lỗi khi cập nhật trạng thái:", error);
+    alert("Không thể cập nhật trạng thái, vui lòng thử lại sau.");
   }
 };
 
@@ -69,16 +96,18 @@ const formatStatus = (status) => {
 
 // Hàm mở modal chỉnh sửa
 const openEditModal = (id) => {
-  selectedItem = items.find((item) => item.id === id);
+  selectedItem = items.find((item) => item.penaltyRecordID === id);
 
   if (selectedItem) {
-    document.querySelector("#eborrowDate").value = selectedItem.borrowDate || "";
-    document.querySelector("#ereturnDate").value = selectedItem.returnDate || "";
-    document.querySelector("#status").value = selectedItem.status || "pending";
-
+    document.querySelector("#editPaidStatus").value = selectedItem.paidStatus;
     $(modalEditId).modal("show"); // Hiển thị modal chỉnh sửa
   }
 };
+
+const closeEditModal = () => {
+  $(modalEditId).modal("hide");
+};
+
 
 // Hàm xóa penalty
 const deleteItem = async (id) => {
