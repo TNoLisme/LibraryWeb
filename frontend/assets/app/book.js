@@ -147,49 +147,23 @@ const getFormData = () => {
 
 
 
-// Xóa dữ liệu trên form
 const clearForm = () => {
-  title.value = "";
-  author.value = "";
-  publishYear.value = "";
-  quantity.value = "";
-  Array.from(cateID.options).forEach((option) => {
-    option.selected = false;
+  title.value = "";  // Reset trường Title
+  author.value = "";  // Reset trường Author
+  publishYear.value = "";  // Reset trường Publish Year
+  quantity.value = "";  // Reset trường Quantity
+  
+  // Reset tất cả các checkbox trong cateID
+  Array.from(document.querySelectorAll('#cateID input[type="checkbox"]')).forEach((checkbox) => {
+    checkbox.checked = false;  // Đặt lại trạng thái checkbox thành chưa chọn
   });
-  selectedItem = null;
+  
+  selectedItem = null;  // Đặt lại selectedItem
 };
+
 
 // Xử lý submit form thêm/sửa
-const handleFormSubmit = async (event) => {
-  event.preventDefault();
 
-  // Lấy dữ liệu từ form
-  const formData = getFormData();
-  // Kiểm tra nếu các trường bắt buộc chưa được điền
-  if (!formData.title || !formData.author) {
-    alert("Vui lòng điền đầy đủ thông tin!");
-    return;
-  }
-
-  try {
-    if (selectedItem) {
-      // Nếu có item được chọn (đang chỉnh sửa), thực hiện PUT
-      const response = await axios.put(`${PATH}/${selectedItem.id}`, formData);
-      alert("Cập nhật thông tin sách thành công!");
-    } else {
-      // Nếu không có item được chọn (thêm mới), thực hiện POST
-      const response = await axios.post(PATH, formData);
-      alert("Thêm mới sách thành công!");
-      renderTable();
-    }
-  } catch (error) {
-    console.error("Error submitting form:", error);
-    alert("Có lỗi xảy ra. Vui lòng thử lại.");
-  } finally {
-    closeModal();  // Đóng modal sau khi gửi dữ liệu
-    renderTable();  // Reload lại bảng để hiển thị dữ liệu mới
-  }
-};
 // Đặt dữ liệu lên form khi chỉnh sửa
 const setFormData = (data) => {
   title.value = data?.title || "";
@@ -271,7 +245,32 @@ const renderCateLista = async () => {
 };
 
 
+const handleFormSubmit = async (event) => {
+  event.preventDefault();
 
+  // Lấy dữ liệu từ form
+  const formData = getFormData();
+  // Kiểm tra nếu các trường bắt buộc chưa được điền
+  if (!formData.title || !formData.author) {
+    alert("Vui lòng điền đầy đủ thông tin!");
+    return;
+  }
+
+  try {
+    
+      // Nếu không có item được chọn (thêm mới), thực hiện POST
+      const response = await axios.post(PATH, formData);
+      alert("Thêm mới sách thành công!");
+      renderTable();
+    
+  } catch (error) {
+    console.error("Error submitting form:", error);
+    alert("Có lỗi xảy ra. Vui lòng thử lại.");
+  } finally {
+    closeModal();  // Đóng modal sau khi gửi dữ liệu
+    renderTable();  // Reload lại bảng để hiển thị dữ liệu mới
+  }
+};
 const handleEditFormSubmit = async (event) => {
   event.preventDefault();
 
