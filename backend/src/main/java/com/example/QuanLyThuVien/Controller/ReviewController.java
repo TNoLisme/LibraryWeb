@@ -20,11 +20,13 @@ public class ReviewController {
     }
 
     @GetMapping("/by-book")
-    public List<Review> getReviewsByBookId(@RequestParam Integer bookId) {
+    public List<ReviewDto> getReviewsByBookId(@RequestParam Integer bookId) {
         return reviewService.getReviewsByBookId(bookId);
     }
+
     @PostMapping
     public String createReview(@RequestBody ReviewDto reviewDTO) {
         return reviewService.createReview(reviewDTO);
     }
+
 }
