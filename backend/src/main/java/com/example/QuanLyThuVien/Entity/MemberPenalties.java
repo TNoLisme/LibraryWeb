@@ -97,6 +97,8 @@ public class MemberPenalties {
     }
 
     public enum PaidStatus {
-        paid, unpaid
+        paid,
+        unpaid;
     }
+
 }
