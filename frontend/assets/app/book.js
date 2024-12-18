@@ -306,7 +306,6 @@ const handleEditFormSubmit = async (event) => {
 };
 
 
-// Xem đánh giá sách
 const viewItem = async (bookId) => {
   try {
     const { data } = await axios.get(PATH_REVIEW + "/by-book", { params: { bookId } });
@@ -314,14 +313,13 @@ const viewItem = async (bookId) => {
       ? data.map(
         (review) => `
       <tr>
-        <td>${review.memberID?.fullName}</td>
+        <td>${review.memberFullName}</td>  <!-- Sử dụng memberFullName thay vì member_id.fullName -->
         <td>
           <textarea rows="4" cols="40" disabled>${review.comment}</textarea>
         </td>
         <td>${review.rating}</td>
       </tr>
-    `
-      ).join("")
+    `).join("")
       : "Không có đánh giá nào.";
     tableDataDialog.innerHTML = rows;
     openModalView();
@@ -329,6 +327,7 @@ const viewItem = async (bookId) => {
     console.error("Error viewing reviews:", error);
   }
 };
+
 
 // Mở modal xóa sách
 const openDeleteModel = (id) => {

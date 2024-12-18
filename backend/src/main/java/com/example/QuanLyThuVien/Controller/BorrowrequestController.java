@@ -73,7 +73,8 @@ public class BorrowrequestController {
     }
 
     @GetMapping("/members")
-    public List<Borrowrequest> getBorrowRequestsNotInReviews(@RequestParam Integer memberId) {
+    public List<BorrowrequestDto> getBorrowRequestsNotInReviews(@RequestParam Integer memberId) {
         return borrowrequestService.getBorrowRequestsNotInReviewsByMemberId(memberId);
     }
+
 }

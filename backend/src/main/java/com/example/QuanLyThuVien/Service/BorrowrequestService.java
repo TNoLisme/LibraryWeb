@@ -168,7 +168,8 @@ public class BorrowrequestService {
                 .orElseThrow(() -> new RuntimeException("Borrow request not found."));
         borrowrequestRepository.delete(borrowrequest);
     }
-    public List<Borrowrequest> getBorrowRequestsNotInReviewsByMemberId(Integer memberId) {
+    public List<BorrowrequestDto> getBorrowRequestsNotInReviewsByMemberId(Integer memberId) {
         return borrowrequestRepository.findBorrowRequestsNotInReviewsByMemberId(memberId);
     }
+
 }
