@@ -46,23 +46,42 @@ const renderTable = async (statusFilter = "") => {
 
     // Tạo HTML cho bảng
     const rows = items
-      .map(
-        (item) => `  
-      <tr data-id="${item.id}">
-        <td>${item.bookTitle}</td>
-        <td>${item.memberFullName}</td>
-        <td>${formatDate(item.borrowDate)}</td>
-        <td>${item.status}</td> <!-- Hiển thị Trạng thái -->
-        <td style="text-align: center;">
-          <a class="edit-btn" href="javascript:void(0);">
-            <i class="bx bx-edit-alt me-1"></i>
-          </a>
-          <a class="delete-btn" href="javascript:void(0);">
-            <i class="bx bx-trash me-1"></i>
-          </a>
-        </td>
-      </tr>
-    `)
+    .map(
+      (item) => {
+        // Chuyển đổi trạng thái
+        let displayStatus = item.status;
+        if (item.status === "pending") {
+          displayStatus = "Đang xử lý";
+        } else if (item.status === "borrowed") {
+          displayStatus = "Đang được mượn";
+        } else if (item.status === "returned") {
+          displayStatus = "Đã trả";
+        } else if (item.status === "lost") {
+          displayStatus = "Mất";
+        } else if (item.status === "damaged") {
+          displayStatus = "Bị hỏng";
+        } else if (item.status === "overdue") {
+          displayStatus = "Trả muộn";
+        }
+  
+        return `  
+        <tr data-id="${item.id}">
+          <td>${item.bookTitle}</td>
+          <td>${item.memberFullName}</td>
+          <td>${formatDate(item.borrowDate)}</td>
+          <td>${displayStatus}</td> <!-- Hiển thị Trạng thái -->
+          <td style="text-align: center;">
+            <a class="edit-btn" href="javascript:void(0);">
+              <i class="bx bx-edit-alt me-1"></i>
+            </a>
+            <a class="delete-btn" href="javascript:void(0);">
+              <i class="bx bx-trash me-1"></i>
+            </a>
+          </td>
+        </tr>
+      `;
+      }
+    )
       .join("");  // Tạo chuỗi HTML cho các dòng trong bảng
 
     // Gán HTML cho phần tử tbody
