@@ -16,7 +16,7 @@ public class WebMvcConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("https://qltv-nostagiguideuss-projects.vercel.app/"));
+        configuration.setAllowedOrigins(List.of("library-1ztvqzgah-tnolismes-projects.vercel.app"));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE"));
         configuration.setAllowedHeaders(List.of("*"));
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
