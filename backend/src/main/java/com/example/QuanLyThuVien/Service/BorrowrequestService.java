@@ -77,91 +77,83 @@ public class BorrowrequestService {
     public List<Borrowrequest> getBorrowByUserID() {
         return borrowrequestRepository.findAll();
     }
+@Transactional
+public Borrowrequest updateBorrowrequest(Integer id, BorrowrequestDto borrowrequestDto) {
+    Borrowrequest borrowrequest = borrowrequestRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException("Borrow request not found."));
 
-    @Transactional
-    public Borrowrequest updateBorrowrequest(Integer id, BorrowrequestDto borrowrequestDto) {
-        Borrowrequest borrowrequest = borrowrequestRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Borrow request not found."));
+    Book book = borrowrequest.getBookID();
+    Member member = borrowrequest.getMemberID();
 
-        Book book = borrowrequest.getBookID();
-        Member member = borrowrequest.getMemberID();
+    // Nếu trạng thái yêu cầu thay đổi, xử lý số lượng sách và bảng phạt
+    if (!borrowrequest.getStatus().equals(borrowrequestDto.getStatus())) {
+        try {
+            String currentStatus = borrowrequest.getStatus();
+            String newStatus = borrowrequestDto.getStatus();
 
-        // Nếu trạng thái yêu cầu thay đổi, xử lý số lượng sách và bảng phạt
-        if (!borrowrequest.getStatus().equals(borrowrequestDto.getStatus())) {
-            try {
-                String currentStatus = borrowrequest.getStatus();
-                String newStatus = borrowrequestDto.getStatus();
-
-                // Nếu trạng thái cũ là "borrowed" và trạng thái mới là "returned", "overdue", "lost", "damaged"
-                if ("borrowed".equals(currentStatus)) {
-                    switch (newStatus) {
-                        case "returned":
-                            // Cộng sách lại khi trả sách
-                            book.setQuantity(book.getQuantity() + 1);
-                            bookRepository.save(book);
-                            break;
-                        case "overdue":
-                            // Xử lý phạt cho trả muộn (trả sách muộn)
-                            Fine overdueFine = fineRepository.findById(1)
-                                    .orElseThrow(() -> new RuntimeException("Fine for overdue book not found."));
-                            MemberPenalties overduePenalty = new MemberPenalties();
-                            overduePenalty.setMember(member);
-                            overduePenalty.setFine(overdueFine);
-                            overduePenalty.setPenaltyDate(LocalDate.now());
-                            overduePenalty.setPaidStatus(MemberPenalties.PaidStatus.unpaid);
-                            memberPenaltiesRepository.save(overduePenalty);
-                            break;
-                        case "lost":
-                            // Xử lý phạt cho mất sách
-                            Fine lostFine = fineRepository.findById(3)
-                                    .orElseThrow(() -> new RuntimeException("Fine for lost book not found."));
-                            MemberPenalties lostPenalty = new MemberPenalties();
-                            lostPenalty.setMember(member);
-                            lostPenalty.setFine(lostFine);
-                            lostPenalty.setPenaltyDate(LocalDate.now());
-                            lostPenalty.setPaidStatus(MemberPenalties.PaidStatus.unpaid);
-                            memberPenaltiesRepository.save(lostPenalty);
-                            break;
-                        case "damaged":
-                            // Xử lý phạt cho sách hỏng
-                            Fine damagedFine = fineRepository.findById(2)
-                                    .orElseThrow(() -> new RuntimeException("Fine for damaged book not found."));
-                            MemberPenalties damagedPenalty = new MemberPenalties();
-                            damagedPenalty.setMember(member);
-                            damagedPenalty.setFine(damagedFine);
-                            damagedPenalty.setPenaltyDate(LocalDate.now());
-                            damagedPenalty.setPaidStatus(MemberPenalties.PaidStatus.unpaid);
-                            memberPenaltiesRepository.save(damagedPenalty);
-                            break;
-                        default:
-                            break;
-                    }
-                } else if ("returned".equals(currentStatus) || "overdue".equals(currentStatus)
-                        || "lost".equals(currentStatus) || "damaged".equals(currentStatus)) {
-                    // Nếu chuyển từ trạng thái khác sang "borrowed", không cộng lại sách, chỉ thực hiện phạt nếu cần
-                    if ("returned".equals(newStatus)) {
-                        // Cộng sách lại khi trả sách
+            // Nếu trạng thái cũ là "pending" và trạng thái mới là "borrowed"
+            if ("pending".equals(currentStatus) && "borrowed".equals(newStatus)) {
+                // Trừ sách đi khi bắt đầu mượn sách
+                if (book.getQuantity() <= 0) {
+                    throw new RuntimeException("Book is out of stock.");
+                }
+                book.setQuantity(book.getQuantity() - 1);
+                bookRepository.save(book);
+            } else if ("borrowed".equals(currentStatus)) {
+                // Xử lý các trạng thái từ "borrowed"
+                switch (newStatus) {
+                    case "returned":
                         book.setQuantity(book.getQuantity() + 1);
                         bookRepository.save(book);
-                    }
+                        break;
+                    case "overdue":
+                        Fine overdueFine = fineRepository.findById(1)
+                                .orElseThrow(() -> new RuntimeException("Fine for overdue book not found."));
+                        MemberPenalties overduePenalty = new MemberPenalties();
+                        overduePenalty.setMember(member);
+                        overduePenalty.setFine(overdueFine);
+                        overduePenalty.setPenaltyDate(LocalDate.now());
+                        overduePenalty.setPaidStatus(MemberPenalties.PaidStatus.unpaid);
+                        memberPenaltiesRepository.save(overduePenalty);
+                        break;
+                    case "lost":
+                        Fine lostFine = fineRepository.findById(3)
+                                .orElseThrow(() -> new RuntimeException("Fine for lost book not found."));
+                        MemberPenalties lostPenalty = new MemberPenalties();
+                        lostPenalty.setMember(member);
+                        lostPenalty.setFine(lostFine);
+                        lostPenalty.setPenaltyDate(LocalDate.now());
+                        lostPenalty.setPaidStatus(MemberPenalties.PaidStatus.unpaid);
+                        memberPenaltiesRepository.save(lostPenalty);
+                        break;
+                    case "damaged":
+                        Fine damagedFine = fineRepository.findById(2)
+                                .orElseThrow(() -> new RuntimeException("Fine for damaged book not found."));
+                        MemberPenalties damagedPenalty = new MemberPenalties();
+                        damagedPenalty.setMember(member);
+                        damagedPenalty.setFine(damagedFine);
+                        damagedPenalty.setPenaltyDate(LocalDate.now());
+                        damagedPenalty.setPaidStatus(MemberPenalties.PaidStatus.unpaid);
+                        memberPenaltiesRepository.save(damagedPenalty);
+                        break;
+                    default:
+                        break;
                 }
-
-            } catch (Exception e) {
-                System.out.println("Error saving penalty: " + e.getMessage());
-                throw new RuntimeException("Error updating borrow request and saving penalty.");
             }
+        } catch (Exception e) {
+            System.out.println("Error saving penalty: " + e.getMessage());
+            throw new RuntimeException("Error updating borrow request and saving penalty.");
         }
-
-        // Cập nhật các thông tin khác của yêu cầu mượn
-        borrowrequest.setBorrowDate(borrowrequestDto.getBorrowDate());
-        borrowrequest.setReturnDate(borrowrequestDto.getReturnDate());
-        borrowrequest.setStatus(borrowrequestDto.getStatus());
-
-        // Lưu lại yêu cầu mượn sách đã cập nhật
-        return borrowrequestRepository.save(borrowrequest); // Lưu yêu cầu mượn sau khi cập nhật
     }
 
+    // Cập nhật các thông tin khác của yêu cầu mượn
+    borrowrequest.setBorrowDate(borrowrequestDto.getBorrowDate());
+    borrowrequest.setReturnDate(borrowrequestDto.getReturnDate());
+    borrowrequest.setStatus(borrowrequestDto.getStatus());
 
+    // Lưu lại yêu cầu mượn sách đã cập nhật
+    return borrowrequestRepository.save(borrowrequest);
+}
 
     // Xóa yêu cầu mượn sách
     public void deleteBorrowrequest(Integer id) {
