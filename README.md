@@ -1,13 +1,13 @@
 # Dự án Web Quản Lý Thư Viện: Library Web
 
 ## Giới thiệu:
-Dự án Quản Lý Thư Viện là một ứng dụng web được xây dựng bằng Java Spring Boot và các công cụ khác nhằm hỗ trợ việc quản lý sách, người dùng, và các hoạt động phạt, mượn/trả sách trong thư viện. Dự án hướng tới việc số hóa quy trình quản lý thư viện, giúp tiết kiệm thời gian và nâng cao hiệu quả công việc.
+- Dự án Quản Lý Thư Viện là một ứng dụng web được xây dựng bằng Java Spring Boot và các công cụ khác nhằm hỗ trợ việc quản lý sách, người dùng, và các hoạt động phạt, mượn/trả sách trong thư viện. Dự án hướng tới việc số hóa quy trình quản lý thư viện, giúp tiết kiệm thời gian và nâng cao hiệu quả công việc.
 
 
-Đây là một trang web giúp cho việc quản lý thư viện của thủ thư (admin) trở nên dễ dàng hơn với các thao tác đơn giản. Người mượn sách (user) có thể đánh giá lại các sách mà mình đã và đang mượn, kiểm tra xem mình có bị phạt hay không thông qua tài khoản user được thư viện cấp cho.
+- Đây là một trang web giúp cho việc quản lý thư viện của thủ thư (admin) trở nên dễ dàng hơn với các thao tác đơn giản. Người mượn sách (user) có thể đánh giá lại các sách mà mình đã và đang mượn, kiểm tra xem mình có bị phạt hay không thông qua tài khoản user được thư viện cấp cho.
 
 ## Mục lục chính:
-1. Cơ sở dữ liệu và mô hình EER
+1. Cơ sở dữ liệu và mô hình ER Diagram
 2. Các tính năng chính
 3. Công nghệ sử dụng
 4. Hướng dẫn cài đặt và chạy dự án
@@ -16,6 +16,8 @@ Dự án Quản Lý Thư Viện là một ứng dụng web được xây dựng 
 
 ## 1. Cơ sở dữ liệu và mô hình EER:
 - Gồm các bảng và mô hình như hình vẽ:
+
+  ![Mô hình ER Diagram](./image/ER%20Diagram.png)
 
 ## 2. Các tính năng chính:
 
@@ -36,7 +38,7 @@ Dự án Quản Lý Thư Viện là một ứng dụng web được xây dựng 
   - Thêm, sửa, xóa thành viên trong thư viện.
 
 ### 2.2 User:
-- **Đánh giá lại sách** đã và đang mượn.
+- **Đánh giá lại sách**: đánh giá sách đã và đang mượn theo số sao và bình luận phản hồi.
 - **Kiểm tra phạt**: Kiểm tra xem người mượn có đang bị phạt hay không.
 
 ## 3. Công nghệ sử dụng:
@@ -113,7 +115,7 @@ thinh01092005@gmail.com
 
   #### 3.Đào Ngọc Tân - MSV:
 
-  - Đóng góp: Back-end quản lý sách, mượn trả, thiết kế cơ sở dữ liệu. 
+  - Đóng góp: Back-end quản lý sách, mượn trả, review, thiết kế cơ sở dữ liệu. 
     
   #### 4.Ngô Anh Tú - MSV:
 
