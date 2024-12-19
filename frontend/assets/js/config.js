@@ -19,7 +19,5 @@ let config = {
   }
 };
 
-let BASE_URL = "http://localhost:8080"
-
-// // Linking to Backend
-// let BASE_URL = "https://libraryweb-ny2i.onrender.com";
+// Linking to Backend
+let BASE_URL = "https://libraryweb-ny2i.onrender.com";
