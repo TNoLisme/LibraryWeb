@@ -253,6 +253,22 @@ const handleFormSubmit = async (event) => {
     return;
   }
 
+  const borrowDate = new Date(borrowRequest.borrowDate);
+  const returnDate = new Date(borrowRequest.returnDate);
+
+  if (returnDate <= borrowDate) {
+    alert("Ngày trả phải muộn hơn ngày mượn ít nhất 1 ngày.");
+    return;
+  }
+
+  const maxReturnDate = new Date(borrowDate);
+  maxReturnDate.setMonth(maxReturnDate.getMonth() + 3);
+
+  if (returnDate > maxReturnDate) {
+    alert("Ngày trả không được vượt quá 3 tháng kể từ ngày mượn.");
+    return;
+  }
+
   try {
     const response = await axios.post(PATH, borrowRequest);
     console.log('Borrow request created:', response.data);
@@ -269,6 +285,7 @@ const handleFormSubmit = async (event) => {
     alert('Đã xảy ra lỗi, vui lòng thử lại!');
   }
 };
+
 
 const closeModala = () => {
   $('#modelAdd').modal('hide'); // Đảm bảo sử dụng ID đúng của modal
@@ -312,11 +329,25 @@ const handleEditFormSubmit = async (event) => {
     status: document.getElementById('status').value,
   };
 
+  const borrowDate = new Date(updatedData.borrowDate);
+  const returnDate = new Date(updatedData.returnDate);
+
+  if (returnDate <= borrowDate) {
+    alert("Ngày trả phải muộn hơn ngày mượn ít nhất 1 ngày.");
+    return;
+  }
+
+  const maxReturnDate = new Date(borrowDate);
+  maxReturnDate.setMonth(maxReturnDate.getMonth() + 3);
+
+  if (returnDate > maxReturnDate) {
+    alert("Ngày trả không được vượt quá 3 tháng kể từ ngày mượn.");
+    return;
+  }
+
   try {
-    // Gọi API để cập nhật
     const response = await axios.put(`${PATH}/${updatedData.id}`, updatedData);
     location.reload();
-    // Hiển thị thông báo thành công và cập nhật bảng
     alert('Cập nhật thông tin mượn sách thành công!');
     renderTable();  // Reload bảng để hiển thị dữ liệu mới
     closeModal();
