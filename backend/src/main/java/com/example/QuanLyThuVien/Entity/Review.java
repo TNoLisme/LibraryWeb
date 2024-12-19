@@ -39,10 +39,6 @@ public class Review {
     @Column(name = "reviewDate")
     private Date reviewDate;
 
-//<<<<<<< HEAD
-//    @Column(name = "reviewDate")
-//    private Instant reviewDate;
-//=======
 	public Integer getId() {
 		return id;
 	}
@@ -91,5 +87,4 @@ public class Review {
 		this.reviewDate = reviewDate;
 	}
 
-//>>>>>>> ca413f1 (Feature/FixLombox)
 }

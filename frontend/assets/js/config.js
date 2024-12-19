@@ -19,8 +19,7 @@ let config = {
   }
 };
 
-// <<<<<<< HEAD
 let BASE_URL = "http://localhost:8080"
-// =======
-// let BASE_URL = "http://127.0.0.1:8080";
-// >>>>>>> ca413f1 (Feature/FixLombox)
+
+// // Linking to Backend
+// let BASE_URL = "https://libraryweb-ny2i.onrender.com";

@@ -54,7 +54,6 @@ public class ReviewService {
             review.setMemberID(member);
             review.setRating(reviewDTO.getRating());
             review.setComment(reviewDTO.getComment());
-
             review.setReviewDate(reviewDTO.getReviewDate() != null ? reviewDTO.getReviewDate() : new Date());
 
             // Log để kiểm tra dữ liệu
