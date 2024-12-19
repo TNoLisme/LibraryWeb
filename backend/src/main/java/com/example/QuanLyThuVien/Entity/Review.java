@@ -10,8 +10,7 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.Date;
 
-@Getter
-@Setter
+
 @Entity
 @Table(name = "reviews")
 public class Review {
@@ -36,10 +35,61 @@ public class Review {
     @Column(name = "comment")
     private String comment;
 
-//    @Temporal(TemporalType.TIMESTAMP)
-//    @Column(name = "reviewDate")
-//    private Date reviewDate;
-
+    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "reviewDate")
-    private Instant reviewDate;
+    private Date reviewDate;
+
+//<<<<<<< HEAD
+//    @Column(name = "reviewDate")
+//    private Instant reviewDate;
+//=======
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public Borrowrequest getBorrowRequestId() {
+		return borrowRequestId;
+	}
+
+	public void setBorrowRequestId(Borrowrequest borrowRequestId) {
+		this.borrowRequestId = borrowRequestId;
+	}
+
+	public Member getMemberID() {
+		return memberID;
+	}
+
+	public void setMemberID(Member memberID) {
+		this.memberID = memberID;
+	}
+
+	public Integer getRating() {
+		return rating;
+	}
+
+	public void setRating(Integer rating) {
+		this.rating = rating;
+	}
+
+	public String getComment() {
+		return comment;
+	}
+
+	public void setComment(String comment) {
+		this.comment = comment;
+	}
+
+	public Date getReviewDate() {
+		return reviewDate;
+	}
+
+	public void setReviewDate(Date reviewDate) {
+		this.reviewDate = reviewDate;
+	}
+
+//>>>>>>> ca413f1 (Feature/FixLombox)
 }
