@@ -31,6 +31,15 @@ CREATE TABLE `admins` (
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
+
+INSERT INTO fines (fine_reason, fine_amount) VALUES
+('Late book return', 10.00),              -- Phạt 10.00 vì trả sách trễ
+('Damaged book', 20.00),               -- Phạt 20.00 vì sách bị hư hỏng
+('Lost book', 30.00);                -- Phạt 30.00 vì đánh mất sách
+
+INSERT INTO admins (email, full_name, password) VALUES
+('admin', "Administrator", '123');
+
 --
 -- Table structure for table `bookcategory`
 --
