@@ -330,7 +330,12 @@ const editItem = (id) => {
     // Tắt các trường không cần chỉnh sửa (bookID, memID)
     bookID.disabled = false;
     memID.disabled = false;
-    statusBook.disabled = false;
+    const orgStatus = selectedItem.status;
+    if (orgStatus === 'pending' || orgStatus === 'borrowed') {
+      statusBook.disabled = false;
+    } else {
+      statusBook.disabled = true;
+    }
   }
 };
 
@@ -362,6 +367,19 @@ const handleEditFormSubmit = async (event) => {
   if (returnDate > maxReturnDate) {
     alert("Ngày trả không được vượt quá 3 tháng kể từ ngày mượn.");
     return;
+  }
+
+  const orgStatus = selectedItem.status;
+  if (orgStatus === 'pending') {
+    if (updatedData.status != 'borrowed' && updatedData.status != 'pending') {
+      alert('Hiện yêu cầu ĐANG XỬ LÝ. Vui lòng lựa chọn lại TRẠNG THÁI phù hợp: Đang được mượn.');
+      return;
+    }
+  } else if (orgStatus === 'borrowed') {
+    if (updatedData.status === 'pending') {
+      alert('Hiện yêu cầu ĐANG ĐƯỢC MƯỢN. Vui lòng lựa chọn lại TRẠNG THÁI phù hợp: Đã trả, Mất, Bị hỏng, Trả muộnmuộn.');
+      return;
+    }
   }
 
   try {

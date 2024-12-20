@@ -139,6 +139,8 @@ public Borrowrequest updateBorrowrequest(Integer id, BorrowrequestDto borrowrequ
                     default:
                         break;
                 }
+            } else {
+                return null;
             }
         } catch (Exception e) {
             System.out.println("Error saving penalty: " + e.getMessage());
