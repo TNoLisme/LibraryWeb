@@ -19,6 +19,8 @@
 
   ![Mô hình ER Diagram](./image/ER%20Diagram.png)
 
+- Sơ đồ mô hình thực thể liên kết ER:
+   ![Mô hình ER](./image/Sơ%20đồ%20ER.png)
 ## 2. Các tính năng chính:
 
 ### 2.1 Admin:
