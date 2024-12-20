@@ -20,4 +20,4 @@ let config = {
 };
 
 // Linking to Backend
-let BASE_URL = "https://libraryweb-ny2i.onrender.com";
+let BASE_URL = "https://libraryweb-backend-and-db.up.railway.app/";
