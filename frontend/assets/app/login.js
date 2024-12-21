@@ -27,7 +27,7 @@ const handleFormLogin = async (event) => {
       "current-user",
       JSON.stringify({ ...response?.data, typeId: typeId?.value })
     );
-    window.location.href = "index.html";
+    window.location.href = "book.html";
   } catch (error) {
     toastr.error('Tên tài khoản hoặc mật khẩu không chính xác!');
     console.error("Error during login:", error);
