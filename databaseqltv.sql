@@ -188,3 +188,13 @@ CREATE TABLE `reviews` (
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
 -- Dump completed on 2024-12-19 13:52:37
+
+
+
+INSERT INTO fines (fine_reason, fine_amount) VALUES
+('Late book return', 10.00),              -- Phạt 10.00 vì trả sách trễ
+('Damaged book', 20.00),               -- Phạt 20.00 vì sách bị hư hỏng
+('Lost book', 30.00);                -- Phạt 30.00 vì đánh mất sách
+
+INSERT INTO admins (email, full_name, password) VALUES
+('admin', "Administrator", '123');
