@@ -131,19 +131,19 @@ thinh01092005@gmail.com
 
 <a name = 'contribute'></a>
 ### 6. Các thành viên và đóng góp:
-   #### 1.Nguyễn Văn Thịnh - MSV: 230217206
+   #### 1.Nguyễn Văn Thịnh - MSV: 23021726
 
-  - Đóng góp: Front-end các phần, thiết kế cơ sở dữ liệu, readme, test lỗi.
+  - Đóng góp: Front-end các phần, thiết kế cơ sở dữ liệu, mô hình ER Diagram, Readme, test lỗi.
 
 
   #### 2.Nguyễn Trường Sơn - MSV: 23021686
 
-  - Đóng góp: Back-end phần quản lý người dùng, login, triển khai web, thiết kế cơ sở dữ liệu.
+  - Đóng góp: Back-end quản lý người dùng, login, review, triển khai web, mô hình ER, thiết kế cơ sở dữ liệu.
 
 
   #### 3.Đào Ngọc Tân - MSV: 23021690
 
-  - Đóng góp: Back-end quản lý sách và thể loại sách, mượn trả, review, thiết kế cơ sở dữ liệu. 
+  - Đóng góp: Back-end quản lý sách và thể loại sách, mượn sách, trả sách, thiết kế cơ sở dữ liệu. 
     
   #### 4.Ngô Anh Tú - MSV: 23021702
 
